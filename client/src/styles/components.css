@@ -1,8 +1,8 @@
 .padding-wide {
-    padding-left: clamp(12px, 3vw, 77px);
-    padding-right: clamp(12px, 3vw, 77px);
-    padding-top: clamp(12px, 2vw, 24px);
-    padding-bottom: clamp(12px, 2vw, 24px);
+    padding-left: clamp(12px, 3vw, 70px);
+    padding-right: clamp(12px, 3vw, 70px);
+    padding-top: clamp(12px, 2vw, 18px);
+    padding-bottom: clamp(12px, 2vw, 18px);
 }
 
 .padding-body {

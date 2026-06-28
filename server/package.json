@@ -1,36 +1,26 @@
 {
-  "name": "backend",
+  "name": "magnula-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Magnula furniture backend",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "seed": "node scripts/seed.js"
+  },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
-    "@prisma/client": "^7.8.0",
-    "axios": "^1.14.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "multer": "^2.1.1",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^3.18.0",
-    "nanoid": "^5.1.6",
-    "node-cache": "^5.1.2",
-    "node-cron": "^4.2.1"
+    "redis": "^4.6.13",
+    "sequelize": "^6.35.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14",
-    "prisma": "^7.8.0",
-    "sequelize-cli": "^6.6.5"
+    "nodemon": "^3.1.14"
   }
 }

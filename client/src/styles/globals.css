@@ -3,29 +3,77 @@
 @import './typography.css';
 
 :root {
-  --background: #ffffff;
+  --background-primary: #fffdf3;
   --foreground: #272727;
   --color-primary: #272727;
   --color-secondary: #696969;
+  --color-third: #ffffff;
+  --color-error: #b32f2f;
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --color-background-primary: var(--background-primary);
+  --color-background-secondary: var(--background-secondary);
   --color-foreground: var(--foreground);
   --color-primary: var(--color-primary);
   --color-secondary: var(--color-secondary);
-  --font-inter: var(--font-inter);
+  --color-third: var(--color-third);
+  --color-error: var(--color-error);
+  --font-damion: var(--font-damion);
+  --font-display: 'Hanken Design Co - Neue Einstellung', sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #000000;
-    --foreground: #ffffff;
+    --foreground: #fffcf9;
   }
 }
 
 body {
-  background: var(--background);
+  background: var(--background-primary);
   color: var(--foreground);
-  font-family: 'Inter', sans-serif;
+}
+
+/* Autofill styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #f2f4f7 inset !important;
+  box-shadow: 0 0 0 30px #f2f4f7 inset !important;
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: #1f2937 !important;
+}
+
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 30px #f2f4f7 inset !important;
+  box-shadow: 0 0 0 30px #f2f4f7 inset !important;
+}
+
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: #1f2937 !important;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; 
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+  }
 }

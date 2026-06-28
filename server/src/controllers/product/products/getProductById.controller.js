@@ -1,0 +1,74 @@
+// Get Product By ID Controller - Fetch product details by ID
+
+import db from '../../../config/db.js';
+import { applyProductVisibilityFilter } from '../../../utils/productVisibility.js';
+
+export const getProductById = async (req, res) => {
+  try {
+    const {
+      Collection,
+      Product,
+      ProductVariant,
+      ProductImage,
+      Material,
+      FabricType,
+      RoomSuitability,
+    } = db.models;
+    const { id } = req.params;
+
+    // Apply visibility filter: Guest sees only ['in stock', 'out of stock'], Staff/Admin see all
+    const whereClause = applyProductVisibilityFilter(req, { deletedAt: null, id });
+
+    const product = await Product.findOne({
+      where: whereClause,
+      include: [
+        {
+          model: Collection,
+          attributes: ['id', 'collectionName', 'colorHex'],
+        },
+        {
+          model: Material,
+          attributes: ['id', 'name', 'description'],
+        },
+        {
+          model: FabricType,
+          attributes: ['id', 'name', 'description'],
+        },
+        {
+          model: RoomSuitability,
+          attributes: ['id', 'name', 'description'],
+        },
+        {
+          model: ProductVariant,
+          as: 'variants',
+          attributes: ['id', 'overallSize', 'seatSize', 'price', 'stockQuantity'],
+        },
+        {
+          model: ProductImage,
+          as: 'images',
+          attributes: ['id', 'imageUrl', 'isMain'],
+          where: { deletedAt: null },
+          required: false,
+        },
+      ],
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        error: 'Product not found',
+      });
+    }
+
+    res.json({
+      success: true,
+      data: product,
+    });
+  } catch (error) {
+    console.error('Get product by ID error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};

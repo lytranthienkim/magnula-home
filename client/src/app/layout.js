@@ -1,11 +1,13 @@
-import { Inter } from "next/font/google";
+import { Damion } from "next/font/google";
 import '@/styles/globals.css';
-import { Footer } from "@/components/common/Footer";
+import { PreloaderWrapper } from "@/components/layout/preloader/PreloaderWrapper";
+import { Providers } from "@/redux/Provider";
 
-const interFont = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+const damionFont = Damion({
+  variable: '--font-damion',
+  weight: '400',
+  subsets: ["latin"]
+})
 
 export const metadata = {
   title: "Magnula",
@@ -16,11 +18,14 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${interFont.variable}  h-full antialiased`}
+      className={`${damionFont.variable}  h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        {children}
-        <Footer/>
+      <body className="min-h-full flex flex-col justify-between">
+        <Providers>
+          <PreloaderWrapper>
+            {children}
+          </PreloaderWrapper>
+        </Providers>
       </body>
     </html>
   );

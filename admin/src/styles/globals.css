@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #f5f7fa;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+/* Typography Styles - matching client */
+h1 {
+  font-size: clamp(32px, 2vw, 56px);
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(24px, 2vw, 32px);
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: clamp(20px, 2vw, 24px);
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.h1-neu {
+  font-size: clamp(32px, 2vw, 56px);
+  line-height: 1.5;
+  letter-spacing: -3%;
+  font-weight: 700;
+}
+
+.h2-neu {
+  font-size: clamp(24px, 2vw, 32px);
+  line-height: 1.5;
+  letter-spacing: -3%;
+  font-weight: 600;
+}
+
+.h3-neu {
+  font-size: clamp(20px, 2vw, 24px);
+  line-height: 1.5;
+  letter-spacing: -3%;
+  font-weight: 600;
+}
+
+.body-01 {
+  font-size: clamp(14px, 1vw, 16px);
+  font-weight: 400;
+}
+
+.body-02 {
+  font-size: clamp(13px, 1vw, 14px);
+  font-weight: 400;
+}
+
+.body-03 {
+  font-size: clamp(11px, 1vw, 13px);
+  font-weight: 400;
+}
+
+/* Form Styles */
+input, textarea, select {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+button {
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Error Messages */
+.error-text {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Success Messages */
+.success-text {
+  color: #22c55e;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Border Styles */
+.border-light {
+  border: 0.25px solid #272727;
+}
+
+.border-dark {
+  border: 1px solid #000000;
+}

@@ -1,3 +1,29 @@
+/* Hanken Design Co - Neue Einstellung */
+@font-face {
+  font-family: 'Hanken Design Co - Neue Einstellung Light';
+  src: url('/fonts/Hanken Design Co - Neue Einstellung Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Hanken Design Co - Neue Einstellung Regular';
+  src: url('/fonts/Hanken Design Co - Neue Einstellung Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Hanken Design Co - Neue Einstellung Medium';
+  src: url('/fonts/Hanken Design Co - Neue Einstellung Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'The Seasons Italic';
+  src: url('/fonts/The Seasons Italic.ttf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TheSeasonsBold';
+  src: url('/fonts/TheSeasonsBold.ttf') format('opentype');
+}
+
 Link {
     font-size: clamp(12px, 1vw, 14px);
     font-weight: 300;
@@ -9,32 +35,81 @@ Link:hover {
 
 h1 {
     font-size: clamp(32px, 2vw, 56px);
+    line-height: 1.5;
+    letter-spacing: 0.5;
+}
+
+.h1-neu {
+  font-size: clamp(32px, 2vw, 56px);
+  line-height: 1.5;
+  letter-spacing: -3%;
 }
 
 h2 {
-    font-size: clamp(28px, 2vw, 40px);
+    font-size: clamp(24px, 2vw, 32px);
+    line-height: 1.5;
+    letter-spacing: 0.5;
+}
+
+.h2-neu {
+  font-size: clamp(24px, 2vw, 32px);
+  line-height: 1.5;
+  letter-spacing: -3%;
 }
 
 h3 {
-    font-size: clamp(24px, 2vw, 28px);
+    font-size: clamp(20px, 2vw, 24px);
+    line-height: 1.5;
+    letter-spacing: 0.5;
+}
+
+.h3-neu {
+  font-size: clamp(20px, 2vw, 24px);
+  line-height: 1.5;
+  letter-spacing: -3%;
 }
 
 h4 {
-    font-size: 20px;
+    font-size: 18px;
+    line-height: 1.5;
+    letter-spacing: 0.5;
 }
 
-.body-01 {
-    font-size: clamp(16px, 2vw, 18px);
-}
-
-.body-02 {
-    font-size: clamp(14px, 2vw, 16px);
-}
-
-.body-03 {
+a {
     font-size: clamp(12px, 2vw, 14px);
 }
 
-.body-04 {
-    font-size: clamp(10px, 2vw, 12px);
+.body-01 {
+    font-size: clamp(14px, 1vw, 16px);
+}
+
+.body-02 {
+    font-size: clamp(13px, 1vw, 14px);
+}
+
+.body-03 {
+    font-size: clamp(11px, 1vw, 13px);
+}
+
+/* Neue Einstellung Utilities */
+@layer utilities {
+  .font-display-light {
+    font-family: 'Hanken Design Co - Neue Einstellung Light', sans-serif;
+  }
+
+  .font-display-regular {
+    font-family: 'Hanken Design Co - Neue Einstellung Regular', sans-serif;
+  }
+
+  .font-display-semibold {
+    font-family: 'Hanken Design Co - Neue Einstellung Medium', sans-serif;
+  }
+
+  .font-display-ss-italic {
+    font-family: 'The Seasons Italic', sans-serif;
+  }
+
+  .font-display-ss-regular {
+    font-family: 'TheSeasonsBold', sans-serif;
+  }
 }

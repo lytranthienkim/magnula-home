@@ -1,4 +1,4 @@
-# MAGNULA Home - Furniture E-Commerce Platform
+# MAGNULA FURNITURE
 
 MAGNULA is an online shopping website specializing in premium sofas and cushions, designed to showcase products and provide users with a seamless, effortless purchasing experience. The interface and user experience are directly inspired by the minimalist and refined design language of the brand MAGNULA (https://www.magnula.com/).
 

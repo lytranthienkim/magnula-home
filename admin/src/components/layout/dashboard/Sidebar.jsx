@@ -9,6 +9,7 @@ import { LuLayoutDashboard, LuSofa } from 'react-icons/lu';
 import { BsBoxSeam } from 'react-icons/bs';
 import { PiTrashSimpleLight } from 'react-icons/pi';
 import { useState } from 'react';
+import { HiOutlineXMark } from 'react-icons/hi2';
 
 const NAVIGATION_SECTIONS = [
   {
@@ -66,7 +67,7 @@ const NAVIGATION_SECTIONS = [
   },
 ];
 
-export function Sidebar() {
+export function Sidebar({ onClose }) {
   const pathname = usePathname();
   const { user } = useSelector((state) => state.auth);
   // Check if user is admin (handle both string and array formats)
@@ -103,7 +104,21 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 w-64 h-screen bg-white border-r border-gray-200 flex flex-col">
+    <aside className="w-full h-full bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
+      {/* Header with Close Button - Mobile Only */}
+      <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 lg:hidden">
+        <h2 className="text-lg font-bold text-gray-900">Menu</h2>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Close sidebar"
+          >
+            <HiOutlineXMark className="w-6 h-6 text-gray-700" />
+          </button>
+        )}
+      </div>
+
       {/* Logo */}
       <div className="p-6 border-b border-gray-200">
         <Link href="/dashboard" className="flex items-center">

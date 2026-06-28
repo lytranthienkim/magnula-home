@@ -36,12 +36,9 @@ router.get('/debug-role/:email', async (req, res) => {
     const { User, UserRole, Role } = db.models;
     const { email } = req.params;
 
-    console.log('\n=== DEBUG ROLE TEST ===');
-    console.log('Testing email:', email);
 
     // 1. Find user
     const user = await User.findOne({ where: { email } });
-    console.log('User found:', user ? { id: user.id, email: user.email } : 'NOT FOUND');
 
     if (!user) {
       return res.json({
@@ -63,22 +60,16 @@ router.get('/debug-role/:email', async (req, res) => {
         }],
       }],
     });
-    console.log('Sequelize Result:', JSON.stringify(userWithRoles, null, 2));
 
     // 3. Check role detection
     const roles = userWithRoles?.userRoles
       ?.map(ur => ur?.Role?.roleName)
       .filter(Boolean) || [];
-    console.log('Extracted roles:', roles);
-    console.log('Role lowercase:', roles.map(r => r?.toLowerCase()));
 
     const isAdmin = userWithRoles?.userRoles?.some(ur => {
       const roleName = ur.Role?.roleName?.toLowerCase();
-      console.log(`Checking: "${roleName}" === "admin" ? ${roleName === 'admin'}`);
       return roleName === 'admin';
     });
-    console.log('Is Admin:', isAdmin);
-    console.log('=== END DEBUG ===\n');
 
     res.json({
       success: true,

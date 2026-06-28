@@ -105,32 +105,25 @@ export default function UsersPage() {
         email: editData.email,
       };
 
-      console.log('Updating user profile:', updatePayload);
       await updateUserProfile(selectedUser.id, updatePayload);
-      console.log('User profile updated successfully');
 
       // Update status if changed
       if (editData.isActive !== selectedUser.isActive) {
-        console.log('Status changed, updating to:', editData.isActive);
         await updateUserStatus(selectedUser.id, editData.isActive);
-        console.log('User status updated successfully');
       }
 
       // Update role if changed
       const selectedUserRoleId = selectedUser.roleId ? String(selectedUser.roleId) : null;
       const editDataRoleId = editData.roleId ? String(editData.roleId) : null;
 
-      console.log('Selected role ID:', selectedUserRoleId, 'Edit role ID:', editDataRoleId);
 
       if (editDataRoleId && editDataRoleId !== selectedUserRoleId) {
-        console.log('Role changed, updating to:', editDataRoleId);
         // Remove old role first if exists
         if (selectedUserRoleId) {
           await removeRoleFromUser(selectedUser.id, selectedUserRoleId);
         }
         // Assign new role
         await assignRoleToUser(selectedUser.id, editDataRoleId);
-        console.log('Role updated successfully');
       }
 
       setSelectedUser(editData);

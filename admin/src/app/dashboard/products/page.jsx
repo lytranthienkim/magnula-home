@@ -129,20 +129,15 @@ export default function ProductsPage() {
 
           // Handle both {data: []} and direct array formats
           const extractData = (res) => {
-            console.log('Response format:', res);
             if (Array.isArray(res)) {
-              console.log('Direct array:', res.length);
               return res;
             }
             if (res?.data && Array.isArray(res.data)) {
-              console.log('res.data is array:', res.data.length);
               return res.data;
             }
             if (res?.data?.data && Array.isArray(res.data.data)) {
-              console.log('res.data.data is array:', res.data.data.length);
               return res.data.data;
             }
-            console.log('No data found, returning empty');
             return [];
           };
 
@@ -157,14 +152,6 @@ export default function ProductsPage() {
           setMaterials(materialsData);
           setFabricTypes(fabricTypesData);
           setRoomSuitabilities(roomSuitabilitiesData);
-
-          console.log('Reference data loaded:', {
-            categories: categoriesData.length,
-            collections: collectionsData.length,
-            materials: materialsData.length,
-            fabricTypes: fabricTypesData.length,
-            roomSuitabilities: roomSuitabilitiesData.length,
-          });
         } catch (err) {
           console.error('Failed to load reference data:', err);
           setError('Failed to load reference data: ' + err.message);
@@ -220,9 +207,6 @@ export default function ProductsPage() {
 
       // Update product only if there are changes
       if (Object.keys(updatePayload).length > 0) {
-        console.log('Updating product ID:', selectedProduct.id);
-        console.log('Payload keys:', Object.keys(updatePayload));
-        console.log('Full payload:', JSON.stringify(updatePayload, null, 2));
         await updateProduct(selectedProduct.id, updatePayload);
       }
 
@@ -240,12 +224,6 @@ export default function ProductsPage() {
             parseInt(variant.stockQuantity) !== parseInt(originalVariant.stockQuantity);
 
           if (hasChanges && variant.id) {
-            console.log(`Updating variant ${variant.id}:`, {
-              overallSize: variant.overallSize,
-              seatSize: variant.seatSize,
-              price: parseFloat(variant.price),
-              stockQuantity: parseInt(variant.stockQuantity),
-            });
             try {
               await updateProductVariant(variant.id, {
                 overallSize: variant.overallSize,
@@ -263,27 +241,20 @@ export default function ProductsPage() {
 
       // Handle image modifications - only if images were actually modified
       if (imagesToUpdate) {
-        console.log('Original images:', selectedProduct.images);
-        console.log('Updated images:', imagesToUpdate);
 
         const originalImageIds = selectedProduct.images.map(img => img.id);
         const updatedImageIds = imagesToUpdate.map(img => img.id);
 
-        console.log('Original image IDs:', originalImageIds);
-        console.log('Updated image IDs:', updatedImageIds);
 
         // Find deleted images (those in original but not in updated)
         const deletedImages = selectedProduct.images.filter(img => !updatedImageIds.includes(img.id));
-        console.log('Deleted images:', deletedImages);
 
         // Delete images that were removed
         if (deletedImages.length > 0) {
           for (const deletedImg of deletedImages) {
             if (deletedImg.id) {
-              console.log(`Deleting image ${deletedImg.id}`);
               try {
                 const deleteResult = await deleteProductImage(deletedImg.id);
-                console.log(`Image ${deletedImg.id} deleted successfully:`, deleteResult);
               } catch (err) {
                 console.error(`Failed to delete image ${deletedImg.id}:`, err);
                 throw err;
@@ -291,25 +262,21 @@ export default function ProductsPage() {
             }
           }
         } else {
-          console.log('No images to delete');
         }
 
         // Find new images (those in updated but not in original)
         const newImages = imagesToUpdate.filter(img => !originalImageIds.includes(img.id));
-        console.log('New images to create:', newImages);
 
         // Create new images in database
         if (newImages.length > 0) {
           const createdImages = [];
           for (const newImg of newImages) {
             if (newImg.imageUrl) {
-              console.log(`Creating new image: ${newImg.imageUrl}`);
               try {
                 const createResult = await addProductImage(selectedProduct.id, {
                   imageUrl: newImg.imageUrl,
                   isMain: newImg.isMain || false,
                 });
-                console.log(`Image created successfully:`, createResult);
                 createdImages.push(createResult.data);
               } catch (err) {
                 console.error(`Failed to create image:`, err);
@@ -322,13 +289,10 @@ export default function ProductsPage() {
           if (createdImages.length > 0) {
             const existingImages = imagesToUpdate.filter(img => originalImageIds.includes(img.id));
             imagesToUpdate = [...existingImages, ...createdImages];
-            console.log('Updated images with created ones:', imagesToUpdate);
           }
         } else {
-          console.log('No new images to create');
         }
       } else {
-        console.log('imagesToUpdate is undefined or falsy, skipping image modifications');
       }
 
       // Update product with merged data
@@ -928,12 +892,8 @@ export default function ProductsPage() {
                                 setTimeout(() => setError(''), 3000);
                                 return;
                               }
-                              console.log(`Remove button clicked for image index ${idx}:`, img);
-                              console.log('Current images before filter:', currentImages);
                               const updatedImages = currentImages.filter((_, i) => i !== idx);
-                              console.log('Images after filter:', updatedImages);
                               setEditData({ ...editData, images: updatedImages });
-                              console.log('editData updated with new images');
                             }}
                             disabled={((editData.images || selectedProduct.images) || []).length === 1}
                             className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition w-full disabled:opacity-50 disabled:cursor-not-allowed"

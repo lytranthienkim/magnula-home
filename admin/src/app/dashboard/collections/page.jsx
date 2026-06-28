@@ -153,13 +153,13 @@ export default function CollectionsPage() {
 
   return (
     <div>
-      <div className="mb-8 flex justify-between items-center">
+      <div className="mb-8 flex justify-between items-end gap-4">
         <div>
-          <h3 className="font-bold text-black uppercase">Collections Management</h3>
-          <p className="body-02">Manage collections</p>
+          <h1 className="text-3xl font-bold text-black uppercase">Collections Management</h1>
+          <p className="text-sm text-gray-600 mt-1">Manage collections</p>
         </div>
         {canCreate && (
-          <button onClick={() => setShowAddForm(true)} className="flex items-center gap-2 px-4 py-2 bg-black text-white text-xs font-bold rounded hover:bg-gray-800 transition">
+          <button onClick={() => setShowAddForm(true)} className="flex items-center gap-2 px-6 py-2.5 bg-black text-white text-sm font-bold rounded hover:bg-gray-800 transition whitespace-nowrap">
             <HiOutlinePlus className="w-5 h-5" /> Add Collection
           </button>
         )}

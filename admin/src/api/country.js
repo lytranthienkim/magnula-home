@@ -1,7 +1,6 @@
 export const getAllCountries = async () => {
     try {
         if (!process.env.NEXT_PUBLIC_COUNTRY_API_KEY) {
-            console.warn('Country API key not configured, will use fallback');
             return [];
         }
 
@@ -27,7 +26,6 @@ export const getAllCountries = async () => {
 export const getAllStateByCountry = async (countryCode) => {
     try {
         if (!process.env.NEXT_PUBLIC_COUNTRY_API_KEY) {
-            console.warn('Country API key not configured, will use fallback');
             return [];
         }
 

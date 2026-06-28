@@ -17,7 +17,6 @@ const cartSlice = createSlice({
             if (!existingItem) {
                 // Only add if stock > 0
                 if (newItem.stock <= 0) {
-                    console.warn('Product out of stock');
                     return;
                 }
                 state.items.push({
@@ -28,7 +27,6 @@ const cartSlice = createSlice({
             } else {
                 // Check stock before increasing quantity
                 if (existingItem.quantity >= newItem.stock) {
-                    console.warn('Cannot exceed available stock');
                     return;
                 }
                 existingItem.quantity++;
@@ -55,7 +53,6 @@ const cartSlice = createSlice({
             if (existingItem) {
                 // Check stock before increasing quantity
                 if (existingItem.quantity >= stock) {
-                    console.warn('Cannot exceed available stock');
                     return;
                 }
                 existingItem.quantity++;

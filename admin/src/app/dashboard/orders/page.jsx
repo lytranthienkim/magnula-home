@@ -97,7 +97,6 @@ export default function OrdersPage() {
           if (countriesArray.length > 0) {
             setCountries(countriesArray);
           } else {
-            console.warn('No countries returned from API, using fallback');
             setCountries(FALLBACK_COUNTRIES);
           }
         } catch (err) {
@@ -175,9 +174,7 @@ export default function OrdersPage() {
   };
 
   const handleCountryChange = async (countryName) => {
-    console.log('Country selected:', countryName);
     const country = countries.find(c => c.name === countryName);
-    console.log('Found country:', country);
 
     setFormData(prev => ({
       ...prev,
@@ -190,12 +187,9 @@ export default function OrdersPage() {
     if (countryName && country && country.iso2) {
       setLoadingStates(true);
       try {
-        console.log('Fetching states for:', country.iso2);
         const statesData = await getAllStateByCountry(country.iso2);
-        console.log('States data received:', statesData);
 
         const statesArray = Array.isArray(statesData) ? statesData : (statesData?.data ? statesData.data : []);
-        console.log('Processed states:', statesArray);
 
         setStates(statesArray || []);
       } catch (err) {
@@ -206,7 +200,6 @@ export default function OrdersPage() {
         setLoadingStates(false);
       }
     } else {
-      console.warn('Country not found or missing iso2:', { countryName, country });
     }
   };
 

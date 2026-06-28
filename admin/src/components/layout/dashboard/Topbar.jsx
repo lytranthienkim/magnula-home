@@ -7,11 +7,11 @@ import { logout } from '@/redux/authSlice';
 import { logoutAdmin } from '@/api/auth';
 import { getAllProductRequests, getAllOrders } from '@/api/orders';
 import { getAllProducts } from '@/api/products';
-import { HiOutlineArrowRightOnRectangle, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
+import { HiOutlineArrowRightOnRectangle, HiOutlineMagnifyingGlass, HiOutlineBars3 } from 'react-icons/hi2';
 import { GoBell } from 'react-icons/go';
 import { IoMailOpenOutline } from 'react-icons/io5';
 
-export function Topbar() {
+export function Topbar({ onMenuClick }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -82,7 +82,6 @@ export function Topbar() {
           isInitialLoadRef.current = false;
         }
 
-        console.log('Notifications fetched - Orders:', newOrdersList.length, 'Requests:', newRequestsList.length);
       } catch (err) {
         console.error('Failed to load notifications:', err);
       }
@@ -182,9 +181,18 @@ export function Topbar() {
   };
 
   return (
-    <header className="fixed right-0 top-0 left-64 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 z-40">
-      {/* Search Bar */}
-      <div className="flex-1 max-w-md relative">
+    <header className="fixed right-0 top-0 left-0 lg:left-64 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-3 md:px-4 lg:px-8 z-40 transition-all duration-300">
+      {/* Hamburger Menu - Mobile/Tablet Only */}
+      <button
+        onClick={onMenuClick}
+        className="lg:hidden flex-shrink-0 p-2 mr-2 hover:bg-gray-100 rounded-lg transition-colors"
+        aria-label="Toggle sidebar"
+      >
+        <HiOutlineBars3 className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
+      </button>
+
+      {/* Search Bar - Hidden on mobile, show on tablet+ */}
+      <div className="hidden sm:flex flex-1 max-w-md relative">
         <div className="relative">
           <HiOutlineMagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
@@ -279,7 +287,7 @@ export function Topbar() {
 
         {/* Order Notifications Dropdown - Only NEW orders */}
         {showNotification && (
-          <div className="absolute top-16 right-8 w-96 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+          <div className="absolute top-16 right-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
             <div className="p-4 border-b border-gray-200 sticky top-0 bg-white">
               <p className="text-sm font-semibold text-black">Order Notifications ({newOrders.length})</p>
             </div>
@@ -318,7 +326,7 @@ export function Topbar() {
 
         {/* Product Requests Dropdown - Only NEW requests */}
         {showProductRequests && (
-          <div className="absolute top-16 right-16 w-96 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+          <div className="absolute top-16 right-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
             <div className="p-4 border-b border-gray-200 sticky top-0 bg-white">
               <p className="text-sm font-semibold text-black">Product Requests ({newProductRequests.length})</p>
             </div>

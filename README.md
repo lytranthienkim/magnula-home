@@ -7,7 +7,7 @@ MAGNULA is an online shopping website specializing in premium sofas and cushions
 ```
 magnula-home/
 ├── client/           # Next.js customer-facing application (Port 3000)
-├── server/           # Express.js REST API backend (Port 5000)
+├── server/           # Express.js REST API backend (Port 3002)
 └── admin/            # Next.js admin dashboard (Port 3001)
 ```
 

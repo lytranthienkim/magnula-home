@@ -49,3 +49,5 @@ railway.json
 # Local files
 .cache/
 .tmp/
+
+.DS_Store

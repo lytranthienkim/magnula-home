@@ -1,10 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { getAllProducts } from '@/api/products';
 import { getAllOrders } from '@/api/orders';
 import { HiOutlineArrowTrendingUp } from 'react-icons/hi2';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+
+// Chart skeleton components for better perceived performance
+const ChartSkeleton = () => (
+  <div className="bg-gray-100 border border-gray-200 p-6 h-80 rounded-lg animate-pulse"></div>
+);
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -30,9 +35,10 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Use pagination to limit data fetched
         const [productsRes, ordersRes] = await Promise.all([
-          getAllProducts(),
-          getAllOrders(),
+          getAllProducts(100, 0),
+          getAllOrders(100, 0),
         ]);
 
         const products = productsRes.data || [];
@@ -223,69 +229,77 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Top Products - Pie Chart */}
+        {/* Top Products - Pie Chart - Lazy loaded */}
         {chartData.topProductsData.length > 0 && (
-          <div className="bg-white border border-gray-200 p-6 rounded-lg">
-            <h2 className="text-sm font-bold text-black mb-6 uppercase">Top Products</h2>
-            <ResponsiveContainer width="100%" height={320}>
-              <PieChart>
-                <Pie
-                  data={chartData.topProductsData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={95}
-                  paddingAngle={2}
-                  dataKey="value"
-                >
-                  <Cell fill="#000000" />
-                  <Cell fill="#1f2937" />
-                  <Cell fill="#374151" />
-                  <Cell fill="#6b7280" />
-                  <Cell fill="#9ca3af" />
-                  <Cell fill="#d1d5db" />
-                </Pie>
-                <Tooltip
-                  contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '6px' }}
-                  formatter={(value) => `${value} orders`}
-                  labelStyle={{ color: '#000' }}
-                />
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  formatter={(value) => <span style={{ color: '#6b7280', fontSize: '11px' }}>{value}</span>}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+          <Suspense fallback={<ChartSkeleton />}>
+            <div className="bg-white border border-gray-200 p-3 sm:p-6 rounded-lg">
+              <h2 className="text-sm font-bold text-black mb-4 sm:mb-6 uppercase">Top Products</h2>
+              <div className="w-full h-64 sm:h-80 flex items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={chartData.topProductsData}
+                      cx="50%"
+                      cy="45%"
+                      innerRadius={35}
+                      outerRadius={70}
+                      paddingAngle={2}
+                      dataKey="value"
+                    >
+                      <Cell fill="#000000" />
+                      <Cell fill="#1f2937" />
+                      <Cell fill="#374151" />
+                      <Cell fill="#6b7280" />
+                      <Cell fill="#9ca3af" />
+                      <Cell fill="#d1d5db" />
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '6px' }}
+                      formatter={(value) => `${value} orders`}
+                      labelStyle={{ color: '#000' }}
+                    />
+                    <Legend
+                      verticalAlign="bottom"
+                      height={28}
+                      formatter={(value) => <span style={{ color: '#6b7280', fontSize: '10px' }}>{value}</span>}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </Suspense>
         )}
       </div>
 
-      {/* Revenue Trend - Full Width */}
+      {/* Revenue Trend - Full Width - Lazy loaded */}
       {chartData.revenueData.length > 0 && (
-        <div className="bg-white border border-gray-200 p-6 rounded-lg">
-          <h2 className="text-sm font-bold text-black mb-6 uppercase">Revenue Trend (Last 7 Days)</h2>
-          <ResponsiveContainer width="100%" height={320}>
-            <LineChart data={chartData.revenueData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-              <XAxis dataKey="date" stroke="#d1d5db" tick={{ fontSize: 12, fill: '#9ca3af' }} />
-              <YAxis stroke="#d1d5db" tick={{ fontSize: 12, fill: '#9ca3af' }} />
-              <Tooltip
-                contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '6px' }}
-                formatter={(value) => `$${value.toLocaleString()}`}
-                labelStyle={{ color: '#000' }}
-              />
-              <Line
-                type="monotone"
-                dataKey="revenue"
-                stroke="#000"
-                strokeWidth={3}
-                dot={{ fill: '#000', r: 5 }}
-                activeDot={{ r: 7 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <Suspense fallback={<ChartSkeleton />}>
+          <div className="bg-white border border-gray-200 p-3 sm:p-6 rounded-lg">
+            <h2 className="text-sm font-bold text-black mb-4 sm:mb-6 uppercase">Revenue Trend (Last 7 Days)</h2>
+            <div className="w-full h-64 sm:h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData.revenueData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                  <XAxis dataKey="date" stroke="#d1d5db" tick={{ fontSize: 11, fill: '#9ca3af' }} />
+                  <YAxis stroke="#d1d5db" tick={{ fontSize: 11, fill: '#9ca3af' }} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '6px' }}
+                    formatter={(value) => `$${value.toLocaleString()}`}
+                    labelStyle={{ color: '#000' }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#000"
+                    strokeWidth={3}
+                    dot={{ fill: '#000', r: 5 }}
+                    activeDot={{ r: 7 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </Suspense>
       )}
     </div>
   );

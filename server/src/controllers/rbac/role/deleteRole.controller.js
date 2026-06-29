@@ -1,5 +1,3 @@
-// Delete Role Controller (Soft Delete)
-
 import db from '../../../config/db.js';
 
 export const deleteRole = async (req, res) => {

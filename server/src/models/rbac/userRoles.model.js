@@ -32,7 +32,7 @@ const UserRole = db.define(
   },
   {
     tableName: 'user_roles',
-    timestamps: false,  // Pivot table - no need to track created/updated
+    timestamps: false,  
     underscored: true,
   }
 );

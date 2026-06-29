@@ -1,6 +1,3 @@
-// Check Permission Middleware - Verify user has required permission
-// Stateless: checks permissions array from JWT token (no database query)
-
 export const checkPermission = (requiredPermission) => {
   return (req, res, next) => {
     try {
@@ -11,7 +8,7 @@ export const checkPermission = (requiredPermission) => {
         });
       }
 
-      // Get permissions from JWT token (set by verifyToken middleware)
+      // Get permissions from JWT token 
       const userPermissions = req.user.permissions || [];
 
       // Check if user has the required permission

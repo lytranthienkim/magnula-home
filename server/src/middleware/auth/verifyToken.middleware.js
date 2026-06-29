@@ -1,7 +1,3 @@
-// Verify Token Middleware - Stateless auth using HttpOnly Cookies
-// Extracts JWT from cookie and validates it
-// Does NOT query DB - all info is in the JWT payload
-
 import jwt from 'jsonwebtoken';
 import db from '../../config/db.js';
 
@@ -20,7 +16,7 @@ export const verifyToken = async (req, res, next) => {
     // Verify and decode JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Check if user account is still active in DB (only check, don't fetch full user)
+    // Check if user account is still active in DB
     const { User } = db.models;
     const user = await User.findByPk(decoded.userId, {
       attributes: ['id', 'isActive'], // Only fetch isActive flag

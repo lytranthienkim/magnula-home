@@ -20,9 +20,19 @@ export const getAllPermissions = async (req, res) => {
         : ['id', 'permissionKey', 'description', 'createdAt'],
     });
 
+    // Format response - add isActive based on deletedAt
+    const formattedPermissions = permissions.map(permission => ({
+      id: permission.id,
+      permissionKey: permission.permissionKey,
+      description: permission.description,
+      isActive: !permission.deletedAt,
+      createdAt: permission.createdAt,
+      ...(permission.deletedAt && { deletedAt: permission.deletedAt }),
+    }));
+
     res.json({
       success: true,
-      data: permissions,
+      data: formattedPermissions,
     });
   } catch (error) {
     console.error('Get all permissions error:', error);

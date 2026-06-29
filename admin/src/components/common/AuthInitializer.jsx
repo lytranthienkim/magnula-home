@@ -19,11 +19,9 @@ export function AuthInitializer({ children }) {
       }
 
       try {
-        // Check if user has valid authentication cookie
         const response = await checkAuth();
 
         if (response.success && response.data) {
-          // Restore user session from cookie
           dispatch(
             loginSuccess({
               user: response.data,
@@ -32,10 +30,8 @@ export function AuthInitializer({ children }) {
           );
         }
       } catch (error) {
-        // Cookie expired or invalid - clear Redux state
         dispatch(logout());
 
-        // Only redirect to login if we're on a protected page
         if (pathname !== '/login') {
           router.push('/login');
         }

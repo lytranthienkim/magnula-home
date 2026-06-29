@@ -1,8 +1,12 @@
 import apiClient from './config';
 
 // Products
-export const getAllProducts = async () => {
-  const res = await apiClient.get('/products');
+export const getAllProducts = async (limit, offset) => {
+  const params = new URLSearchParams();
+  if (limit !== undefined) params.append('limit', limit);
+  if (offset !== undefined) params.append('offset', offset);
+  const query = params.toString() ? `?${params.toString()}` : '';
+  const res = await apiClient.get(`/products${query}`);
   return res.data;
 };
 

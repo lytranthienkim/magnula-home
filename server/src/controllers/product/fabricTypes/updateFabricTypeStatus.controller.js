@@ -11,7 +11,7 @@ export const updateFabricTypeStatus = async (req, res) => {
     if (isActive === undefined || typeof isActive !== 'boolean') {
       return res.status(400).json({
         success: false,
-        error: 'isActive (boolean) is required',
+        error: 'isActive is required',
       });
     }
 

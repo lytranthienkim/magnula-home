@@ -14,7 +14,7 @@ export const createUser = async (userData) => {
 
 // Update user profile
 export const updateUserProfile = async (userId, userData) => {
-  const res = await apiClient.put(`/users/${userId}`, userData);
+  const res = await apiClient.put(`/profile/${userId}`, userData);
   return res.data;
 };
 

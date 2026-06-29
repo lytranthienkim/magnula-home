@@ -1,19 +1,18 @@
 import express from 'express';
-import { getAllOrders, getOrderById, getOrderByOrderCode, createOrder, updateOrderStatus } from '../../controllers/order/orders/index.js';
+import { getAllOrders, getOrderById, getOrderByOrderCode, createOrder, updateOrder } from '../../controllers/order/orders/index.js';
 import { verifyToken, checkPermission } from '../../middleware/auth/index.js';
 
 const router = express.Router();
 
 // GET /api/orders - Lấy tất cả orders
 router.get('/', verifyToken, checkPermission('orders:read'), getAllOrders);
-// GET /api/orders/track/:orderCode - Tracking order by code (public)
+// Tracking order by code 
 router.get('/track/:orderCode', getOrderByOrderCode);
-// GET /api/orders/:id - Lấy chi tiết order (public)
+// Lấy chi tiết order 
 router.get('/:id', getOrderById);
-// POST /api/orders - Tạo order (KHÔNG cần login - guest tạo tài khoản tự động)
+// POST /api/orders 
 router.post('/', createOrder);
-// PUT /api/orders/:id - Cập nhật order status
-router.put('/:id', verifyToken, checkPermission('orders:update'), updateOrderStatus);
-// NOTE: DELETE not supported - Orders are immutable financial records
+// PUT /api/orders/:id 
+router.put('/:id', verifyToken, checkPermission('orders:update'), updateOrder);
 
 export default router;

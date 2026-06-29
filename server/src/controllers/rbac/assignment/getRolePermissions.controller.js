@@ -1,5 +1,3 @@
-// Get Role Permissions Controller
-
 import db from '../../../config/db.js';
 
 export const getRolePermissions = async (req, res) => {
@@ -10,34 +8,34 @@ export const getRolePermissions = async (req, res) => {
     // Get role
     const role = await Role.findByPk(id);
     if (!role) {
-      return res.status(404).json({
-        success: false,
-        error: 'Role not found',
-      });
+      return res.status(404).json({ success: false, error: 'Role not found' });
     }
 
-    // Get role permissions
-    const rolePermissions = await RolePermission.findAll({
-      where: { roleId: id },
-      include: [
-        {
-          model: Permission,
-          attributes: ['id', 'permissionKey', 'description'],
-        },
-      ],
+    // Get all permissions
+    const allPermissions = await Permission.findAll({
+      attributes: ['id', 'permissionKey', 'description'],
+      raw: true,
     });
 
-    res.json({
-      success: true,
-      data: rolePermissions,
-      message: `Retrieved ${rolePermissions.length} permission(s) for role`,
+    // Get permissions assigned to this role
+    const assignedPermissions = await RolePermission.findAll({
+      where: { roleId: id },
+      attributes: ['permissionId'],
+      raw: true,
     });
+
+    const assignedPermIds = new Set(assignedPermissions.map((ap) => ap.permissionId));
+
+    // Format all permissions with assigned flag
+    const formattedPermissions = allPermissions.map((perm) => ({
+      id: perm.id,
+      permissionKey: perm.permissionKey,
+      description: perm.description,
+      assigned: assignedPermIds.has(perm.id),
+    }));
+
+    res.json({ success: true, data: formattedPermissions });
   } catch (error) {
-    console.error('Get role permissions error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to fetch role permissions',
-      details: error.message,
-    });
+    res.status(500).json({ success: false, error: error.message });
   }
 };

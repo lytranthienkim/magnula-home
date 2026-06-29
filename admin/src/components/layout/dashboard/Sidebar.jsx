@@ -45,7 +45,7 @@ const NAVIGATION_SECTIONS = [
         title: 'Image',
         items: [
           { label: 'Collection Images', href: '/dashboard/collection-images' },
-          { label: 'Images', href: '/dashboard/images' },
+          { label: 'Product Images', href: '/dashboard/images' },
         ]
       },
       {

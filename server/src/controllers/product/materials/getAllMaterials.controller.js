@@ -12,9 +12,9 @@ export const getAllMaterials = async (req, res) => {
 
     const materials = await Material.findAll({
       where: isDeleted
-        ? { deletedAt: { [Op.not]: null } } // Only deleted items
-        : { deletedAt: null }, // Only non-deleted items (both active and inactive)
-      paranoid: !isDeleted, // Disable paranoid mode to include deleted items when requested
+        ? { deletedAt: { [Op.not]: null } }
+        : { deletedAt: null },
+      paranoid: !isDeleted,
       order: [['createdAt', 'DESC']],
     });
 

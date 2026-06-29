@@ -14,10 +14,10 @@ const db = new Sequelize(
     port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
     pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000,
+      max: 30,
+      min: 4,
+      acquire: 30000, //safe barrier
+      idle: 10000, // clean up 10s
     },
   }
 );

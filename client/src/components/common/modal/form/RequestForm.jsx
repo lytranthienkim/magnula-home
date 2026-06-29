@@ -129,7 +129,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
                             </button>
                         </div>
 
-                        {/* Error Message */}
+                        
                         {error && (
                             <div className="mb-4 md:mb-6 p-3 md:p-4  border-[var(--color-error)] bg-red-50 rounded-none">
                                 <p className="body-02 font-display-regular" style={{ color: 'var(--color-error)' }}>

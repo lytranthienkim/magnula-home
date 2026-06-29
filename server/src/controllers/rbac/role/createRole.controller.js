@@ -5,7 +5,7 @@ import db from '../../../config/db.js';
 export const createRole = async (req, res) => {
   try {
     const { Role } = db.models;
-    const { roleName, description } = req.body;
+    const { roleName } = req.body;
 
     // Validate input
     if (!roleName || typeof roleName !== 'string' || roleName.trim().length < 2) {
@@ -27,7 +27,6 @@ export const createRole = async (req, res) => {
     // Create new role
     const role = await Role.create({
       roleName: roleName.trim(),
-      description: description || null,
     });
 
     res.status(201).json({
@@ -37,9 +36,19 @@ export const createRole = async (req, res) => {
     });
   } catch (error) {
     console.error('Create role error:', error);
+
+    // Handle validation errors
+    if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+      const message = error.errors?.[0]?.message || 'Role name already exists';
+      return res.status(400).json({
+        success: false,
+        error: message,
+      });
+    }
+
     res.status(500).json({
       success: false,
-      error: error.message,
+      error: 'Failed to create role',
     });
   }
 };

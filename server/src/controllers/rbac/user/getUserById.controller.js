@@ -30,7 +30,13 @@ export const getUserById = async (req, res) => {
       email: user.email,
       fullName: user.fullName,
       isActive: user.isActive,
-      roles: user.userRoles.map(ur => ur.Role.roleName),
+      status: user.isActive ? 'active' : 'inactive',
+      roles: user.userRoles.map(ur => ({
+        id: ur.Role.id,
+        roleName: ur.Role.roleName,
+      })),
+      roleId: user.userRoles.length > 0 ? user.userRoles[0].Role.id : null,
+      role: user.userRoles.length > 0 ? user.userRoles[0].Role.roleName : null,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -44,7 +50,7 @@ export const getUserById = async (req, res) => {
     console.error('Get user by ID error:', error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Failed to retrieve user',
+      error: error.message || 'Failed to get user',
     });
   }
 };

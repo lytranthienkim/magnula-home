@@ -1,5 +1,3 @@
-// Update User Status Controller - Activate/Deactivate only
-
 import db from '../../../config/db.js';
 
 export const updateUserStatus = async (req, res) => {
@@ -11,7 +9,7 @@ export const updateUserStatus = async (req, res) => {
     if (isActive === undefined || typeof isActive !== 'boolean') {
       return res.status(400).json({
         success: false,
-        error: 'isActive (boolean) is required',
+        error: 'isActive is required',
       });
     }
 

@@ -28,12 +28,13 @@ router.use('/auth', authRoutes);
 
 // ==================== USER ROUTES ==================== - User management
 router.use('/users', userRoutes);
-router.use('/users', assignmentRoutes);  // User role assignment: /users/:id/assign-role, /users/:id/roles
 
 // ==================== ROLE & PERMISSION ROUTES ==================== - Role and permission management
-// Note: These routes include full paths like /roles, /permissions already, so register at root level
-router.use('/', roleRoutes);            // Endpoints: /roles, /roles/:id, /roles/:id/assign-permission
+router.use('/', roleRoutes);            // Endpoints: /roles, /roles/:id
 router.use('/', permissionRoutes);      // Endpoints: /permissions, /permissions/:id
+
+// ==================== ASSIGNMENT ROUTES ==================== - User role & role permission assignment
+router.use('/', assignmentRoutes);      // Endpoints: /users/:id/assign-role, /roles/:id/assign-permission
 
 // ==================== PRODUCT ROUTES ==================== - CRUD sản phẩm, biến thể, hình ảnh, collections, attributes
 router.use('/products', collectionRoutes);

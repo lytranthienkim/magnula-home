@@ -1,7 +1,7 @@
 // Get Product By ID Controller - Fetch product details by ID
 
 import db from '../../../config/db.js';
-import { applyProductVisibilityFilter } from '../../../utils/productVisibility.js';
+import { Op } from 'sequelize';
 
 export const getProductById = async (req, res) => {
   try {
@@ -16,8 +16,12 @@ export const getProductById = async (req, res) => {
     } = db.models;
     const { id } = req.params;
 
-    // Apply visibility filter: Guest sees only ['in stock', 'out of stock'], Staff/Admin see all
-    const whereClause = applyProductVisibilityFilter(req, { deletedAt: null, id });
+    // Xây dựng WHERE clause - loại bỏ discontinued products
+    const whereClause = {
+      deletedAt: null,
+      id,
+      status: { [Op.ne]: 'discontinued' } // Loại bỏ discontinued products
+    };
 
     const product = await Product.findOne({
       where: whereClause,

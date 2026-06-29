@@ -1,19 +1,3 @@
-// Change Password Controller - User change their own password
-//
-// REQUIREMENTS:
-// - Staff can ONLY change password during active login session
-// - Requires verification of old password
-// - Admin cannot see/know the new password
-// - No logging of actual password values
-// - Staff who forgets password after logout must contact admin
-//
-// FLOW:
-// 1. Verify user is authenticated (has active session/token)
-// 2. Validate old password against current hash
-// 3. Hash new password
-// 4. Update without logging password value
-// 5. Return success without exposing password
-
 import bcrypt from 'bcryptjs';
 import db from '../../../config/db.js';
 

@@ -11,8 +11,6 @@ magnula-home/
 └── admin/            # Next.js admin dashboard (Port 3001)
 ```
 
-All three applications work together to provide a complete e-commerce solution with clear separation of concerns.
-
 ## Technology Stack
 
 ### Frontend (Client & Admin)
@@ -27,7 +25,6 @@ All three applications work together to provide a complete e-commerce solution w
 - Node.js runtime environment
 - Express.js for HTTP server and routing
 - MySQL for relational data storage
-- Redis for caching and session management
 - JWT (JSON Web Tokens) for authentication
 - Railway for cloud deployment
 
@@ -43,7 +40,6 @@ All three applications work together to provide a complete e-commerce solution w
   - Fabric type filtering
   - Material filtering
   - Room suitability filtering
-- Product search with real-time results
 - Dynamic product grid layout with responsive sizing
 - Skeleton loaders for smooth loading experience
 - Product variants support (size, color, specifications)
@@ -52,7 +48,7 @@ All three applications work together to provide a complete e-commerce solution w
 - Redux-based cart state management
 - Add/remove products from cart
 - Quantity adjustment
-- Real-time cart total calculation
+- Cart total calculation
 - Cart persistence across sessions
 - Cart clearing after successful order
 
@@ -63,7 +59,6 @@ All three applications work together to provide a complete e-commerce solution w
 - Order summary display
 - Stock validation before order confirmation
 - Order creation with automatic cart clearing
-- Comprehensive error handling with user-friendly messages
 
 #### Order Management
 - Order confirmation page with detailed information
@@ -71,7 +66,7 @@ All three applications work together to provide a complete e-commerce solution w
 - Order status display
 - Order items listing with product details
 - Order history tracking
-- Real-time order status updates
+- Order status updates
 
 ### Admin Dashboard Features
 
@@ -81,7 +76,6 @@ All three applications work together to provide a complete e-commerce solution w
 - Stock management
 - Category assignment
 - Collection assignment
-- Bulk actions support
 - Advanced filtering and sorting
 - Soft delete functionality for data retention
 
@@ -119,7 +113,6 @@ All three applications work together to provide a complete e-commerce solution w
 - Fabric type management (create, update, delete)
 - Material management
 - Room suitability management
-- Bulk attribute operations
 - Attribute usage tracking
 
 ### Backend API Features
@@ -140,7 +133,7 @@ All three applications work together to provide a complete e-commerce solution w
 - Order confirmation email sending
 
 #### Inventory Management
-- Real-time stock tracking
+- Stock tracking
 - Stock deduction on order placement
 - Stock restoration on order cancellation
 - Low stock alerts
@@ -232,170 +225,6 @@ Performance Optimization:
 - Search results are paginated for large datasets
 - API responses include aggregated data for filter options
 
-## Getting Started
-
-### Prerequisites
-- Node.js 18 or higher
-- npm package manager
-- MySQL 8.0+ database instance
-- Git version control
-
-### Installation
-
-1. Clone the repository
-```bash
-git clone https://github.com/lytranthienkim/magnula-home.git
-cd magnula-home
-```
-
-2. Install dependencies for each application
-```bash
-# Client application
-cd client
-npm install
-cd ..
-
-# Admin application
-cd admin
-npm install
-cd ..
-
-# Server application
-cd server
-npm install
-cd ..
-```
-
-3. Configure environment variables
-
-Create .env files in each directory with required configuration:
-
-server/.env
-```
-NODE_ENV=development
-PORT=5000
-DATABASE_HOST=localhost
-DATABASE_PORT=3306
-DATABASE_NAME=magnula_db
-DATABASE_USER=root
-DATABASE_PASSWORD=your_password
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRE=7d
-REDIS_HOST=localhost
-REDIS_PORT=6379
-```
-
-client/.env.local
-```
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-NEXT_PUBLIC_APP_NAME=MAGNULA
-```
-
-admin/.env.local
-```
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-NEXT_PUBLIC_APP_NAME=MAGNULA Admin
-```
-
-4. Start all applications
-
-Terminal 1 - Start the backend server:
-```bash
-cd server
-npm run dev
-```
-
-Terminal 2 - Start the customer client:
-```bash
-cd client
-npm run dev
-```
-
-Terminal 3 - Start the admin dashboard:
-```bash
-cd admin
-npm run dev
-```
-
-Application URLs:
-- Customer Client: http://localhost:3000
-- Admin Dashboard: http://localhost:3001
-- API Server: http://localhost:5000/api
-- API Documentation: http://localhost:5000/api/docs
-
-## Architecture & Code Patterns
-
-### Component Extraction Pattern (Logic-UI Separation)
-
-The codebase implements a strict separation of concerns by extracting business logic into custom hooks while keeping components focused on presentation.
-
-Architecture Layers:
-
-1. Custom Hooks Layer (`src/hooks/`)
-   - Contains all state management and API interactions
-   - Handles data fetching with useEffect
-   - Manages complex business logic
-   - Provides handler functions for user interactions
-   - Returns only necessary data and functions to consumers
-
-2. Component Layer (`src/components/`)
-   - Pure presentation components
-   - Receive data via props only
-   - No direct API calls or state management
-   - Focused on rendering UI
-   - Reusable across multiple pages
-
-3. Page Layer (`src/app/`)
-   - Minimal orchestration files (30-50 lines)
-   - Import hooks for logic
-   - Import components for UI
-   - Compose hooks and components together
-   - Handle page-level layouts
-
-Implementation Example:
-```javascript
-// hooks/useProduct.js - Business Logic
-export const useProduct = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-  
-  const handleFilter = async (criteria) => {
-    setLoading(true);
-    const results = await fetchFiltered(criteria);
-    setProducts(results);
-    setLoading(false);
-  };
-  
-  return { products, loading, handleFilter };
-};
-
-// components/ProductList.jsx - Presentation Only
-export const ProductList = ({ products, loading, onFilter }) => {
-  return (
-    <div>
-      {loading ? <Spinner /> : products.map(p => <ProductCard key={p.id} product={p} />)}
-    </div>
-  );
-};
-
-// app/products/page.jsx - Composition
-export default function ProductsPage() {
-  const { products, loading, handleFilter } = useProduct();
-  return <ProductList products={products} loading={loading} onFilter={handleFilter} />;
-}
-```
-
-Benefits of This Pattern:
-- Logic is reusable across multiple pages
-- Components are easier to test and maintain
-- Clear separation of concerns
-- Pages remain lean and focused
-- Logic can be tested independently from UI
-
 ### Implemented Hooks
 
 Current hook implementations in the codebase:
@@ -454,101 +283,3 @@ useTrackingOrder
 - `product_images`: Product image storage and retrieval
 
 All main tables include soft delete support via `isActive` boolean and `deletedAt` timestamp.
-
-## API Documentation
-
-Comprehensive API documentation including all endpoints, request/response formats, and authentication requirements is maintained in the server directory.
-
-Access API documentation at: `server/API_DOCUMENTATION.md`
-
-Key API Areas:
-- Authentication endpoints (login, register, token refresh)
-- Product catalog endpoints (search, filter, retrieve)
-- Order management endpoints (create, retrieve, track)
-- User management endpoints (profile, preferences)
-- Admin endpoints (CRUD operations with role validation)
-
-## Development Workflows
-
-### Adding a New Feature
-
-1. Identify if feature requires complex state or API interactions
-2. Create custom hook in `src/hooks/useFeatureName.js` with all logic
-3. Create UI components in `src/components/layout/feature/`
-4. Create or update page file in `src/app/feature/page.jsx`
-5. Import and compose hook with components in page
-6. Test hook logic independently from components
-7. Test component presentation in isolation
-8. Test integrated page functionality
-
-### Modifying Existing Features
-
-1. Check if logic is in custom hook or component
-2. If logic is in hook, modify hook without touching component files
-3. If logic is in component, extract to hook first
-4. Update components to use extracted logic
-5. Verify no regression in dependent pages
-
-## Recent Updates
-
-Version 1.0 - June 28, 2026
-
-Architecture Improvements:
-- Extracted useProduct hook from ProductContainer component
-- Extracted useCheckout hook from checkout page
-- Extracted useOrderConfirmation hook from order-confirmation page
-- Extracted useTrackingOrder hook from tracking-order page
-- Established consistent hook-based architecture across codebase
-
-Infrastructure:
-- Added comprehensive .gitignore for monorepo structure
-- Configured GitHub repository for version control
-- Implemented proper environment variable management
-
-## Build and Deployment
-
-Production Build:
-```bash
-# Client
-cd client && npm run build
-
-# Admin
-cd admin && npm run build
-
-# Server
-cd server && npm run build
-```
-
-Deployment Platforms:
-- Client: Vercel, Netlify, or Docker container
-- Admin: Vercel, Netlify, or Docker container
-- Server: Railway, Heroku, AWS EC2, or Docker container
-
-## Contributing Guidelines
-
-Contribution Process:
-1. Create feature branch from main: `git checkout -b feature/feature-name`
-2. Implement changes following existing patterns
-3. Follow component extraction pattern for complex logic
-4. Commit with descriptive messages: `git commit -m "feature: add new feature description"`
-5. Push to repository: `git push origin feature/feature-name`
-6. Create Pull Request with detailed description of changes
-
-Code Standards:
-- Use consistent naming conventions
-- Follow existing code style
-- Extract logic to hooks when component becomes complex
-- Add comments for non-obvious logic
-- Test features before submitting PR
-
-## Support and Contact
-
-For technical inquiries, bug reports, or feature requests:
-Email: thienkimly2601@gmail.com
-Repository: https://github.com/lytranthienkim/magnula-home
-
----
-
-Last Updated: June 28, 2026
-Project Status: Active Development
-Version: 1.0

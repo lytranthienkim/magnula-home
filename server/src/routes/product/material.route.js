@@ -17,18 +17,18 @@ const router = express.Router();
 router.get('/materials', getAllMaterials);
 
 // POST /api/products/materials - Create material
-router.post('/materials', verifyToken, checkPermission('materials:create'), createMaterial);
+router.post('/materials', verifyToken, checkPermission('material:create'), createMaterial);
 
 // PUT /api/products/materials/:id - Update material
-router.put('/materials/:id', verifyToken, checkPermission('materials:update'), updateMaterial);
+router.put('/materials/:id', verifyToken, checkPermission('material:update'), updateMaterial);
 
-// PATCH /api/products/materials/:id/status - Activate/Deactivate (update isActive)
-router.patch('/materials/:id/status', verifyToken, checkPermission('materials:update'), updateMaterialStatus);
+// PATCH /api/products/materials/:id/status - Activate/Deactivate 
+router.patch('/materials/:id/status', verifyToken, checkPermission('material:update'), updateMaterialStatus);
 
-// DELETE /api/products/materials/:id - Delete material (soft delete with check)
-router.delete('/materials/:id', verifyToken, checkPermission('materials:delete'), deleteMaterial);
+// DELETE /api/products/materials/:id - Delete material 
+router.delete('/materials/:id', verifyToken, checkPermission('material:delete'), deleteMaterial);
 
 // PATCH /api/products/materials/:id/restore - Restore soft-deleted material
-router.patch('/materials/:id/restore', verifyToken, checkPermission('materials:delete'), restoreMaterial);
+router.patch('/materials/:id/restore', verifyToken, checkPermission('material:delete'), restoreMaterial);
 
 export default router;

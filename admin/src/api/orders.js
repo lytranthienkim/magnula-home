@@ -1,8 +1,18 @@
 import apiClient from './config';
 
 // Orders
-export const getAllOrders = async () => {
-  const res = await apiClient.get('/orders');
+export const getAllOrders = async (limit, offset) => {
+  const params = new URLSearchParams();
+  if (limit !== undefined) params.append('limit', limit);
+  if (offset !== undefined) params.append('offset', offset);
+  const query = params.toString() ? `?${params.toString()}` : '';
+  const res = await apiClient.get(`/orders${query}`);
+  return res.data;
+};
+
+export const getOrderCount = async () => {
+  const res = await apiClient.get('/orders?limit=1&offset=0');
+  // Assuming API returns total count in response
   return res.data;
 };
 
@@ -16,14 +26,22 @@ export const createOrder = async (orderData) => {
   return res.data;
 };
 
-export const updateOrderStatus = async (orderId, status) => {
-  const res = await apiClient.put(`/orders/${orderId}`, { status });
+export const updateOrder = async (orderId, orderData) => {
+  const res = await apiClient.put(`/orders/${orderId}`, orderData);
   return res.data;
 };
 
+export const updateOrderStatus = async (orderId, status) => {
+  return updateOrder(orderId, { status });
+};
+
 // Product Requests
-export const getAllProductRequests = async () => {
-  const res = await apiClient.get('/product-requests');
+export const getAllProductRequests = async (limit, offset) => {
+  const params = new URLSearchParams();
+  if (limit !== undefined) params.append('limit', limit);
+  if (offset !== undefined) params.append('offset', offset);
+  const query = params.toString() ? `?${params.toString()}` : '';
+  const res = await apiClient.get(`/product-requests${query}`);
   return res.data;
 };
 

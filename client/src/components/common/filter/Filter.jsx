@@ -4,7 +4,6 @@ import { getAllCategories } from "@/api/category";
 import { useEffect, useState, useRef } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 
-// Tách riêng một Component con cho Dropdown để dễ quản lý trạng thái đóng/mở riêng biệt
 const CustomSelectField = ({ label, options, selectedValue, onSelect, placeholder = "---" }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -42,7 +41,6 @@ const CustomSelectField = ({ label, options, selectedValue, onSelect, placeholde
                 {isOpen && (
                     <div className="absolute z-[9999] left-0 w-full mt-[-1px] bg-background-primary
                                     border-[0.25px] border-[#272727] rounded-none  max-h-48 overflow-y-auto ">
-                        {/* Option mặc định rỗng để bỏ lọc */}
                         <button
                             type="button"
                             onClick={() => {

@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess, loginFailure } from '@/redux/authSlice';
 import { loginAdmin } from '@/api/auth';
 import Link from 'next/link';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,16 +29,9 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
-
-      // Send rememberMe flag to backend (affects cookie lifetime)
-      const response = await loginAdmin(email, password, rememberMe);
+      const response = await loginAdmin(email, password, rememberMe); // remeber me flag true or false
 
       if (response.success) {
-        // Store user data in localStorage for local state management
-        // Token is stored in HttpOnly cookie by backend (browser manages it)
-        localStorage.setItem('adminUser', JSON.stringify(response.data));
-
-        // Update Redux state with permissions from JWT
         dispatch(
           loginSuccess({
             user: response.data,
@@ -45,16 +39,22 @@ export default function LoginPage() {
           })
         );
 
-        // Redirect to dashboard
         router.push('/dashboard');
       } else {
-        setError(response.message || 'Login failed');
-        dispatch(loginFailure(response.message || 'Login failed'));
+        const errorMsg = response.error || response.message || 'Login failed';
+        setError(errorMsg);
+        dispatch(loginFailure(errorMsg));
       }
     } catch (err) {
-      const errorMessage = err.response?.data?.error || err.response?.data?.message || 'Login failed. Please try again.';
+      // Handle different error response formats
+      const errorMessage =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        err.message ||
+        'Login failed. Please try again.';
       setError(errorMessage);
       dispatch(loginFailure(errorMessage));
+      console.error('Login error details:', err.response?.data || err.message);
     } finally {
       setLoading(false);
     }
@@ -62,24 +62,19 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="w-full max-w-md  px-8 py-10 rounded-sm shadow-md">
-        {/* Logo */}
-        {/* Title */}
+      <div className="w-full max-w-md  px-8 py-10 rounded-sm ">
         <div className="flex flex-col text-center justify-center mb-5">
           <h3 className="font-bold text-black uppercase">Welcome back</h3>
           <p className='text-sm text-gray-600'>Have a nice work day</p>
         </div>
 
-        {/* Error Message */}
+
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded">
-            <p className="text-sm text-red-600">{error}</p>
-          </div>
+          <p className="mb-4 text-xs text-red-600">{error}</p>
         )}
 
-        {/* Login Form */}
         <form onSubmit={handleLogin} className="space-y-4">
-          {/* Email */}
+          
           <div className="flex flex-col gap-2">
             <label htmlFor="email" className="text-xs font-semibold text-black uppercase">
               Email
@@ -96,7 +91,7 @@ export default function LoginPage() {
             />
           </div>
 
-          {/* Password */}
+          
           <div className="flex flex-col gap-2">
             <label htmlFor="password" className="text-xs font-semibold text-black uppercase">
               Password
@@ -120,28 +115,21 @@ export default function LoginPage() {
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
-                  // Eye Off Icon
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-4.803m5.596-3.856a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
+                  <EyeOff size={14} />
                 ) : (
-                  // Eye Icon
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
+                  <Eye size={14} />
                 )}
               </button>
             </div>
           </div>
 
-          {/* Remember me & Forgot password */}
+  
           <div className="flex justify-between items-center pt-2">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+                onChange={(e) => setRememberMe(e.target.checked)} // tick remember me
                 className="w-4 h-4 rounded border-gray-300 cursor-pointer"
                 disabled={loading}
               />

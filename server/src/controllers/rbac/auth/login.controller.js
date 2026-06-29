@@ -1,6 +1,3 @@
-// Login Controller - Stateless authentication with HttpOnly Cookies
-// Sets JWT token in HttpOnly cookie with rememberMe logic
-
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import db from '../../../config/db.js';
@@ -9,7 +6,7 @@ import { getCookieOptions } from '../../../config/cookies.js';
 export const login = async (req, res) => {
   try {
     const { User, UserRole, Role } = db.models;
-    const { email, password, rememberMe = false } = req.body;
+    const { email, password, rememberMe = false } = req.body; //check remember me
 
     // Validate input
     if (!email || !password) {
@@ -67,6 +64,7 @@ export const login = async (req, res) => {
 
     // Extract unique permissions from all roles
     const permissions = new Set();
+    console.log('User roles with permissions:', JSON.stringify(user.userRoles, null, 2));
     user.userRoles.forEach(userRole => {
       if (userRole.Role.rolePermissions) {
         userRole.Role.rolePermissions.forEach(rp => {
@@ -74,6 +72,8 @@ export const login = async (req, res) => {
         });
       }
     });
+
+    console.log('Extracted permissions:', Array.from(permissions));
 
     // Generate JWT token with permissions
     const token = jwt.sign(

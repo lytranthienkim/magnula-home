@@ -144,7 +144,7 @@ export const CartModal = ({ isOpen, onClose }) => {
                                                             Quantity: {item.quantity}
                                                         </p>
                                                     </div>
-                                                    {/* Error Message */}
+                                                    
                                                     {isIncreaseDisabled && (
                                                         <p className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>
                                                             Cannot exceed available stock.

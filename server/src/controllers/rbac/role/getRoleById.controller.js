@@ -8,7 +8,7 @@ export const getRoleById = async (req, res) => {
     const { id } = req.params;
 
     const role = await Role.findByPk(id, {
-      attributes: ['id', 'roleName', 'description', 'createdAt'],
+      attributes: ['id', 'roleName', 'createdAt'],
     });
 
     if (!role) {
@@ -27,7 +27,6 @@ export const getRoleById = async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch role',
-      details: error.message,
     });
   }
 };

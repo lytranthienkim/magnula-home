@@ -12,10 +12,10 @@ import { verifyToken, checkPermission } from '../../middleware/auth/index.js';
 
 const router = express.Router();
 
-// GET all collection images (Admin only)
+// GET all collection images
 router.get('/collection-images', verifyToken, checkPermission('collections:read'), getAllCollectionImages);
 
-// GET images of specific collection (PUBLIC)
+// GET images of specific collection
 router.get('/collections/:collectionId/images', getCollectionImagesByCollectionId);
 
 // POST add image to collection

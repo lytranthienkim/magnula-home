@@ -1,22 +1,12 @@
-// Restore User Controller - Reactivate an inactive user
-
 import db from '../../../config/db.js';
 
 export const restoreUser = async (req, res) => {
   try {
-    const { User } = db.models;
-    const { id } = req.params;
+    const user = await db.models.User.findByPk(req.params.id);
 
-    // Find user (including inactive)
-    const user = await User.findByPk(id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        error: 'User not found',
-      });
-    }
+    if (!user)
+      return res.status(404).json({ success: false, error: 'User not found' });
 
-    // Reactivate user
     await user.update({ isActive: true });
 
     res.json({
@@ -30,11 +20,6 @@ export const restoreUser = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Restore user error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to restore user',
-      details: error.message,
-    });
+    res.status(500).json({ success: false, error: error.message });
   }
 };

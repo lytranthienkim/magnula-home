@@ -1,5 +1,3 @@
-// Role & Permission Assignment Routes - RBAC - Manage user roles and role permissions
-
 import express from 'express';
 import {
   assignRoleToUser,
@@ -9,28 +7,28 @@ import {
   removePermissionFromRole,
   getRolePermissions,
 } from '../../controllers/rbac/assignment/index.js';
-import { verifyToken } from '../../middleware/auth/index.js';
+import { verifyToken, checkPermission } from '../../middleware/auth/index.js';
 
 const router = express.Router();
 
-// User Roles
-// POST /api/users/:id/assign-role
-router.post('/users/:id/assign-role', verifyToken, assignRoleToUser);
+// ==================== USER ROLE ASSIGNMENT ====================
+// POST /users/:id/assign-role - Assign role to user
+router.post('/users/:id/assign-role', verifyToken, checkPermission('users:update_status'), assignRoleToUser);
 
-// DELETE /api/users/:id/roles/:roleId - Remove role from user (admin only)
-router.delete('/users/:id/roles/:roleId', verifyToken, removeRoleFromUser);
+// GET /users/:id/roles - Get user's assigned roles
+router.get('/users/:id/roles', verifyToken, checkPermission('roles:read'), getUserRoles);
 
-// GET /api/users/:id/roles - Get all roles of a user
-router.get('/users/:id/roles', verifyToken, getUserRoles);
+// DELETE /users/:id/roles/:roleId - Remove role from user
+router.delete('/users/:id/roles/:roleId', verifyToken, checkPermission('users:update_status'), removeRoleFromUser);
 
-// Role Permissions
-// POST /api/roles/:id/assign-permission - Assign permission to role (admin only)
-router.post('/roles/:id/assign-permission', verifyToken, assignPermissionToRole);
+// ==================== ROLE PERMISSION ASSIGNMENT ====================
+// GET /roles/:id/permissions - Get permissions assigned to role
+router.get('/roles/:id/permissions', verifyToken, checkPermission('roles:read'), getRolePermissions);
 
-// DELETE /api/roles/:id/permissions/:permissionId - Remove permission from role (admin only)
-router.delete('/roles/:id/permissions/:permissionId', verifyToken, removePermissionFromRole);
+// POST /roles/:id/assign-permission - Assign permission to role
+router.post('/roles/:id/assign-permission', verifyToken, checkPermission('roles:update'), assignPermissionToRole);
 
-// GET /api/roles/:id/permissions - Get all permissions of a role
-router.get('/roles/:id/permissions', verifyToken, getRolePermissions);
+// DELETE /roles/:id/permissions/:permissionId - Remove permission from role
+router.delete('/roles/:id/permissions/:permissionId', verifyToken, checkPermission('roles:update'), removePermissionFromRole);
 
 export default router;

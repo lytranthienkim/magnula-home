@@ -1,5 +1,3 @@
-// Reset Password By Admin Controller - Admin override staff password without verification
-
 import bcrypt from 'bcryptjs';
 import db from '../../../config/db.js';
 
@@ -7,9 +5,9 @@ export const resetPasswordByAdmin = async (req, res) => {
   try {
     const { User } = db.models;
     const { userId, newPassword } = req.body;
-    const adminId = req.user.userId; // From JWT token
+    const adminId = req.user.userId; // Lấy từ JWT token
 
-    // Validate input
+    // Kiểm tra dữ liệu đầu vào
     if (!userId || !newPassword) {
       return res.status(400).json({
         success: false,
@@ -17,15 +15,15 @@ export const resetPasswordByAdmin = async (req, res) => {
       });
     }
 
-    // Validate password strength
+    // Kiểm tra độ mạnh của mật khẩu
     if (newPassword.length < 6) {
       return res.status(400).json({
         success: false,
-        error: 'Password must be at least 6 characters',
+        error: 'Password must be at least 6 characters', 
       });
     }
 
-    // Get target user
+    // Lấy thông tin người dùng cần đặt lại mật khẩu
     const targetUser = await User.findByPk(userId);
     if (!targetUser) {
       return res.status(404).json({
@@ -34,8 +32,8 @@ export const resetPasswordByAdmin = async (req, res) => {
       });
     }
 
-    // Prevent admin from resetting their own password via this endpoint
-    // (admins should use changePassword which requires old password)
+    // Ngăn chặn admin đặt lại mật khẩu của chính họ thông qua endpoint này
+    // admin nên sử dụng endpoint changePassword yêu cầu mật khẩu cũ
     if (adminId === userId) {
       return res.status(400).json({
         success: false,
@@ -43,10 +41,10 @@ export const resetPasswordByAdmin = async (req, res) => {
       });
     }
 
-    // Hash new password
+    // Mã hóa mật khẩu mới
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
-    // Update password
+    // Cập nhật mật khẩu trong cơ sở dữ liệu
     await targetUser.update({ passwordHash });
 
     res.json({

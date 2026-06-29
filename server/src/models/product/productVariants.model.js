@@ -48,7 +48,7 @@ const ProductVariant = db.define(
       type: DataTypes.DECIMAL(15, 2),
       allowNull: false,
       validate: {
-        min: 0,  // Only validate minimum value, not decimal format
+        min: 0, 
       },
     },
 

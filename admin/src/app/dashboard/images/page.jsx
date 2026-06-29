@@ -4,13 +4,9 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getAllImages, updateImage, deleteProductImage, restoreImage } from '@/api/products';
 import { Table } from '@/components/common/table/Table';
-import { checkPermission, PERMISSIONS } from '@/helper/permissions';
 
 export default function ImagesPage() {
   const { user: currentUser } = useSelector((state) => state.auth);
-  const canRead = checkPermission(currentUser, PERMISSIONS.PRODUCTS.READ);
-  const canUpdate = checkPermission(currentUser, PERMISSIONS.PRODUCTS.UPDATE);
-  const canDelete = checkPermission(currentUser, PERMISSIONS.PRODUCTS.DELETE);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
@@ -111,20 +107,12 @@ export default function ImagesPage() {
 
   const actions = (item) => [
     { label: 'View', onClick: () => handleViewDetails(item), variant: 'success' },
-    ...(canDelete
-      ? [
-          {
-            label: 'Delete',
-            onClick: () => handleDeleteFromTable(item),
-            variant: 'danger',
-          },
-        ]
-      : []),
+    {
+      label: 'Delete',
+      onClick: () => handleDeleteFromTable(item),
+      variant: 'danger',
+    },
   ];
-
-  if (!canRead) {
-    return <div className="bg-white border border-gray-200 rounded-xl p-8 text-center"><p className="text-gray-500">Access denied. You don't have permission to view images.</p></div>;
-  }
 
   return (
     <div>
@@ -158,44 +146,27 @@ export default function ImagesPage() {
 
       {showDetails && selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="px-8 py-6 border-b border-gray-200">
-              <p className="text-xs text-gray-600 font-semibold uppercase mb-2">Image ID</p>
-              <h2 className="text-3xl font-bold text-black">#{selectedImage.id}</h2>
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6">
+            <div className="flex justify-center mb-4">
+              <img src={selectedImage.imageUrl} alt="Product" className="max-w-full max-h-64 rounded object-cover" />
             </div>
-            <div className="px-8 py-6 space-y-8">
-              <div className="flex justify-center">
-                <img src={selectedImage.imageUrl} alt={selectedImage.altText} className="max-w-96 max-h-96 rounded object-cover" />
+            <div className="space-y-3 mb-6">
+              <div className="flex items-start gap-2">
+                <p className="text-xs font-semibold text-gray-600 w-20">ID:</p>
+                <p className="text-xs text-black">{selectedImage.id}</p>
               </div>
-              <div><p className="text-sm text-black font-semibold uppercase mb-4">Image Details</p><div className="space-y-4">
-                <div className="flex items-start"><p className="text-xs text-black font-semibold uppercase w-32">URL:</p>
-                  {editMode ? (
-                    <input type="text" value={editData.imageUrl !== undefined ? editData.imageUrl : selectedImage.imageUrl || ''} onChange={(e) => setEditData({ ...editData, imageUrl: e.target.value })} className="flex-1 px-4 py-2 bg-white border border-[0.5px] border-gray-400 text-xs text-black focus:outline-none" />
-                  ) : (
-                    <p className="flex-1 bg-gray-50 px-4 py-2 text-xs break-all">{selectedImage.imageUrl || 'N/A'}</p>
-                  )}
-                </div>
-              </div></div>
+              <div className="flex items-start gap-2">
+                <p className="text-xs font-semibold text-gray-600 w-20">URL:</p>
+                <p className="text-xs text-black break-all">{selectedImage.imageUrl || 'N/A'}</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <p className="text-xs font-semibold text-gray-600 w-20">Uploaded:</p>
+                <p className="text-xs text-black">{new Date(selectedImage.uploadedAt || selectedImage.createdAt).toLocaleString('vi-VN')}</p>
+              </div>
             </div>
-            <div className="px-8 py-6 border-t border-gray-200 flex justify-between items-center">
-              {editMode ? (
-                <>
-                  <button onClick={() => { setEditMode(false); setEditData({}); }} disabled={statusUpdating} className="px-6 py-2 bg-white border-2 border-gray-300 text-black text-xs font-bold hover:bg-gray-50 transition disabled:opacity-50">Cancel</button>
-                  <button onClick={handleSave} disabled={statusUpdating} className="px-6 py-2 bg-black text-white text-xs font-bold hover:bg-gray-800 disabled:opacity-50 transition">{statusUpdating ? 'Saving...' : 'Save'}</button>
-                </>
-              ) : (
-                <>
-                  <button onClick={() => setShowDetails(false)} className="px-6 py-2 bg-white border-2 border-gray-300 text-black text-xs font-bold hover:bg-gray-50 transition">Cancel</button>
-                  <div className="flex gap-2">
-                    {!selectedImage.deletedAt ? (
-                      canUpdate && <button onClick={() => { setEditMode(true); setEditData({ imageUrl: selectedImage.imageUrl }); }} className="px-6 py-2 bg-black text-white text-xs font-bold hover:bg-gray-800 transition">Edit</button>
-                    ) : (
-                      canUpdate && <button onClick={handleRestore} disabled={statusUpdating} className="px-6 py-2 bg-green-600 text-white text-xs font-bold hover:bg-green-700 disabled:opacity-50 transition">{statusUpdating ? 'Restoring...' : 'Restore'}</button>
-                    )}
-                    <button disabled className="px-6 py-2 bg-black text-white text-xs font-bold opacity-50 cursor-not-allowed">Saved</button>
-                  </div>
-                </>
-              )}
+            <div className="flex gap-2">
+              <button onClick={() => { setShowDetails(false); setSelectedImage(null); }} className="flex-1 px-4 py-2 bg-white border border-gray-300 text-black text-xs font-bold rounded hover:bg-gray-50">Close</button>
+              <button onClick={() => handleDeleteFromTable(selectedImage)} className="flex-1 px-4 py-2 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700">Delete</button>
             </div>
           </div>
         </div>

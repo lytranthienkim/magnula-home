@@ -15,9 +15,11 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Unauthorized - clear local state and redirect to login
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('adminUser');
+      // Don't redirect on login endpoint itself - let the login page handle the error
+      const isLoginEndpoint = error.config?.url?.includes('/auth/login');
+
+      if (!isLoginEndpoint && typeof window !== 'undefined') {
+        // Unauthorized - redirect to login (Redux and cookie handled by browser)
         window.location.href = '/login';
       }
     }

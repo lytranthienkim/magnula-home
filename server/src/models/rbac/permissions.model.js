@@ -36,7 +36,7 @@ const Permission = db.define(
     tableName: 'permissions',
     timestamps: true,
     underscored: true,
-    paranoid: true,  // Enable soft delete
+    paranoid: true, 
   }
 );
 

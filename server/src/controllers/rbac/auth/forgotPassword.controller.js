@@ -1,19 +1,3 @@
-// Forgot Password Controller - User resets own password without authentication
-//
-// SCENARIO:
-// - User quên password và logout
-// - Cung cấp email + password mới
-// - Hệ thống cập nhật password trực tiếp
-// - Không cần kiểm tra role/permission (endpoint này public)
-//
-// FLOW:
-// 1. Validate input (email, newPassword)
-// 2. Find user by email
-// 3. Hash new password
-// 4. Update user password
-// 5. Return success
-//
-// NOTE: Trong production, nên thêm email verification step
 
 import bcrypt from 'bcryptjs';
 import db from '../../../config/db.js';

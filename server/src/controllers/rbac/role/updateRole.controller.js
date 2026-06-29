@@ -6,7 +6,7 @@ export const updateRole = async (req, res) => {
   try {
     const { Role } = db.models;
     const { id } = req.params;
-    const { roleName, description } = req.body;
+    const { roleName } = req.body;
 
     // Get role
     const role = await Role.findByPk(id);
@@ -39,7 +39,6 @@ export const updateRole = async (req, res) => {
 
     // Update fields
     if (roleName) role.roleName = roleName.trim();
-    if (description !== undefined) role.description = description || null;
 
     await role.save();
 

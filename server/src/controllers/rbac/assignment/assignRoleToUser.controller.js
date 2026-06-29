@@ -8,6 +8,8 @@ export const assignRoleToUser = async (req, res) => {
     const { id } = req.params;
     const { roleId } = req.body;
 
+    console.log('assignRoleToUser:', { userId: id, roleId });
+
     // Validate input
     if (!roleId) {
       return res.status(400).json({
@@ -34,24 +36,16 @@ export const assignRoleToUser = async (req, res) => {
       });
     }
 
-    // Check if user already has this role
-    const existing = await UserRole.findOne({
-      where: { userId: id, roleId },
-    });
-    if (existing) {
-      return res.status(400).json({
-        success: false,
-        error: 'User already has this role',
-      });
-    }
+    // Remove all existing roles for this user
+    await UserRole.destroy({ where: { userId: id } });
 
-    // Assign role
+    // Assign new role
     const userRole = await UserRole.create({
       userId: id,
       roleId,
     });
 
-    res.status(201).json({
+    res.json({
       success: true,
       data: userRole,
       message: `Role "${role.roleName}" assigned to user successfully`,

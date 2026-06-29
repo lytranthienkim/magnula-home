@@ -1,6 +1,3 @@
-// Model Associations & Relationships - - Định nghĩa tất cả mối quan hệ giữa các models - - One-to-M...
-
-// Thiết lập tất cả mối quan hệ giữa models
 export const setupAssociations = ({
   User,
   Role,
@@ -21,17 +18,14 @@ export const setupAssociations = ({
   ProductRequest,
   PaymentMethod,
 }) => {
-  // ========== RBAC Relations ==========
-  // Users (1) ---> (N) UserRoles (Pivot table)
+  
+  // Users (1) ---> (N) UserRoles 
   User.hasMany(UserRole, { foreignKey: 'userId', as: 'userRoles' });
   UserRole.belongsTo(User, { foreignKey: 'userId' });
 
-  // Roles (1) ---> (N) UserRoles (Pivot table)
+  // Roles (1) ---> (N) UserRoles 
   Role.hasMany(UserRole, { foreignKey: 'roleId', as: 'roleUsers' });
   UserRole.belongsTo(Role, { foreignKey: 'roleId' });
-
-  // NOTE: Using explicit pivot tables instead of belongsToMany shortcuts
-  // This gives more control over soft delete and cascade behavior
 
   // Roles (1) ---> (N) RolePermissions
   Role.hasMany(RolePermission, { foreignKey: 'roleId', as: 'rolePermissions' });
@@ -41,7 +35,6 @@ export const setupAssociations = ({
   Permission.hasMany(RolePermission, { foreignKey: 'permissionId', as: 'permissionRoles' });
   RolePermission.belongsTo(Permission, { foreignKey: 'permissionId' });
 
-  // ========== Product Relations ==========
   // Collections (1) ---> (N) Products
   Collection.hasMany(Product, { foreignKey: 'collectionId', as: 'products' });
   Product.belongsTo(Collection, { foreignKey: 'collectionId' });
@@ -74,7 +67,6 @@ export const setupAssociations = ({
   Product.hasMany(ProductImage, { foreignKey: 'productId', as: 'images' });
   ProductImage.belongsTo(Product, { foreignKey: 'productId' });
 
-  // ========== Order Relations ==========
   // PaymentMethods (1) ---> (N) Orders
   PaymentMethod.hasMany(Order, { foreignKey: 'paymentMethodId', as: 'orders' });
   Order.belongsTo(PaymentMethod, { foreignKey: 'paymentMethodId' });
@@ -91,12 +83,11 @@ export const setupAssociations = ({
   ProductVariant.hasMany(OrderItem, { foreignKey: 'productVariantId', as: 'variantOrderItems' });
   OrderItem.belongsTo(ProductVariant, { foreignKey: 'productVariantId' });
 
-  // ========== ProductRequest Relations ==========
   // Products (1) ---> (N) ProductRequests
   Product.hasMany(ProductRequest, { foreignKey: 'productId', as: 'requests' });
   ProductRequest.belongsTo(Product, { foreignKey: 'productId' });
 
-  // ProductVariants (1) ---> (N) ProductRequests (NULL nếu đặt phom chung)
+  // ProductVariants (1) ---> (N) ProductRequests 
   ProductVariant.hasMany(ProductRequest, { foreignKey: 'productVariantId', as: 'requests' });
-  ProductRequest.belongsTo(ProductVariant, { foreignKey: 'productVariantId' });  // allowNull defined in Model
+  ProductRequest.belongsTo(ProductVariant, { foreignKey: 'productVariantId' }); 
 };

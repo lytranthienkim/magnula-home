@@ -108,7 +108,7 @@ export default function RestorePage() {
 
       // Remove from deleted list
       setDeletedItems((prev) => prev.filter((i) => i.id !== item.id));
-      setSuccess('Item restored successfully');
+      setSuccess('Restored successfully');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Failed to restore item');

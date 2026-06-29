@@ -295,7 +295,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
             <div className="flex flex-col gap-2">
                 <h2 className="font-display-semibold body-01 uppercase">Contact</h2>
 
-                {/* Email */}
+                
                 <div className="flex flex-col gap-2">
                     <label className="font-display-regular body-02">Email (*)</label>
                     <input

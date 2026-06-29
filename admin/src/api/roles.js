@@ -1,8 +1,8 @@
 import apiClient from './config';
 
-// Get all roles
-export const getAllRoles = async () => {
-  const res = await apiClient.get('/roles');
+// Get all roles (active by default, or deleted if showDeleted=true)
+export const getAllRoles = async (showDeleted = false) => {
+  const res = await apiClient.get(`/roles${showDeleted ? '?deleted=true' : ''}`);
   return res.data;
 };
 

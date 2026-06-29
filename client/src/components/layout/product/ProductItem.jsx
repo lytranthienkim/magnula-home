@@ -214,7 +214,7 @@ export const ProductItem = () => {
                             </button>
                         </div>
 
-                        {/* Error Message */}
+                        
                         {isButtonDisabled && (
                             <p className="body-02 font-display-regular italic text-gray-600">
                                 You can submit a restock request.

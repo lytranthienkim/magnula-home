@@ -1,5 +1,3 @@
-// Get Role Permissions Controller - Retrieve all permissions assigned to a specific role
-
 import db from '../../../config/db.js';
 
 export const getRolePermissions = async (req, res) => {
@@ -10,42 +8,34 @@ export const getRolePermissions = async (req, res) => {
     // Verify role exists
     const role = await Role.findByPk(id);
     if (!role) {
-      return res.status(404).json({
-        success: false,
-        error: 'Role not found',
-      });
+      return res.status(404).json({ success: false, error: 'Role not found' });
     }
 
-    // Get all permissions assigned to this role
-    const permissions = await Permission.findAll({
-      include: [{
-        model: RolePermission,
-        as: 'permissionRoles',
-        where: { roleId: id },
-        attributes: [],
-      }],
-      attributes: ['id', 'permissionKey', 'description', 'createdAt'],
+    // Get all permissions
+    const allPermissions = await Permission.findAll({
+      attributes: ['id', 'permissionKey', 'description'],
+      raw: true,
     });
 
-    // Transform to match frontend expectations (add permissionId field)
-    const formattedPermissions = permissions.map((perm) => ({
-      permissionId: perm.id,
+    // Get permissions assigned to this role
+    const assignedPermissions = await RolePermission.findAll({
+      where: { roleId: id },
+      attributes: ['permissionId'],
+      raw: true,
+    });
+
+    const assignedPermIds = new Set(assignedPermissions.map((ap) => ap.permissionId));
+
+    // Format all permissions with assigned flag
+    const formattedPermissions = allPermissions.map((perm) => ({
       id: perm.id,
       permissionKey: perm.permissionKey,
       description: perm.description,
-      createdAt: perm.createdAt,
+      assigned: assignedPermIds.has(perm.id),
     }));
 
-    res.json({
-      success: true,
-      data: formattedPermissions,
-    });
+    res.json({ success: true, data: formattedPermissions });
   } catch (error) {
-    console.error('Get role permissions error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to fetch role permissions',
-      details: error.message,
-    });
+    res.status(500).json({ success: false, error: error.message });
   }
 };

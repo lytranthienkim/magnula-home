@@ -21,10 +21,10 @@ router.post('/collections/bulk', verifyToken, checkPermission('collections:creat
 // PUT /api/products/collections/:id - Update collection
 router.put('/collections/:id', verifyToken, checkPermission('collections:update'), updateCollection);
 
-// PATCH /api/products/collections/:id/status - Activate/Deactivate (update isActive)
+// PATCH /api/products/collections/:id/status - Activate/Deactivate 
 router.patch('/collections/:id/status', verifyToken, checkPermission('collections:update'), updateCollectionStatus);
 
-// DELETE /api/products/collections/:id - Delete collection (soft delete with check)
+// DELETE /api/products/collections/:id - Delete collection 
 router.delete('/collections/:id', verifyToken, checkPermission('collections:delete'), deleteCollection);
 
 // PATCH /api/products/collections/:id/restore - Restore soft-deleted collection

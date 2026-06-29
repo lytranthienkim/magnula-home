@@ -17,8 +17,6 @@ const authSlice = createSlice({
       state.error = null;
     },
     loginSuccess: (state, action) => {
-      // Token is now stored in HttpOnly cookie by backend
-      // Redux only manages user data and permissions
       state.loading = false;
       state.user = action.payload.user;
       state.permissions = action.payload.permissions || [];

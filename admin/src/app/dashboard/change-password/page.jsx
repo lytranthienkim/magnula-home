@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { changePassword } from '@/api/auth';
-import { FormField } from '@/components/common/form/FormField';
+import { ChangePasswordHeader } from '@/components/layout/change-password';
 
 export default function ChangePasswordPage() {
   const router = useRouter();
@@ -54,83 +54,62 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <div className="max-w-md">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="h1-neu font-bold text-black mb-2">Change Password</h1>
-        <p className="body-02 text-gray-600">Update your account password</p>
-      </div>
+    <div>
+      <ChangePasswordHeader />
 
-      {/* Messages */}
-      {error && (
-        <div className="mb-6 p-4 bg-red-50  border-error rounded">
-          <p className="body-02 text-error">{error}</p>
-        </div>
-      )}
-      {success && (
-        <div className="mb-6 p-4 bg-green-50  border-green-600 rounded">
-          <p className="body-02 text-green-700">{success}</p>
-        </div>
-      )}
+      <div className="bg-white rounded-lg  p-8 max-w-md mx-auto">
+        {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded"><p className="text-xs text-red-600">{error}</p></div>}
+        {success && <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded"><p className="text-xs text-green-600">{success}</p></div>}
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="bg-white border border-light rounded-lg p-6">
-        <div className="space-y-6 mb-6">
-          <FormField
-            label="Current Password"
-            name="oldPassword"
-            type="password"
-            value={formData.oldPassword}
-            onChange={handleChange}
-            error={errors.oldPassword}
-            placeholder="••••••••"
-            required
-            disabled={loading}
-          />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="oldPassword" className="text-xs font-semibold text-black uppercase block mb-2">Current Password *</label>
+            <input
+              type="password"
+              id="oldPassword"
+              name="oldPassword"
+              value={formData.oldPassword}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded text-sm text-black focus:outline-none"
+            />
+            {errors.oldPassword && <p className="text-xs text-red-600 mt-1">{errors.oldPassword}</p>}
+          </div>
 
-          <FormField
-            label="New Password"
-            name="newPassword"
-            type="password"
-            value={formData.newPassword}
-            onChange={handleChange}
-            error={errors.newPassword}
-            placeholder="••••••••"
-            required
-            disabled={loading}
-          />
+          <div>
+            <label htmlFor="newPassword" className="text-xs font-semibold text-black uppercase block mb-2">New Password *</label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded text-sm text-black focus:outline-none"
+            />
+            {errors.newPassword && <p className="text-xs text-red-600 mt-1">{errors.newPassword}</p>}
+          </div>
 
-          <FormField
-            label="Confirm New Password"
-            name="confirmPassword"
-            type="password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            error={errors.confirmPassword}
-            placeholder="••••••••"
-            required
-            disabled={loading}
-          />
-        </div>
+          <div>
+            <label htmlFor="confirmPassword" className="text-xs font-semibold text-black uppercase block mb-2">Confirm Password *</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded text-sm text-black focus:outline-none"
+            />
+            {errors.confirmPassword && <p className="text-xs text-red-600 mt-1">{errors.confirmPassword}</p>}
+          </div>
 
-        <div className="flex gap-3">
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 px-6 py-3 bg-black text-white body-02 font-semibold hover:bg-gray-900 disabled:opacity-50"
+            className="w-full px-6 py-2 bg-black text-white text-xs font-bold rounded hover:bg-gray-800 transition disabled:opacity-50"
           >
             {loading ? 'Changing...' : 'Change Password'}
           </button>
-          <button
-            type="button"
-            onClick={() => router.push('/dashboard')}
-            disabled={loading}
-            className="flex-1 px-6 py-3 border border-light text-black body-02 font-semibold hover:bg-gray-100 disabled:opacity-50"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

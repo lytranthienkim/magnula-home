@@ -4,14 +4,11 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getAllProductRequests, updateProductRequest } from '@/api/orders';
 import { Table } from '@/components/common/table/Table';
-import { checkPermission, PERMISSIONS } from '@/helper/permissions';
 
 const REQUEST_STATUSES = ['pending', 'approved', 'rejected'];
 
 export default function ProductRequestsPage() {
   const { user: currentUser } = useSelector((state) => state.auth);
-  const canRead = checkPermission(currentUser, PERMISSIONS.ORDERS.READ);
-  const canUpdate = checkPermission(currentUser, PERMISSIONS.ORDERS.UPDATE);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDetails, setShowDetails] = useState(false);
@@ -138,10 +135,6 @@ export default function ProductRequestsPage() {
     ];
   };
 
-  if (!canRead) {
-    return <div className="bg-white border border-gray-200 rounded-xl p-8 text-center"><p className="text-gray-500">Access denied. You don't have permission to view product requests.</p></div>;
-  }
-
   return (
     <div>
       {/* Header */}
@@ -262,17 +255,15 @@ export default function ProductRequestsPage() {
                     Cancel
                   </button>
                   <div className="flex gap-2">
-                    {canUpdate && (
-                      <button
-                        onClick={() => {
-                          setEditMode(true);
-                          setEditData({ status: selectedRequest.status });
-                        }}
-                        className="px-6 py-2 bg-black text-white text-xs font-bold hover:bg-gray-800 transition"
-                      >
-                        Edit
-                      </button>
-                    )}
+                    <button
+                      onClick={() => {
+                        setEditMode(true);
+                        setEditData({ status: selectedRequest.status });
+                      }}
+                      className="px-6 py-2 bg-black text-white text-xs font-bold hover:bg-gray-800 transition"
+                    >
+                      Edit
+                    </button>
                     <button
                       disabled
                       className="px-6 py-2 bg-black text-white text-xs font-bold opacity-50 cursor-not-allowed"

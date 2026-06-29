@@ -56,9 +56,8 @@ export const updateCollection = async (req, res) => {
       { transaction }
     );
 
-    // Handle images if provided
     if (images && Array.isArray(images)) {
-      // Delete existing images for this collection
+      // Xoa 1 image
       await CollectionImage.destroy({
         where: { collectionId: id },
         transaction,

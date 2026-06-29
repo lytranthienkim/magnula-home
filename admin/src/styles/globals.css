@@ -47,27 +47,6 @@ h4 {
   font-weight: 600;
 }
 
-.h1-neu {
-  font-size: clamp(32px, 2vw, 56px);
-  line-height: 1.5;
-  letter-spacing: -3%;
-  font-weight: 700;
-}
-
-.h2-neu {
-  font-size: clamp(24px, 2vw, 32px);
-  line-height: 1.5;
-  letter-spacing: -3%;
-  font-weight: 600;
-}
-
-.h3-neu {
-  font-size: clamp(20px, 2vw, 24px);
-  line-height: 1.5;
-  letter-spacing: -3%;
-  font-weight: 600;
-}
-
 .body-01 {
   font-size: clamp(14px, 1vw, 16px);
   font-weight: 400;

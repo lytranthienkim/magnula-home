@@ -34,7 +34,7 @@ export default function DashboardLayout({ children }) {
       <div className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-white transform transition-all duration-300 ease-in-out
         lg:static lg:translate-x-0 lg:z-auto
-        ${sidebarOpen ? 'translate-x-0 shadow-lg' : '-translate-x-full lg:translate-x-0'}
+        ${sidebarOpen ? 'translate-x-0 ' : '-translate-x-full lg:translate-x-0'}
       `}>
         <Sidebar onClose={() => setSidebarOpen(false)} />
       </div>

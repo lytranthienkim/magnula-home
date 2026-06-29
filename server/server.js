@@ -1,10 +1,3 @@
-/**
- * Server Main File
- * - Khởi tạo Express app
- * - Kết nối database
- * - Đăng ký routes
- */
-
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -26,8 +19,6 @@ const initializeDatabase = async () => {
   try {
     await db.authenticate();
     console.log('Database connected');
-    // Use alter: false to avoid key conflicts - database already exists
-    // If you need to add new columns, use manual SQL migrations
     await db.sync({ alter: false });
     console.log('Database synced');
   } catch (error) {
@@ -55,7 +46,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Parse cookies from request headers
+app.use(cookieParser()); 
 
 // Routes
 app.use('/api', routes);

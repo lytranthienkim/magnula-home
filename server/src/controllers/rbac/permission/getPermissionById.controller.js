@@ -8,7 +8,7 @@ export const getPermissionById = async (req, res) => {
     const { id } = req.params;
 
     const permission = await Permission.findByPk(id, {
-      attributes: ['id', 'permissionKey', 'description', 'createdAt'],
+      attributes: ['id', 'permissionKey', 'description', 'createdAt', 'deletedAt'],
     });
 
     if (!permission) {
@@ -18,9 +18,19 @@ export const getPermissionById = async (req, res) => {
       });
     }
 
+    // Format response - add isActive based on deletedAt
+    const formattedPermission = {
+      id: permission.id,
+      permissionKey: permission.permissionKey,
+      description: permission.description,
+      isActive: !permission.deletedAt,
+      createdAt: permission.createdAt,
+      ...(permission.deletedAt && { deletedAt: permission.deletedAt }),
+    };
+
     res.json({
       success: true,
-      data: permission,
+      data: formattedPermission,
     });
   } catch (error) {
     console.error('Get permission by ID error:', error);

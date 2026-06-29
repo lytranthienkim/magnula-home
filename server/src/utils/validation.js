@@ -1,3 +1,5 @@
+//checkUserRole, register, forgotPassword, createUser, updateProfile, createOrder, createProductRequest
+
 import { Op } from 'sequelize';
 
 export const isValidEmail = (email) => {

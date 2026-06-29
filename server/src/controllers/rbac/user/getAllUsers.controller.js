@@ -7,13 +7,12 @@ export const getAllUsers = async (req, res) => {
   try {
     const { User, UserRole, Role } = db.models;
 
-    // Check if requesting inactive items (Users don't have paranoid delete, use isActive instead)
     const isInactive = req.query.deleted === 'true';
 
     // Get all users (active or inactive)
     const users = await User.findAll({
       where: {
-        isActive: isInactive ? false : true, // Show inactive if deleted=true, active if deleted=false
+        isActive: isInactive ? false : true,
       },
       attributes: { exclude: ['passwordHash'] },
       attributes: { exclude: ['passwordHash'] },
@@ -30,7 +29,13 @@ export const getAllUsers = async (req, res) => {
       email: user.email,
       fullName: user.fullName,
       isActive: user.isActive,
-      roles: user.userRoles.map(ur => ur.Role.roleName),
+      status: user.isActive ? 'active' : 'inactive',
+      roles: user.userRoles.map(ur => ({
+        id: ur.Role.id,
+        roleName: ur.Role.roleName,
+      })),
+      roleId: user.userRoles.length > 0 ? user.userRoles[0].Role.id : null,
+      role: user.userRoles.length > 0 ? user.userRoles[0].Role.roleName : null,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     }));

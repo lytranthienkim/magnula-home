@@ -28,20 +28,20 @@ export default function ForgotPasswordPage() {
         return;
       }
 
-      // Call check-user-role endpoint
-      const res = await apiClient.post('/auth/check-user-role', { email });
+      // Gọi endpoint check user role
+      const res = await apiClient.post('/auth/check-user-role', { email });  
 
       if (res.data?.success) {
         const userRoleData = res.data.data.role || '';
 
-        // Only admin can reset password via forgot-password
-        if (userRoleData.toLowerCase() === 'staff' || userRoleData.toLowerCase() === 'user') {
-          setError('Your role does not have permission to change password. Contact your system administrator.');
+        // Chỉ administrator có thể reset password
+        if (userRoleData.toLowerCase() !== 'administrator') {
+          setError('Only administrator role can reset password. Contact your system administrator.');
           setLoading(false);
           return;
         }
 
-        // Admin can continue
+        // Administrator có thể tiếp tục
         setStep(2);
         setSuccess('');
       } else {
@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
         return;
       }
 
-      // Call forgot-password endpoint
+      // Gọi endpoint forgot-password
       const res = await apiClient.post('/auth/forgot-password', {
         email,
         newPassword,
@@ -126,7 +126,7 @@ export default function ForgotPasswordPage() {
           <form onSubmit={handleEmailSubmit} className="space-y-4">
             <div className="flex flex-col gap-2">
               <label htmlFor="email" className="text-xs font-semibold text-black uppercase">
-                Email Address
+                Email
               </label>
               <input
                 type="email"

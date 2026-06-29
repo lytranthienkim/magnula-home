@@ -1,15 +1,11 @@
 'use client';
 
-/**
- * PermissionsHeader Component
- * Displays the page header for permissions management
- */
-export function PermissionsHeader() {
+export default function PermissionsHeader() {
   return (
-    <div className="mb-8 flex justify-between items-center">
+    <div className="mb-8">
       <div>
-        <h3 className="font-bold text-black uppercase">Permissions Management</h3>
-        <p className="body-02 text-black">View system permissions (read-only)</p>
+        <h3 className="font-bold text-black uppercase">Permissions</h3>
+        <p className="body-02 text-black">Manage role permissions and access control</p>
       </div>
     </div>
   );

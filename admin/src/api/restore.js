@@ -1,4 +1,5 @@
 import apiClient from './config';
+import { getAllRoles } from './roles';
 
 // Get deleted products
 export const getDeletedProducts = async () => {
@@ -50,8 +51,7 @@ export const getDeletedUsers = async () => {
 
 // Get deleted roles
 export const getDeletedRoles = async () => {
-  const res = await apiClient.get('/roles?deleted=true');
-  return res.data;
+  return getAllRoles(true);
 };
 
 // Get deleted permissions

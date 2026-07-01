@@ -5,8 +5,8 @@ export const COOKIE_NAMES = {
 
 export const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
+  secure: true, // ✅ Always true vì cross-domain
+  sameSite: 'none', // ✅ Cho phép cross-site cookies
 };
 
 export const getCookieOptions = (rememberMe = false) => {

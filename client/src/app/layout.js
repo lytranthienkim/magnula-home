@@ -11,7 +11,26 @@ const damionFont = Damion({
 
 export const metadata = {
   title: "Magnula",
-  description: "Furniture, home, sofas, elegant, minimal, basic",
+  template: "$s | Magnula",
+  description: "Furniture That Brings Your Family Together.",
+  keyWords: ["Magnula", "Furniture", "Home Decor", "Interior Design", "Living Room", "Bedroom", "Dining Room", "Office Furniture"],
+
+  openGraph: {
+    title: "Magnula",
+    description: "Furniture That Brings Your Family Together.",
+    url: "https://magnula.space",
+    siteName: "Magnula",
+    images: [
+      {
+        url: 'https://d1yei2z3i6k35z.cloudfront.net/14433334/68c7b26dce7d0_MagnulaText.png',
+        width: 1500,
+        height: 260,
+        alt: "Magnula Text Logo",
+      },
+    ],
+    locale: "en-US",
+    type: "website",
+  }
 };
 
 export default function RootLayout({ children }) {

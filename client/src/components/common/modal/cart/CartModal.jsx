@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { AiOutlineClose } from "react-icons/ai";
 import { PiTrashSimple } from "react-icons/pi";
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { decreaseQuantity, increaseQuantity, removeFromCart } from '@/redux/cartSlice';
 
@@ -42,7 +41,7 @@ export const CartModal = ({ isOpen, onClose }) => {
         setMounted(true);
     }, []);
 
-    useEffect(() => {
+    /*useEffect(() => {
         // Lock body scroll when modal is open
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -53,7 +52,7 @@ export const CartModal = ({ isOpen, onClose }) => {
         return () => {
             document.body.style.overflow = 'unset';
         };
-    }, [isOpen]);
+    }, [isOpen]);*/
 
     if (!mounted) return null;
 

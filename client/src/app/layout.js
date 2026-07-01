@@ -11,10 +11,12 @@ const damionFont = Damion({
 })
 
 export const metadata = {
-  title: "Magnula",
-  template: "$s | Magnula",
+  title: {
+    default: "Magnula",
+    template: "%s | Magnula",
+  },
   description: "Furniture That Brings Your Family Together.",
-  keyWords: ["Magnula", "Furniture", "Home Decor", "Interior Design", "Living Room", "Bedroom", "Dining Room", "Office Furniture"],
+  keywords: ["Magnula", "Furniture", "Home Decor", "Interior Design", "Living Room", "Bedroom", "Dining Room", "Office Furniture"],
 
   openGraph: {
     title: "Magnula",

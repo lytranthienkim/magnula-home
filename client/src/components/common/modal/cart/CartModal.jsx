@@ -41,7 +41,7 @@ export const CartModal = ({ isOpen, onClose }) => {
         setMounted(true);
     }, []);
 
-    /*useEffect(() => {
+    useEffect(() => {
         // Lock body scroll when modal is open
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -52,7 +52,7 @@ export const CartModal = ({ isOpen, onClose }) => {
         return () => {
             document.body.style.overflow = 'unset';
         };
-    }, [isOpen]);*/
+    }, [isOpen]);
 
     if (!mounted) return null;
 

@@ -29,8 +29,8 @@ const initializeDatabase = async () => {
 app.use(cors({
   origin: function(origin, callback) {
     const allowedOrigins = [
-      'http://localhost:3000',  // Client
-      'http://localhost:3002',  // Admin
+      'https://magnula.space' || 'http://localhost:3000',  // Client
+      'https://magnula-admin.vercel.app/login' || 'http://localhost:3002',  // Admin
       process.env.CLIENT_URL,
     ].filter(Boolean);
 

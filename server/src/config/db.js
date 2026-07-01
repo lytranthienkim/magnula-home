@@ -15,7 +15,7 @@ const db = new Sequelize(
     dialect: 'mysql',
     pool: {
       max: 30,
-      min: 4,
+      min: 2,
       acquire: 30000, //safe barrier
       idle: 10000, // clean up 10s
     },

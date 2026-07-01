@@ -9,7 +9,7 @@ import { initializeModels } from './src/config/models.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 // Initialize models and associations
 initializeModels();

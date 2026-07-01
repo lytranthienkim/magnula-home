@@ -93,9 +93,6 @@ a {
 
 /* Neue Einstellung Utilities */
 @layer utilities {
-  .font-display-light {
-    font-family: 'Hanken Design Co - Neue Einstellung Light', sans-serif;
-  }
 
   .font-display-regular {
     font-family: 'Hanken Design Co - Neue Einstellung Regular', sans-serif;

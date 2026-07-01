@@ -20,23 +20,16 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('🔵 Login form submitted!');
-    console.log('📧 Email:', email);
-    console.log('🔐 Password length:', password.length);
-
     setError('');
     setLoading(true);
 
     try {
       if (!email || !password) {
-        console.log('❌ Email or password empty');
         setError('Email and password are required');
         setLoading(false);
         return;
       }
-      console.log('📤 Calling loginAdmin API...');
-      const response = await loginAdmin(email, password, rememberMe); // remeber me flag true or false
-      console.log('✅ Login response:', response);
+      const response = await loginAdmin(email, password, rememberMe);
 
       if (response.success) {
         dispatch(
@@ -53,10 +46,6 @@ export default function LoginPage() {
         dispatch(loginFailure(errorMsg));
       }
     } catch (err) {
-      // Handle different error response formats
-      console.log('❌ Login error caught!');
-      console.log('Error details:', err);
-      console.log('Response:', err.response?.data);
       const errorMessage =
         err.response?.data?.error ||
         err.response?.data?.message ||
@@ -64,10 +53,8 @@ export default function LoginPage() {
         'Login failed. Please try again.';
       setError(errorMessage);
       dispatch(loginFailure(errorMessage));
-      console.error('Login error details:', err.response?.data || err.message);
     } finally {
       setLoading(false);
-      console.log('🏁 Login attempt finished');
     }
   };
 

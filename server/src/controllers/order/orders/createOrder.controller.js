@@ -106,9 +106,10 @@ export const createOrder = async (req, res) => {
       });
     }
 
+    // Tạo mã đơn hàng gồm: ORD + ngày hiện tại + 6 ký tự ngẫu nhiên
     const orderCode = `ORD-${new Date().toISOString().split('T')[0]}-${uuidv4().substring(0, 6).toUpperCase()}`;
 
-    // Create order (sanitize phone: remove special chars, keep only digits)
+    // Create order 
     const order = await Order.create(
       {
         orderCode,

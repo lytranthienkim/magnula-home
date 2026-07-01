@@ -2,16 +2,12 @@ import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-// ✅ Debug: Log env var value
-console.log('🔍 ADMIN API_BASE_URL env var:', API_BASE_URL);
-console.log('🔍 ADMIN process.env:', process.env);
-
 const apiClient = axios.create({
-  baseURL: API_BASE_URL || 'https://magnula-home-production.up.railway.app/api',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Enable cookie support (HttpOnly cookies)
+  withCredentials: true,
 });
 
 // Response interceptor - handle errors

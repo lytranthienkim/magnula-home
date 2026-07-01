@@ -74,7 +74,7 @@ export const CartModal = ({ isOpen, onClose }) => {
                     {/* Backdrop */}
                     <motion.div
                         key="backdrop"
-                        className="fixed inset-0 bg-black/5 z-[1000]"
+                        className="fixed inset-0 bg-transparent md:bg-black/5 z-[1000]"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}

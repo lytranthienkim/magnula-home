@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import cartReducer from './cartSlice';
 import userReducer from './userSlice';
 
+// Cấu hình redux-persist để lưu trữ dữ liệu giỏ hàng và thông tin người dùng vào localStorage.
 const persistConfig = {
     key: 'root',
     storage,
@@ -22,10 +23,12 @@ export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
-            serializableCheck: {
+            serializableCheck: { // Tránh lỗi khi sử dụng redux-persist với các action không serializable
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
         })
 })
 
 export const persistor = persistStore(store)
+
+// Cấu hình store với redux-persist để lưu trữ dữ liệu giỏ hàng và thông tin người dùng vào localStorage.

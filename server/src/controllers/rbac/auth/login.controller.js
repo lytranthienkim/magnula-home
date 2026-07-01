@@ -64,7 +64,6 @@ export const login = async (req, res) => {
 
     // Extract unique permissions from all roles
     const permissions = new Set();
-    console.log('User roles with permissions:', JSON.stringify(user.userRoles, null, 2));
     user.userRoles.forEach(userRole => {
       if (userRole.Role.rolePermissions) {
         userRole.Role.rolePermissions.forEach(rp => {
@@ -72,8 +71,6 @@ export const login = async (req, res) => {
         });
       }
     });
-
-    console.log('Extracted permissions:', Array.from(permissions));
 
     // Generate JWT token with permissions
     const token = jwt.sign(

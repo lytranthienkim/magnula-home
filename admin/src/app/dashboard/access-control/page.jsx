@@ -479,7 +479,6 @@ export default function AccessControlPage() {
                   <button onClick={async () => {
                     try {
                       if (activeTab === 'users') {
-                        console.log('Save user:', { editData, selectedItem });
 
                         // Handle name/email change (update user profile)
                         const hasNameChanged = editData.fullName && editData.fullName !== selectedItem.fullName;
@@ -494,9 +493,7 @@ export default function AccessControlPage() {
 
                         // Handle role change (assign role to user)
                         const newRoleId = editData.roleId ? parseInt(editData.roleId) : null;
-                        console.log('Role change check:', { editData_roleId: editData.roleId, newRoleId, currentRoleId: selectedItem.roleId });
                         if (newRoleId && newRoleId !== selectedItem.roleId) {
-                          console.log('Assigning role:', { userId: selectedItem.id, roleId: newRoleId });
                           await assignRoleToUser(selectedItem.id, newRoleId);
                         }
 

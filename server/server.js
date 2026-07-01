@@ -18,9 +18,7 @@ initializeModels();
 const initializeDatabase = async () => {
   try {
     await db.authenticate();
-    console.log('Database connected');
     await db.sync({ alter: false });
-    console.log('Database synced');
   } catch (error) {
     console.error('Database error:', error.message);
     throw error;

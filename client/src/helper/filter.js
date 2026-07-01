@@ -1,4 +1,4 @@
-// Filter helper functions for ProductContainer
+// Xử lý các filter trên client side để cập nhật query params và điều hướng trang
 
 export const createFilterHandlers = ({
     selectedCategory,
@@ -26,35 +26,36 @@ export const createFilterHandlers = ({
         updateQueryParams('color', newValue);
     };
 
+    // Hàm check giá price có 4 trường hợp: minPrice, maxPrice, minPrice và maxPrice hoặc không nhập gì
     const handlePriceChange = (min, max) => {
         // Validate inputs
         let validMin = min;
         let validMax = max;
 
-        if (min && parseFloat(min) < minPriceLimit) {
-            validMin = minPriceLimit;
+        if (min && parseFloat(min) < minPriceLimit) { // Nếu giá trị minPrice nhập vào nhỏ hơn minPriceLimit, gán validMin bằng minPriceLimit
+            validMin = minPriceLimit; // Ví dụ nhập min = 0 nhưng minPriceLimit tìm thấy trong bảng productVariant có giá trị là 20$ thì validMin sẽ được gán bằng 20$ để đảm bảo giá trị minPrice không nhỏ hơn minPriceLimit
         }
         if (max && parseFloat(max) > maxPriceLimit) {
-            validMax = maxPriceLimit;
+            validMax = maxPriceLimit; // Nếu giá trị maxPrice nhập vào lớn hơn maxPriceLimit, gán validMax bằng maxPriceLimit
         }
 
-        // Update both minPrice and maxPrice params
+        // Cập nhật query params dựa trên giá trị validMin và validMax
         const params = new URLSearchParams(searchParams.toString());
         if (validMin) {
-            params.set('minPrice', validMin);
+            params.set('minPrice', validMin); // Nếu validMin tồn tại, set query param minPrice bằng validMin
         } else {
             params.delete('minPrice');
         }
         if (validMax) {
-            params.set('maxPrice', validMax);
+            params.set('maxPrice', validMax); // Nếu validMax tồn tại, set query param maxPrice bằng validMax
         } else {
             params.delete('maxPrice');
         }
-        router.push(`${pathname}?${params.toString()}`, { scroll: false });
+        router.push(`${pathname}?${params.toString()}`, { scroll: false }); // Điều hướng trang với query params mới mà không cuộn trang
     };
 
     const handleFabricTypeClick = (fabricTypeId) => {
-        // Find fabric type name from array
+        // Lấy fabric type name từ mảng dựa trên id
         const fabricType = fabricTypes.find(f => f.id === parseInt(fabricTypeId));
         const fabricTypeName = fabricType?.name;
 

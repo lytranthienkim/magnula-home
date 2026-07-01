@@ -1,4 +1,4 @@
-// Generate URL-friendly slug from text
+// Chuyển sang slug 
 export const generateSlug = (name) => {
     return name
         .toLowerCase()

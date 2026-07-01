@@ -353,6 +353,7 @@ export default function OrdersPage() {
           variantSelect={variantSelect}
           productQuantity={productQuantity}
           productVariants={productVariants}
+          products={products}
           countries={countries}
           states={states}
           paymentMethods={paymentMethods}

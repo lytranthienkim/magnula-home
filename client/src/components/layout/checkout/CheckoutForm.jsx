@@ -6,6 +6,8 @@ import { getAllCountries, getAllStateByCountry } from '@/api/country';
 import { SkeletonText } from '@/components/skeleton';
 import { validateShippingAddress } from '@/helper/addressValidation';
 import { searchAddresses } from '@/helper/mapboxGeocoding';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '@/redux/userSlice';
 
 // Custom Select Component tương tự Filter.jsx
 const CustomSelectField = ({ label, options = [], selectedValue, onSelect, placeholder = "---", disabled = false, optionKey = 'name', optionLabel = 'name' }) => {
@@ -81,15 +83,18 @@ const CustomSelectField = ({ label, options = [], selectedValue, onSelect, place
 };
 
 export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => {
+    const dispatch = useDispatch();
+    const currentCustomer = useSelector((states) => states.user.user);
+
     const [formData, setFormData] = useState({
-        fullName: '',
-        email: '',
-        phone: '',
-        countryRegion: '',
-        countryCode: '',
-        stateProvince: '',
-        shippingAddress: '',
-        paymentMethodId: null,
+        fullName: currentCustomer?.fullName || '',
+        email: currentCustomer?.email || '',
+        phone: currentCustomer?.phone || '',
+        countryRegion: currentCustomer?.countryRegion || '',
+        countryCode: currentCustomer?.countryCode || '',
+        stateProvince: currentCustomer?.stateProvince || '',
+        shippingAddress: currentCustomer?.shippingAddress || '',
+        paymentMethodId: currentCustomer?.paymentMethodId || null,
     });
 
     const [errors, setErrors] = useState({});
@@ -103,6 +108,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
     const [addressSuggestions, setAddressSuggestions] = useState([]);
     const [showAddressSuggestions, setShowAddressSuggestions] = useState(false);
     const [loadingAddresses, setLoadingAddresses] = useState(false);
+
 
     // Fetch countries
     useEffect(() => {
@@ -134,6 +140,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
         fetchPaymentMethods();
     }, []);
 
+    // Helper: Dispatch vào Redux (Redux Persist tự động lưu vào localStorage)
     const handleChange = useCallback((e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -148,7 +155,11 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
         }
     }, [errors]);
 
-    const handleCountryChange = async (e) => {
+    useEffect(() => {
+        dispatch(setUser(formData));
+    }, [formData, dispatch]);
+
+    {/*const handleCountryChange = async (e) => {
         const countryName = e.target.value;
         const country = countries.find(c => c.name === countryName);
 
@@ -170,14 +181,17 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                 console.error('Failed to fetch states:', err);
             }
         }
-    };
+    };*/}
 
     const handleAddressInputChange = async (e) => {
         const value = e.target.value;
-        setFormData(prev => ({
-            ...prev,
-            shippingAddress: value
-        }));
+        setFormData(prev => {
+            const newData = {
+                ...prev,
+                shippingAddress: value
+            };
+            return newData;
+        });
 
         if (errors.shippingAddress) {
             setErrors(prev => ({
@@ -211,13 +225,34 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
     };
 
     const handleSelectAddress = (address) => {
-        setFormData(prev => ({
-            ...prev,
-            shippingAddress: address
-        }));
+        setFormData(prev => {
+            const newData = {
+                ...prev,
+                shippingAddress: address
+            };
+            return newData;
+        });
         setShowAddressSuggestions(false);
         setAddressSuggestions([]);
     };
+
+    useEffect(() => {
+        const fetchStatesForSavedCountry = async () => {
+            // Kiểm tra nếu user có sẵn mã quốc gia từ trước
+            const savedCountryCode = currentCustomer?.countryCode || formData.countryCode;
+            
+            if (savedCountryCode) {
+                try {
+                    const statesData = await getAllStateByCountry(savedCountryCode.toUpperCase());
+                    setStates(statesData);
+                } catch (err) {
+                    console.error('Failed to fetch initial states for saved country:', err);
+                }
+            }
+        };
+    
+        fetchStatesForSavedCountry();
+    }, [currentCustomer?.countryCode]);
 
     const validateForm = () => {
         const newErrors = {};
@@ -253,6 +288,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
+
         if (validateForm()) {
             onSubmit(formData);
         }
@@ -295,7 +331,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
             <div className="flex flex-col gap-2">
                 <h2 className="font-display-semibold body-01 uppercase">Contact</h2>
 
-                
+
                 <div className="flex flex-col gap-2">
                     <label className="font-display-regular body-02">Email (*)</label>
                     <input
@@ -355,12 +391,15 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                             selectedValue={formData.countryRegion}
                             onSelect={async (value) => {
                                 const country = countries.find(c => c.name === value);
-                                setFormData(prev => ({
-                                    ...prev,
-                                    countryRegion: value,
-                                    countryCode: country?.iso2?.toLowerCase() || '',
-                                    stateProvince: ''
-                                }));
+                                setFormData(prev => {
+                                    const newData = {
+                                        ...prev,
+                                        countryRegion: value,
+                                        countryCode: country?.iso2?.toLowerCase() || '',
+                                        stateProvince: ''
+                                    };
+                                    return newData;
+                                });
                                 setStates([]);
                                 if (errors.countryRegion) {
                                     setErrors(prev => ({
@@ -394,10 +433,13 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                             options={states}
                             selectedValue={formData.stateProvince}
                             onSelect={(value) => {
-                                setFormData(prev => ({
-                                    ...prev,
-                                    stateProvince: value
-                                }));
+                                setFormData(prev => {
+                                    const newData = {
+                                        ...prev,
+                                        stateProvince: value
+                                    };
+                                    return newData;
+                                });
                                 if (errors.stateProvince) {
                                     setErrors(prev => ({
                                         ...prev,
@@ -424,9 +466,8 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                         onChange={handleAddressInputChange}
                         onFocus={() => formData.shippingAddress.length >= 3 && setShowAddressSuggestions(true)}
                         onBlur={() => setTimeout(() => setShowAddressSuggestions(false), 200)}
-                        className={`body-02 font-display-regular border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${
-                            errors.shippingAddress ? 'border-[#dc2626]' : 'border-[#272727]'
-                        }`}
+                        className={`body-02 font-display-regular border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${errors.shippingAddress ? 'border-[#dc2626]' : 'border-[#272727]'
+                            }`}
                         placeholder="Type your address if it not display"
                         autoComplete="off"
                     />
@@ -482,10 +523,13 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                                     value={method.id}
                                     checked={formData.paymentMethodId === method.id}
                                     onChange={(e) => {
-                                        setFormData(prev => ({
-                                            ...prev,
-                                            paymentMethodId: parseInt(e.target.value)
-                                        }));
+                                        setFormData(prev => {
+                                            const newData = {
+                                                ...prev,
+                                                paymentMethodId: parseInt(e.target.value)
+                                            };
+                                            return newData;
+                                        });
                                         if (errors.paymentMethodId) {
                                             setErrors(prev => ({
                                                 ...prev,

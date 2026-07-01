@@ -15,37 +15,42 @@ const cartSlice = createSlice({
             const existingItem = state.items.find(item => item.id === newItem.id);
 
             if (!existingItem) {
-                // Only add if stock > 0
+                // Kiểm tra còn hàng không
                 if (newItem.stock <= 0) {
-                    return;
+                    return; // Nếu hết hàng, không thêm vào giỏ
                 }
-                state.items.push({
+                state.items.push({ // Thêm sản phẩm mới vào giỏ hàng
                     ...newItem,
-                    quantity: 1,
+                    quantity: 1, // Mặc định số lượng là 1 vì mỗi lần thêm vào giỏ hàng là 1 sản phẩm
                 });
-                state.totalQuantity += 1;
+                state.totalQuantity += 1; // Cập nhật tổng số lượng sản phẩm 
             } else {
-                // Check stock before increasing quantity
+                // Kiểm tra số lượng hiện tại với stock trước khi tăng quantity
                 if (existingItem.quantity >= newItem.stock) {
-                    return;
+                    return; // Nếu số lượng hiện tại đã bằng stock, không tăng quantity nữa
                 }
-                existingItem.quantity++;
-                state.totalQuantity += 1;
+                existingItem.quantity++; // Tăng số lượng sản phẩm trong giỏ hàng
+                state.totalQuantity += 1; // Cập nhật tổng số lượng sản phẩm trong giỏ hàng
             }
         },
+        // Xoá sản phẩm khỏi giỏ hàng
         removeFromCart: (state, action) => {
             const id = action.payload;
             const existingItem = state.items.find(item => item.id === id);
 
-            if (existingItem) {
+            if (existingItem) { 
                 state.totalQuantity -= existingItem.quantity;
-                state.items = state.items.filter(item => item.id !== id);
+                state.items = state.items.filter(item => item.id !== id); // Lọc ra các sản phẩm không có id trùng với id cần xoá, tức là xoá sản phẩm khỏi giỏ hàng
             }
         },
+
+        // Xoá toàn bộ giỏ hàng
         clearCart: (state) => {
             state.items = [];
             state.totalQuantity = 0;
         },
+
+        // Tăng số lượng sản phẩm trong giỏ hàng
         increaseQuantity: (state, action) => {
             const { id, stock } = action.payload;
             const existingItem = state.items.find(item => item.id === id);
@@ -68,7 +73,7 @@ const cartSlice = createSlice({
                 existingItem.quantity--;
                 state.totalQuantity--;
             }
-            // Nếu quantity = 1, không giảm được nữa (prevent decrease)
+            // Nếu quantity = 1, không giảm được nữa 
         }
     },
 });

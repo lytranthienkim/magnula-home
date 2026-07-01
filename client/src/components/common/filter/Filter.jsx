@@ -211,17 +211,17 @@ export const Filter = ({
                                 <div className="flex flex-row gap-1.5 items-center pt-1">
                                     <input
                                         type="number"
-                                        placeholder="Min"
+                                        placeholder={`e.g. ${minPriceLimit || 0}`}
                                         value={tempMinPrice}
                                         onChange={(e) => setTempMinPrice(e.target.value)}
-                                        min={minPriceLimit || 0}
-                                        max={maxPriceLimit || undefined}
+                                        min={minPriceLimit || 0} // Set min price về 0 nếu minPriceLimit không tồn tại
+                                        max={maxPriceLimit || undefined} // Set max price về undefined nếu maxPriceLimit không tồn tại
                                         className="w-full p-1 font-display-regular body-03 border-[0.25px] border-[#272727] bg-background-primary outline-none rounded-none"
                                     />
                                     <span className="body-03 text-gray-400">-</span>
                                     <input
                                         type="number"
-                                        placeholder="Max"
+                                        placeholder={`e.g. ${maxPriceLimit || ''}`}
                                         value={tempMaxPrice}
                                         onChange={(e) => setTempMaxPrice(e.target.value)}
                                         min={minPriceLimit || 0}
@@ -232,20 +232,21 @@ export const Filter = ({
                                         onClick={() => {
                                             let error = '';
 
-                                            // Validate min price
+
+                                            // Kiểm tra giá trị min price
                                             if (tempMinPrice) {
                                                 const minVal = parseFloat(tempMinPrice);
-                                                // Check if it's a valid number
+                                                // Kiểm tra xem có phải là số hợp lệ và dương không
                                                 if (isNaN(minVal) || minVal < 0) {
-                                                    error = 'Min price must be a valid positive number';
+                                                    error = 'Min price must be a valid positive number'; // Trả về thông báo lỗi nếu không hợp lệ
                                                 }
-                                                // Check for leading zeros (except for "0")
+                                                // Kiểm tra xem có phải nhập số có số 0 đứng đầu không vì đây là trường hợp loại trừ 0
                                                 if (tempMinPrice.toString().match(/^0\d/) && tempMinPrice !== '0') {
-                                                    error = 'Min price cannot have leading zeros';
+                                                    error = 'Min price cannot have leading zeros'; 
                                                 }
                                             }
 
-                                            // Validate max price
+                                            // Kiểm tra giá trị max price
                                             if (!error && tempMaxPrice) {
                                                 const maxVal = parseFloat(tempMaxPrice);
                                                 // Check if it's a valid number
@@ -258,7 +259,7 @@ export const Filter = ({
                                                 }
                                             }
 
-                                            // Compare min and max
+                                            // So sánh min price và max price nếu cả hai đều tồn tại
                                             if (!error && tempMinPrice && tempMaxPrice) {
                                                 const minVal = parseFloat(tempMinPrice);
                                                 const maxVal = parseFloat(tempMaxPrice);

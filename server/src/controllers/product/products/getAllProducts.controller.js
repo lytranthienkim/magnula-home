@@ -2,13 +2,13 @@ import db from '../../../config/db.js';
 import { Op } from 'sequelize';
 import { buildCompleteProductFilter, buildColorFilter, hasColorFilter } from '../../../utils/productFilter.js';
 
-// Kết hợp color và price filters với logic AND
+// Hàm hỗ trợ filter color và price từ bảng Product Variant
 const mergeFilters = (colorFilter, priceFilter) => {
-  if (!colorFilter && !priceFilter) return null;
-  if (!colorFilter) return priceFilter;
-  if (!priceFilter) return colorFilter;
+  if (!colorFilter && !priceFilter) return null; // Không có filter nào
+  if (!colorFilter) return priceFilter; // Chỉ có price filter
+  if (!priceFilter) return colorFilter; // Chỉ có color filter
 
-  // Cả hai filters tồn tại - cần logic AND
+  // Cả hai filters tồn tại 
   return {
     [Op.and]: [colorFilter, priceFilter]
   };
@@ -27,52 +27,52 @@ export const getAllProducts = async (req, res) => {
       RoomSuitability,
     } = db.models;
 
-    // Xây dựng WHERE clause từ query params (search, filters)
+    // Xây dựng query filters từ các query params
     const queryFilters = buildCompleteProductFilter(req.query);
 
-    // Kiểm tra nếu yêu cầu deleted items
+    // Kiểm tra nếu yêu cầu deleted items để hiển thị trong restore
     const isDeleted = req.query.deleted === 'true';
 
-    // Xây dựng WHERE clause từ visibility và query filters
-    const visibilityFilter = isDeleted
-      ? { deletedAt: { [Op.not]: null } } // Chỉ deleted items
+    // Xây dựng visibility filter dựa trên trạng thái deleted
+    const visibilityFilter = isDeleted // kiểm tra xem có phải là yêu cầu hiển thị các sản phẩm đã bị xóa hay không
+      ? { deletedAt: { [Op.not]: null } } // Nếu là yêu cầu hiển thị các sản phẩm đã bị xóa, chỉ lấy các sản phẩm có deletedAt khác null
       : {
-          deletedAt: null, // Chỉ active items
-          status: { [Op.ne]: 'discontinued' } // Loại bỏ discontinued products
+          deletedAt: null, // Nếu là yêu cầu hiển thị toàn bộ sản phẩm gồm in stock và out of stock 
+          status: { [Op.ne]: 'discontinued' } // loại bỏ sản phẩm ngừng kinh doanh
         };
 
-    const whereClause = { ...visibilityFilter, ...queryFilters };
+    const whereClause = { ...visibilityFilter, ...queryFilters }; // Kết hợp visibility filter và các query filters khác
 
     // Kiểm tra nếu cần color filter
     const colorFilter = hasColorFilter(req.query) ? buildColorFilter(req.query) : null;
 
     // Xây dựng price filter
-    let priceFilter = null;
+    let priceFilter = null; 
     if (req.query.minPrice || req.query.maxPrice) {
       priceFilter = {};
       const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : null;
       const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : null;
 
-      if (minPrice !== null && !isNaN(minPrice)) {
-        priceFilter.price = { [Op.gte]: minPrice };
+      if (minPrice !== null && !isNaN(minPrice)) { // Trường hợp nhập giá thấp nhất
+        priceFilter.price = { [Op.gte]: minPrice }; // Greater Than or Equal - Lớn hơn hoặc bằng
       }
 
-      if (maxPrice !== null && !isNaN(maxPrice)) {
+      if (maxPrice !== null && !isNaN(maxPrice)) { // Trường hợp nhập giá cao nhất
         if (priceFilter.price) {
-          priceFilter.price[Op.lte] = maxPrice;
+          priceFilter.price[Op.lte] = maxPrice; // Có minPrice và maxPrice, thêm điều kiện lte vào object hiện tại
         } else {
-          priceFilter.price = { [Op.lte]: maxPrice };
+          priceFilter.price = { [Op.lte]: maxPrice }; // Nếu chỉ có maxPrice, tạo object mới
         }
       }
     }
 
     // Xây dựng category filter
     const categoryInclude = {
-      model: Category,
+      model: Category, // Check bảng Category
       attributes: ['id', 'categoryName'],
     };
 
-    // Nếu category query param tồn tại, thêm where clause để filter theo category name
+    // Nếu category query param tồn tại thì thêm where clause
     if (req.query.category) {
       categoryInclude.where = {
         categoryName: req.query.category,
@@ -122,9 +122,10 @@ export const getAllProducts = async (req, res) => {
       roomSuitabilityInclude.required = true;
     }
 
+    // Truy vấn sản phẩm với các filters và includes
     const products = await Product.findAll({
       where: whereClause,
-      paranoid: !isDeleted, // Tắt paranoid mode để bao gồm deleted items khi được yêu cầu
+      paranoid: !isDeleted, // Tắt paranoid mode để có thể bao gồm các sản phẩm đã bị xóa nếu isDeleted là true hoặc false tuỳ vào yêu cầu truy vấn
       subQuery: false, // Quan trọng để color filter hoạt động đúng với GROUP BY
       include: [
         categoryInclude,

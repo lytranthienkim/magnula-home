@@ -7,6 +7,7 @@ export default function OrdersAddForm({
   variantSelect,
   productQuantity,
   productVariants,
+  products,
   countries,
   states,
   paymentMethods,
@@ -25,8 +26,6 @@ export default function OrdersAddForm({
   onProductSelectChange,
   onVariantSelectChange,
 }) {
-  if (!loading) return null;
-
   const handleAddProduct = () => {
     onAddProduct(productSelect, variantSelect, productQuantity, productVariants);
   };
@@ -165,7 +164,15 @@ export default function OrdersAddForm({
                     className="w-full px-4 py-2 border border-gray-300 rounded text-sm text-black focus:outline-none"
                   >
                     <option value="">Select Product</option>
-                    {/* Products will be passed from page */}
+                    {Array.isArray(products) && products.length > 0 ? (
+                      products.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.productName}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>No products available</option>
+                    )}
                   </select>
                 </div>
                 <div>
@@ -206,7 +213,7 @@ export default function OrdersAddForm({
                     min="1"
                     max={variantSelect && productVariants.find(v => v.id === parseInt(variantSelect)) ? (productVariants.find(v => v.id === parseInt(variantSelect))?.stockQuantity || 0) : undefined}
                     value={productQuantity}
-                    onChange={(e) => onProductQuantityChange(parseInt(e.target.value) || 1)}
+                    onChange={(e) => onProductQuantityChange(parseInt(e.target.value))}
                     className="w-full px-4 py-2 border border-gray-300 rounded text-sm text-black focus:outline-none"
                   />
                 </div>

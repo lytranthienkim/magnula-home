@@ -8,8 +8,6 @@ export const assignRoleToUser = async (req, res) => {
     const { id } = req.params;
     const { roleId } = req.body;
 
-    console.log('assignRoleToUser:', { userId: id, roleId });
-
     // Validate input
     if (!roleId) {
       return res.status(400).json({

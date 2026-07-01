@@ -74,7 +74,7 @@ export const CartModal = ({ isOpen, onClose }) => {
                     {/* Backdrop */}
                     <motion.div
                         key="backdrop"
-                        className="fixed inset-0 bg-black/20 z-[1000]"
+                        className="fixed inset-0 bg-black/5 z-[1000]"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -84,15 +84,15 @@ export const CartModal = ({ isOpen, onClose }) => {
                     {/* Cart Modal */}
                     <motion.div
                         key="cart"
-                        className="fixed w-full h-screen top-0 right-0 md:right-2 md:top-2 xl:right-2 xl:top-2 h-[100vh] md:h-[98vh] md:w-[50vw] xl:w-[28vw] bg-background-primary z-[1001] flex flex-col overflow-hidden rounded-none md:rounded-md xl:rounded-lg"
+                        className="fixed w-full h-[100dvh] top-0 right-0 md:right-2 md:top-2 xl:right-2 xl:top-2  md:h-[98vh] md:w-[50vw] xl:w-[28vw] bg-background-primary z-[1001] flex flex-col overflow-hidden rounded-none md:rounded-md xl:rounded-lg"
                         initial={{ x: '100%' }}
                         animate={{ x: 0 }}
                         exit={{ x: '100%' }}
                         transition={{ type: 'easeIn' }}
                     >
                         {/* Header */}
-                        <div className="flex flex-row justify-end items-center  pt-4 px-4">
-
+                        <div className="flex flex-row justify-between items-center  pt-4 px-4">
+                            <h3 className='h3-neu font-display-regular text-left'>Cart</h3>
                             <button
                                 onClick={onClose}
                             >

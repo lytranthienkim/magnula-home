@@ -6,7 +6,8 @@ import { Providers } from "@/redux/Provider";
 const damionFont = Damion({
   variable: '--font-damion',
   weight: '400',
-  subsets: ["latin"]
+  subsets: ["latin"],
+  display: 'swap'
 })
 
 export const metadata = {

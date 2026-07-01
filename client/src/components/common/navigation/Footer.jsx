@@ -11,13 +11,13 @@ export const Footer = () => {
                     </p>
                 </div>
                 <div className="w-full flex flex-col items-center justify-center gap-2 md:grid md:grid-cols-3 md:gap-0 uppercase">
-                    <p className="body-03 font-[500] text-left font-display-light">+91 9431990482</p>
-                    <p className="body-03 font-[500] text-center font-display-light">magnulahome@gmail.com</p>
-                    <p className="body-03 font-[500] text-right font-display-light">Indore, Madhya Pradesh, 453111</p>
+                    <p className="body-03 font-[500] text-left font-display-regular">+91 9431990482</p>
+                    <p className="body-03 font-[500] text-center font-display-regular">magnulahome@gmail.com</p>
+                    <p className="body-03 font-[500] text-right font-display-regular">Indore, Madhya Pradesh, 453111</p>
                 </div>
             </div>
             <hr className="border-t-[0.25px] border-[#272727]/30 my-1"></hr>
-            <p className="body-03 text-center py-1 opacity-70 font-display-light">© Magnula Home. All rights reserved 2025.</p>
+            <p className="body-03 text-center py-1 opacity-70 font-display-regular">© Magnula Home. All rights reserved 2025.</p>
         </div>
     )
 }

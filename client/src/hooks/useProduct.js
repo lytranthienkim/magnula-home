@@ -52,8 +52,8 @@ export const useProduct = () => {
             let maxPrice = 0;
 
             allData.forEach(product => {
-                if (product.Collection?.colorHex) {
-                    uniqueColors.add(product.Collection.colorHex); // them color vao set de lay cac gia tri duy nhat
+                if (product.variants?.color) {
+                    uniqueColors.add(product.variants.color); // them color vao set de lay cac gia tri duy nhat
                 }
 
                 const price = parseFloat(product.variants?.[0]?.price || 0); // lay gia tri price

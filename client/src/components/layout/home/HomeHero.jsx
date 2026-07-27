@@ -45,9 +45,9 @@ export const HomeHero = () => {
     return (
         <div ref={trackRef} className="relative w-full h-[250vh] bg-transparent"> 
             <div
-                className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[url('/home/home-thumbnail.png.svg')] bg-no-repeat bg-cover bg-center flex justify-center z-0"
+                className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[url('/home/home-thumbnail.png')] bg-no-repeat bg-cover bg-center flex justify-center z-0"
                 style={{
-                    opacity: isMounted ? 1 : 0, // fade in the background image on mount
+                    opacity: isMounted ? 1 : 0, 
                     clipPath: isExpanded ? 'inset(0% 0% 0% 0%)' : 'inset(44% 40% 44% 40%)', 
                     transition: 'opacity 0.8s ease, clip-path 1.2s cubic-bezier(0.19, 1, 0.22, 1)' 
                 }}
@@ -68,7 +68,7 @@ export const HomeHero = () => {
                     >
                         Magnula
                     </div>
-                    {/* Menu - Framer Motion Stagger Animation */}
+
                     <motion.div className="md:absolute w-full h-fit md:h-full flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-40">
                         {MENU.map((item, index) => {
                             const itemMotion = getMenuItemMotion(index, progress);
@@ -122,7 +122,7 @@ export const HomeHero = () => {
                             );
                         })}
                     </motion.div>
-                    {/* Title Magnula */}
+
                     <div
                         className="hidden w-full xl:text-[200px] font-damion text-third lg:flex items-center md:items-start justify-center md:justify-start leading-[1.25]"
                         style={{

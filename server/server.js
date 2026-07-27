@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import routes from './src/routes/index.js';
 import db from './src/config/db.js';
 import { initializeModels } from './src/config/models.js';
+import { cacheMiddleware } from './src/middleware/cache/index.js';
 
 dotenv.config();
 
@@ -44,7 +45,8 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); 
+app.use(cookieParser());
+app.use(cacheMiddleware(3600)); 
 
 // Routes
 app.use('/api', routes);

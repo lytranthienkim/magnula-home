@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { ProductCard } from "./ProductCard";
 import { Filter } from "@/components/common/filter/Filter";
 import { useProduct } from "@/hooks/useProduct";
@@ -8,11 +9,13 @@ import { productContainerVariants, productCardVariants } from "@/framer/productC
 import { SkeletonGrid } from "@/components/skeleton";
 
 export const ProductContainer = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 6;
     const imageSizes = [
         [280, 0, 340, 380],
         [340, 280, 0, 380],
         [380, 0, 280, 340]
-    ];
+    ]; 
 
     const {
         products,
@@ -41,10 +44,23 @@ export const ProductContainer = () => {
 
     if (loading) return <div className="w-full min-h-screen flex flex-col gap-8 padding-wide"><SkeletonGrid count={12} columns="grid-cols-1 md:grid-cols-2 lg:grid-cols-3" /></div>;
 
-    const totalRows = Math.ceil(products.length / 3);
+    const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const paginatedProducts = products.slice(startIndex, endIndex);
+
+    const totalRows = Math.ceil(paginatedProducts.length / 3);
     const rowsArray = Array.from({ length: totalRows });
 
     let productIndex = 0;
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
 
     return (
         <div className="w-full min-h-screen flex flex-col gap-8 padding-wide">
@@ -78,45 +94,67 @@ export const ProductContainer = () => {
                     </p>
                 </div>
             ) : (
-                <motion.div
-                    variants={productContainerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className="flex flex-col gap-8"
-                >
-                    {rowsArray.map((_, rowIndex) => {
-                        const countRowIndex = rowIndex % 3;
-                        const currentRowSizes = imageSizes[countRowIndex];
+                <>
+                    <motion.div
+                        variants={productContainerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="flex flex-col gap-8"
+                    >
+                        {rowsArray.map((_, rowIndex) => {
+                            const countRowIndex = rowIndex % 3;
+                            const currentRowSizes = imageSizes[countRowIndex];
 
-                        return (
-                            <div key={rowIndex} className="w-full flex flex-col justify-center md:flex-row md:flex-wrap md:justify-between gap-y-4 md:gap-x-1 lg:gap-0">
-                                {currentRowSizes.map((imageSize, itemIndex) => {
-                                    if (imageSize === 0) {
-                                        return <div key={`${rowIndex}-${itemIndex}`} className="w-0 h-0" />;
-                                    }
+                            return (
+                                <div key={rowIndex} className="w-full flex flex-col justify-center md:flex-row md:flex-wrap md:justify-between gap-y-4 md:gap-x-1 lg:gap-0">
+                                    {currentRowSizes.map((imageSize, itemIndex) => {
+                                        if (imageSize === 0) {
+                                            return <div key={`${rowIndex}-${itemIndex}`} className="w-0 h-0" />;
+                                        }
 
-                                    const currentProduct = products[productIndex];
-                                    const currentProductIndex = productIndex;
-                                    productIndex++;
+                                        const currentProduct = paginatedProducts[productIndex];
+                                        const currentProductIndex = productIndex;
+                                        productIndex++;
 
-                                    if (!currentProduct) return null;
+                                        if (!currentProduct) return null;
 
-                                    return (
-                                        <motion.div
-                                            key={`product-${currentProductIndex}`}
-                                            variants={productCardVariants}
-                                        >
-                                            <ProductCard
-                                                product={currentProduct}
-                                                imageSize={imageSize}
-                                            />
-                                        </motion.div>
-                                    );
-                                })}
-                            </div>
-                        );
-                    })}
-                </motion.div>
+                                        return (
+                                            <motion.div
+                                                key={`product-${currentProductIndex}`}
+                                                variants={productCardVariants}
+                                            >
+                                                <ProductCard
+                                                    product={currentProduct}
+                                                    imageSize={imageSize}
+                                                />
+                                            </motion.div>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })}
+                    </motion.div>
+
+                    <div className="w-full flex justify-end items-center gap-4 mt-8">
+                        <span className="body-02 font-display-regular text-primary">
+                            Page {currentPage} of {totalPages}
+                        </span>
+                        <button
+                            onClick={handlePreviousPage}
+                            disabled={currentPage === 1}
+                            className="px-4 py-2 border-[0.25px] border-[#272727] bg-white text-black body-02 font-display-regular rounded-none cursor-pointer hover:bg-black hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Previous
+                        </button>
+                        <button
+                            onClick={handleNextPage}
+                            disabled={currentPage === totalPages}
+                            className="px-4 py-2 border-[0.25px] border-[#272727] bg-black text-white body-02 font-display-regular rounded-none cursor-pointer hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Next
+                        </button>
+                    </div>
+                </>
             )}
         </div>
     );

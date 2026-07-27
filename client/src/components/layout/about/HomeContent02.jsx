@@ -6,7 +6,7 @@ export const HomeContent02 = () => {
             {/* BLOCK 1 (Ảnh lớn): Nằm TRÊN trên Mobile, chiếm 70vh */}
             <div className="w-full h-[60vh] md:w-[50%] lg:w-[40%] md:h-full overflow-hidden">
                 <img 
-                    src='/home/home-beluga.svg' 
+                    src='/home/home-beluga.jpg' 
                     className="w-full h-full md:object-left lg:object-center object-cover" 
                     alt="Home Beluga" 
                 />
@@ -26,7 +26,7 @@ export const HomeContent02 = () => {
                 <div className="w-full flex items-center justify-center md:justify-end overflow-hidden">
                     {/* Tinh chỉnh ảnh họa nhỏ lại một chút (w-[50vw]) để vừa vặn trong 30vh còn lại của mobile */}
                     <img 
-                        src='/home/beluga.svg' 
+                        src='/home/beluga.png' 
                         className="w-[80vw] md:w-[45vw] lg:w-[50vw] h-auto object-cover" 
                         alt="Beluga Graphic" 
                     />

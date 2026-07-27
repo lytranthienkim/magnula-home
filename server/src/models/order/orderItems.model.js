@@ -19,7 +19,7 @@ const OrderItem = db.define(
         model: 'orders',
         key: 'id',
       },
-      onDelete: 'RESTRICT',  // Changed from CASCADE - Orders can NEVER be deleted
+      onDelete: 'RESTRICT', 
       onUpdate: 'CASCADE',
     },
 
@@ -31,9 +31,8 @@ const OrderItem = db.define(
         model: 'products',
         key: 'id',
       },
-      onDelete: 'RESTRICT',  // Database-level protection
+      onDelete: 'RESTRICT',
       onUpdate: 'CASCADE',
-      // NOTE: Application-level logic needed to prevent soft-delete of products in orders
     },
 
     productVariantId: {
@@ -44,9 +43,8 @@ const OrderItem = db.define(
         model: 'product_variants',
         key: 'id',
       },
-      onDelete: 'RESTRICT',  // Database-level protection
+      onDelete: 'RESTRICT',
       onUpdate: 'CASCADE',
-      // NOTE: Application-level logic needed to prevent soft-delete of variants in orders
     },
 
     quantity: {
@@ -63,7 +61,7 @@ const OrderItem = db.define(
       allowNull: false,
       field: 'price_at_purchase',
       validate: {
-        min: 0,  // Changed from isDecimal - Frontend sends numbers, not strings
+        min: 0,  
       },
     },
   },

@@ -46,7 +46,7 @@ const Category = db.define(
     tableName: 'categories',
     timestamps: true,
     underscored: true,
-    paranoid: true, // Enable soft delete
+    paranoid: true, 
   }
 );
 

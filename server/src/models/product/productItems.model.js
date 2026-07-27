@@ -94,7 +94,7 @@ const Product = db.define(
     tableName: 'products',
     timestamps: true,
     underscored: true,
-    paranoid: true,  // Enable soft delete - Product.destroy() will set deletedAt
+    paranoid: true,  
   }
 );
 

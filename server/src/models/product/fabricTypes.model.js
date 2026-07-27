@@ -40,15 +40,13 @@ const FabricType = db.define(
     tableName: 'fabric_types',
     timestamps: true,
     underscored: true,
-    paranoid: true,  // Enable soft delete
+    paranoid: true,  
     indexes: [
       {
-        // Unique constraint only for non-deleted records
         name: 'unique_fabric_type_name_active',
         fields: ['name', 'deleted_at'],
         unique: true,
         where: { deletedAt: null },
-        // Allows same name for deleted + active fabric types
       },
     ],
   }

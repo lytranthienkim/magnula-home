@@ -1,6 +1,7 @@
 // Create Product Controller - Create product with variants, images, and attributes using transaction
 
 import db from '../../../config/db.js';
+import { invalidateProductCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const createProduct = async (req, res) => {
   const transaction = await db.transaction();
@@ -174,6 +175,7 @@ export const createProduct = async (req, res) => {
     );
 
     await transaction.commit();
+    await invalidateProductCache();
 
     res.status(201).json({
       success: true,

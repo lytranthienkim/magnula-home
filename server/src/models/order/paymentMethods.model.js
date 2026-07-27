@@ -41,7 +41,7 @@ const PaymentMethod = db.define(
     tableName: 'payment_methods',
     timestamps: true,
     underscored: true,
-    paranoid: true,  // Enable soft delete
+    paranoid: true,  
   }
 );
 

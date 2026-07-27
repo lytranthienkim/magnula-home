@@ -5,15 +5,15 @@ export const COOKIE_NAMES = {
 
 export const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: true, // ✅ Always true vì cross-domain
-  sameSite: 'none', // ✅ Cho phép cross-site cookies
+  secure: true, 
+  sameSite: 'none', 
 };
 
 export const getCookieOptions = (rememberMe = false) => {
   const options = { ...COOKIE_OPTIONS };
 
   if (rememberMe) {
-    options.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 ngày
+    options.maxAge = 30 * 24 * 60 * 60 * 1000; 
   }
 
   return options;

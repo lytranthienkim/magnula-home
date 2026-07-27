@@ -89,7 +89,7 @@ const Order = db.define(
     tableName: 'orders',
     timestamps: true,
     underscored: true,
-    paranoid: false,  // IMMUTABLE ENTITY - Orders can NEVER be deleted (soft or hard)
+    paranoid: false,  
   }
 );
 

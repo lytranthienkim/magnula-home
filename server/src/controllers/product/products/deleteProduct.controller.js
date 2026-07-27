@@ -1,6 +1,7 @@
 // Delete Product (Soft Delete) Controller - Mark as deleted
 
 import db from '../../../config/db.js';
+import { invalidateProductCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const deleteProduct = async (req, res) => {
   try {
@@ -17,6 +18,7 @@ export const deleteProduct = async (req, res) => {
 
     // Soft delete using destroy() - proper way with paranoid: true
     await product.destroy();
+    await invalidateProductCache();
 
     res.json({
       success: true,

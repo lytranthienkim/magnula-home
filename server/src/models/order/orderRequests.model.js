@@ -43,7 +43,7 @@ const ProductRequest = db.define(
         model: 'product_variants',
         key: 'id',
       },
-      onDelete: 'SET NULL',  // Changed from CASCADE to SET NULL
+      onDelete: 'SET NULL',  
       onUpdate: 'CASCADE',
     },
 

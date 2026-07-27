@@ -19,7 +19,7 @@ const ProductVariant = db.define(
         model: 'products',
         key: 'id',
       },
-      onDelete: 'CASCADE',  // Cascade soft delete with product
+      onDelete: 'CASCADE',  
       onUpdate: 'CASCADE',
     },
 
@@ -73,7 +73,7 @@ const ProductVariant = db.define(
     tableName: 'product_variants',
     timestamps: true,
     underscored: true,
-    paranoid: true,  // Enable soft delete
+    paranoid: true,  
     hooks: {
       afterCreate: updateProductStock,
       afterUpdate: updateProductStock,

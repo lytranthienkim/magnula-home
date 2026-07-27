@@ -1,6 +1,7 @@
 // Update Product Controller - Update product info
 
 import db from '../../../config/db.js';
+import { invalidateProductCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const updateProduct = async (req, res) => {
   try {
@@ -148,6 +149,7 @@ export const updateProduct = async (req, res) => {
 
     // Update product
     await product.update(updates);
+    await invalidateProductCache();
 
     res.json({
       success: true,

@@ -1,6 +1,7 @@
 // Restore Product Controller - Restore soft-deleted product
 
 import db from '../../../config/db.js';
+import { invalidateProductCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const restoreProduct = async (req, res) => {
   try {
@@ -35,6 +36,8 @@ export const restoreProduct = async (req, res) => {
         error: 'Failed to restore product - verification failed',
       });
     }
+
+    await invalidateProductCache();
 
     res.json({
       success: true,

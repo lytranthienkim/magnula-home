@@ -41,15 +41,13 @@ const Collection = db.define(
     tableName: 'collections',
     timestamps: true,
     underscored: true,
-    paranoid: true,  // Enable soft delete
+    paranoid: true,  
     indexes: [
       {
-        // Unique constraint only for non-deleted records
         name: 'unique_collection_name_active',
         fields: ['collection_name', 'deleted_at'],
         unique: true,
         where: { deletedAt: null },
-        // Allows same name for deleted + active collections
       },
     ],
   }

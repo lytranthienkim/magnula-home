@@ -19,7 +19,7 @@ const ProductImage = db.define(
         model: 'products',
         key: 'id',
       },
-      onDelete: 'CASCADE',  // Images cascade delete with product (dependent entity)
+      onDelete: 'CASCADE',  
       onUpdate: 'CASCADE',
     },
 
@@ -48,7 +48,7 @@ const ProductImage = db.define(
     tableName: 'product_images',
     timestamps: true,
     underscored: true,
-    paranoid: true,  // Enable soft delete
+    paranoid: true,  
   }
 );
 

@@ -86,7 +86,7 @@ export const AboutHero = () => {
 
     return (
         <div ref={trackRef} className="relative w-full h-[250vh] bg-transparent">
-            <div className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[url('/common/about-thumbnail.svg')] bg-no-repeat bg-cover bg-right xl:bg-center flex items-start justify-start z-0 ">
+            <div className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[url('/common/about-thumbnail.png')] bg-no-repeat bg-cover bg-right xl:bg-center flex items-start justify-start z-0 ">
                 <nav className="relative  w-full flex flex-row justify-between items-center padding-wide z-[999]">
                     <div className="flex flex-row item-start gap-1 md:gap-1.5">
                         <img src='/common/logo.svg' className="w-[18px] md:w-[25px]" loading="lazy"></img>

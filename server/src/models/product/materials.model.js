@@ -40,15 +40,13 @@ const Material = db.define(
     tableName: 'materials',
     timestamps: true,
     underscored: true,
-    paranoid: true,  // Enable soft delete
+    paranoid: true,  
     indexes: [
       {
-        // Unique constraint only for non-deleted records
         name: 'unique_material_name_active',
         fields: ['name', 'deleted_at'],
         unique: true,
         where: { deletedAt: null },
-        // Allows same name for deleted + active materials
       },
     ],
   }

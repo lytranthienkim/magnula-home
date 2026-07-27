@@ -36,7 +36,7 @@ const CollectionImage = db.define(
     tableName: 'collection_images',
     timestamps: true,
     underscored: true,
-    paranoid: false, // Don't use soft delete for images
+    paranoid: false, 
   }
 );
 

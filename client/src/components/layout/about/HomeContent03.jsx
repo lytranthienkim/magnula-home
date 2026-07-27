@@ -14,7 +14,7 @@ export const HomeContent03 = () => {
                 <div className="w-full flex items-center justify-center overflow-hidden">
                     {/* Tinh chỉnh w-[85vw] trên mobile để đồng bộ thị giác với Content01 */}
                     <img 
-                        src='/home/magnes.svg' 
+                        src='/home/magnes.png' 
                         className="w-[75vw] md:w-[45vw] h-auto object-cover" 
                         alt="Magnes Graphic" 
                     />
@@ -25,7 +25,7 @@ export const HomeContent03 = () => {
             <div className="w-full h-[55vh] md:w-[50%] lg:w-[50%] md:h-full flex items-center justify-center md:justify-end overflow-hidden">
                 {/* Trên mobile ảnh chiếm trọn h-full của block 30vh, trên desktop giữ nguyên tỷ lệ responsive cũ của bạn */}
                 <img 
-                    src='/home/home-magnes.svg' 
+                    src='/home/home-magnes.jpg' 
                     className="w-full h-full md:w-[40vw] md:h-[50vh] lg:h-full object-cover" 
                     alt="Home Magnes" 
                 />

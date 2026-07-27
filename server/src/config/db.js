@@ -16,8 +16,8 @@ const db = new Sequelize(
     pool: {
       max: 30,
       min: 2,
-      acquire: 30000, //safe barrier
-      idle: 10000, // clean up 10s
+      acquire: 30000, 
+      idle: 10000, 
     },
   }
 );

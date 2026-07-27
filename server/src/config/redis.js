@@ -3,21 +3,27 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const redisClient = createClient({
-  socket: {
-    host: process.env.REDIS_HOST || 'localhost',
-    port: parseInt(process.env.REDIS_PORT || 6379),
-    reconnectStrategy: (retries) => {
-      if (retries > 10) {
-        console.log('Max Redis retries reached');
-        return new Error('Max retries reached');
-      }
-      return retries * 50;
-    },
-  },
-  password: process.env.REDIS_PASSWORD || undefined,
-  db: parseInt(process.env.REDIS_DB || 0),
-});
+const redisUrl = process.env.REDIS_URL || process.env.REDIS_PUBLIC_URL;
+
+const redisClient = createClient(
+  redisUrl ?
+    { url: redisUrl } :
+    {
+      socket: {
+        host: process.env.REDIS_HOST || 'localhost',
+        port: parseInt(process.env.REDIS_PORT || 6379),
+        reconnectStrategy: (retries) => {
+          if (retries > 10) {
+            console.log('Max Redis retries reached');
+            return new Error('Max retries reached');
+          }
+          return retries * 50;
+        },
+      },
+      password: process.env.REDIS_PASSWORD || undefined,
+      db: parseInt(process.env.REDIS_DB || 0),
+    }
+);
 
 redisClient.on('error', (err) => console.error('Redis Client Error', err));
 redisClient.on('connect', () => console.log('Redis connected'));

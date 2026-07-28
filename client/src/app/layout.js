@@ -15,12 +15,12 @@ export const metadata = {
     default: "Magnula",
     template: "%s | Magnula",
   },
-  description: "Furniture That Brings Your Family Together.",
+  description: "Furniture That Brings Your Family Together",
   keywords: ["Magnula", "Furniture", "Home Decor", "Interior Design", "Living Room", "Bedroom", "Dining Room", "Office Furniture"],
 
   openGraph: {
     title: "Magnula",
-    description: "Furniture That Brings Your Family Together.",
+    description: "Furniture That Brings Your Family Together",
     url: "https://magnula.space",
     siteName: "Magnula",
     images: [

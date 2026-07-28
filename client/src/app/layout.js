@@ -25,9 +25,9 @@ export const metadata = {
     siteName: "Magnula",
     images: [
       {
-        url: 'https://d1yei2z3i6k35z.cloudfront.net/14433334/68c7b26dce7d0_MagnulaText.png',
-        width: 1500,
-        height: 260,
+        url: 'https://pub-c0d91e27663a41a5a1671bb31cabfb2a.r2.dev/common/home-thumbnail.png',
+        width: 1200,
+        height: 630,
         alt: "Magnula Text Logo",
       },
     ],

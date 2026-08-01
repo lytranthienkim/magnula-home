@@ -1,6 +1,6 @@
 'use client';
 
-import { Pagination } from './Pagination';
+import { Pagination } from '../Pagination';
 
 export function Table({ columns, data, onAction, loading, totalPages, currentPage }) {
   if (loading) {

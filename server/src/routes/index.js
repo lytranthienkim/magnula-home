@@ -21,20 +21,20 @@ import requestRoutes from './order/request.route.js';
 import paymentMethodRoutes from './order/paymentMethod.route.js';
 const router = express.Router();
 
-// ==================== AUTH ROUTES ==================== - Login, register, authentication
+// auth
 router.use('/auth', authRoutes);
 
-// ==================== USER ROUTES ==================== - User management
+// User
 router.use('/users', userRoutes);
 
-// ==================== ROLE & PERMISSION ROUTES ==================== - Role and permission management
-router.use('/', roleRoutes);            // Endpoints: /roles, /roles/:id
-router.use('/', permissionRoutes);      // Endpoints: /permissions, /permissions/:id
+// role and permission 
+router.use('/', roleRoutes);   
+router.use('/', permissionRoutes); 
 
-// ==================== ASSIGNMENT ROUTES ==================== - User role & role permission assignment
-router.use('/', assignmentRoutes);      // Endpoints: /users/:id/assign-role, /roles/:id/assign-permission
+// assignment 
+router.use('/', assignmentRoutes);
 
-// ==================== PRODUCT ROUTES ==================== - CRUD sản phẩm, biến thể, hình ảnh, collections, attributes
+// Product
 router.use('/products', collectionRoutes);
 router.use('/products', collectionImageRoutes);
 router.use('/products', categoryRoutes);
@@ -45,13 +45,13 @@ router.use('/products', materialRoutes);
 router.use('/products', roomSuitabilityRoutes);
 router.use('/products', productRoutes);
 
-// ==================== ORDER ROUTES ==================== - CRUD đơn hàng, yêu cầu đặt hàng, phương thức thanh toán, order items
+// Order
 router.use('/orders', orderRoutes);
 router.use('/orders', orderItemRoutes);
 router.use('/product-requests', requestRoutes);
 router.use('/payment-methods', paymentMethodRoutes);
 
-// ==================== HEALTH CHECK ==================== - Kiểm tra server hoạt động
+//Server
 router.get('/server', (req, res) => {
   res.json({ success: true, message: 'Server is running' });
 });

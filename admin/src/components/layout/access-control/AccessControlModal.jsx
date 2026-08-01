@@ -86,7 +86,7 @@ export default function AccessControlModal({
                               type="checkbox"
                               checked={perm.assigned || false}
                               onChange={(e) => {
-                                if (!editMode) return; // Only editable in edit mode
+                                if (!editMode) return; 
                                 setRolePermissions(
                                   rolePermissions.map((p) =>
                                     p.id === perm.id ? { ...p, assigned: e.target.checked } : p
@@ -337,7 +337,6 @@ export default function AccessControlModal({
                         (oldPerm) => !newPermissions.some((newPerm) => newPerm.id === oldPerm.id)
                       );
 
-                      // Find added permissions
                       const addedPerms = newPermissions.filter(
                         (newPerm) => !oldPermissions.some((oldPerm) => oldPerm.id === newPerm.id)
                       );
@@ -360,14 +359,6 @@ export default function AccessControlModal({
                     const newStatus = editData.isActive !== undefined ? editData.isActive : selectedItem.isActive;
                     const oldStatus = selectedItem.isActive;
 
-                    // TODO: Implement permission status update if needed
-                    // if (newStatus !== oldStatus) {
-                    //   if (newStatus) {
-                    //     await restorePermission(selectedItem.id);
-                    //   } else {
-                    //     await deletePermission(selectedItem.id);
-                    //   }
-                    // }
                   }
                   setEditMode(false);
                   setEditData({});

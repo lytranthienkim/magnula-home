@@ -18,7 +18,7 @@ const seedAdmin = async () => {
     const newAdmin = await User.create({
       email: 'test@gmail.com',
       passwordHash: hashedPassword,
-      fullName: 'Admin Test',
+      fullName: 'Test',
       isActive: true,
     });
 

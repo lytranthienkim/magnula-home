@@ -1,7 +1,7 @@
 import apiClient from './config';
 
 export const loginAdmin = async (email, password, rememberMe = false) => {
-  const res = await apiClient.post('/auth/auth/login', { email, password, rememberMe });
+  const res = await apiClient.post('/auth/login', { email, password, rememberMe });
   return res.data;
 };
 

@@ -1,7 +1,7 @@
 import { updateUserProfile, assignRoleToUser, updateUserStatus } from '@/api/users';
 import { updateRole, removePermissionFromRole, assignPermissionToRole } from '@/api/roles';
 
-export const AccessControlModal = ({
+export default function AccessControlModal({
   showModal,
   setShowModal,
   selectedItem,
@@ -16,7 +16,7 @@ export const AccessControlModal = ({
   setShowPasswordModal,
   canChangePassword,
   fetchAllData,
-}) => {
+}) {
   if (!showModal || !selectedItem) return null;
 
   return (
@@ -385,4 +385,4 @@ export const AccessControlModal = ({
       </div>
     </div>
   );
-};
+}

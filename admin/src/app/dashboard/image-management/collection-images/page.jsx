@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { useListManagement } from '@/hooks/useListManagement';
 import { useUrlPagination } from '@/hooks/useUrlPagination';
 import { getAllCollectionImages, deleteCollectionImage } from '@/api/collectionImage';
-import { CollectionImageModal } from '@/components/layout/collection-images';
+import CollectionImageModal from '@/components/layout/collection-images';
 import { Table } from '@/components/common/table/Table';
 import { Pagination } from '@/components/common/Pagination';
 

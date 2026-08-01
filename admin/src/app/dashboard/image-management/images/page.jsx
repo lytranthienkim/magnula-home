@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { useListManagement } from '@/hooks/useListManagement';
 import { useUrlPagination } from '@/hooks/useUrlPagination';
-import { ProductImageModal } from '@/components/layout/product-images';
+import ProductImageModal from '@/components/layout/product-images';
 import { Table } from '@/components/common/table/Table';
 import { Pagination } from '@/components/common/Pagination';
 import { getAllImages } from '@/api/image';

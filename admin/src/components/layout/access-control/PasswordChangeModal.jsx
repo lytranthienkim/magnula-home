@@ -1,7 +1,7 @@
 import { HiOutlineEye, HiOutlineEyeSlash } from 'react-icons/hi2';
 import { resetUserPassword } from '@/api/users';
 
-export const PasswordChangeModal = ({
+export default function PasswordChangeModal({
   showPasswordModal,
   setShowPasswordModal,
   passwordData,
@@ -12,7 +12,7 @@ export const PasswordChangeModal = ({
   setShowConfirmPassword,
   selectedItem,
   fetchAllData,
-}) => {
+}) {
   if (!showPasswordModal) return null;
 
   return (
@@ -91,4 +91,4 @@ export const PasswordChangeModal = ({
       </div>
     </div>
   );
-};
+}

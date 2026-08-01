@@ -1,13 +1,13 @@
 import { Table } from '@/components/common/table/Table';
 
-export const RolesTab = ({
+export default function RolesTab({
   roles,
   loading,
   setShowCreateRoleModal,
   setCreateRoleData,
   roleColumns,
   roleActions,
-}) => {
+}) {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
@@ -21,4 +21,4 @@ export const RolesTab = ({
       <Table columns={roleColumns} data={roles} onAction={roleActions} loading={loading} />
     </div>
   );
-};
+}

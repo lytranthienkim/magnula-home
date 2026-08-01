@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { Sidebar } from '@/components/layout/navigate/Sidebar';
-import { Topbar } from '@/components/layout/navigate/topbar/Topbar';
+import Sidebar from '@/components/layout/navigate/Sidebar';
+import Topbar from '@/components/layout/navigate/topbar/Topbar';
 
 export default function DashboardLayout({ children }) {
   const router = useRouter();

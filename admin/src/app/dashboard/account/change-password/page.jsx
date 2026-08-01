@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { changePassword } from '@/api/auth';
-import { ChangePasswordHeader } from '@/components/layout/change-password';
+import ChangePasswordHeader from '@/components/layout/change-password';
 
 export default function ChangePasswordPage() {
   const router = useRouter();

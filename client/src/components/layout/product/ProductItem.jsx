@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { getAllProducts } from "@/api/products";
+import { API } from "@/api/config";
 import { generateSlug } from "@/helper/slug";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/cartSlice";
@@ -31,6 +32,15 @@ export const ProductItem = () => {
                 const foundProduct = response.data.find(p =>
                     generateSlug(p.productName) === slug
                 );
+
+                if (foundProduct?.id && foundProduct?.variants?.[0]) {
+                    const variantRes = await API.get(`/products/${foundProduct.id}/variants`);
+                    const variants = Array.isArray(variantRes.data) ? variantRes.data : variantRes.data?.data || [];
+                    if (variants.length > 0) {
+                        foundProduct.variants = variants;
+                    }
+                }
+
                 setProduct(foundProduct || null);
             } catch (error) {
                 console.error('Failed to fetch product', error);

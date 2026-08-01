@@ -1,6 +1,6 @@
 'use client';
 
-import { MetricCard } from './MetricCard';
+import MetricCard from './MetricCard';
 
 export default function MetricsGrid({ stats }) {
   return (

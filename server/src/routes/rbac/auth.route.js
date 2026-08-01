@@ -7,12 +7,12 @@ const router = express.Router();
 router.get('/check-auth', checkAuth);
 router.get('/me', verifyToken, getCurrentUser);
 
-router.post('/auth/login', login);
+router.post('/login', login);
 router.post('/register', register);
 router.post('/change-password', verifyToken, changePassword);
 router.post('/forgot-password', forgotPassword);
 router.post('/check-user-role', checkUserRole);
 router.post('/reset-password-by-admin', verifyToken, checkPermission('users:update'), resetPasswordByAdmin);
-router.post('/auth/logout', verifyToken, logout);
+router.post('/logout', verifyToken, logout);
 
 export default router;

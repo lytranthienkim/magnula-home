@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { uploadImageToR2, deleteImageFromR2 } from '@/api/upload';
+import { getProductVariants } from '@/api/productVariant';
 
 export default function ProductsModal({
   isOpen,
@@ -36,6 +37,18 @@ export default function ProductsModal({
   const [imagePreview, setImagePreview] = useState({});
   const [uploadingImageIdx, setUploadingImageIdx] = useState(null);
   const [uploadError, setUploadError] = useState({});
+  const [variantsWithStock, setVariantsWithStock] = useState([]);
+
+  useEffect(() => {
+    if (isOpen && product?.id) {
+      getProductVariants(product.id).then((data) => {
+        const variants = Array.isArray(data) ? data : data?.data || [];
+        setVariantsWithStock(variants);
+      }).catch(() => {
+        setVariantsWithStock(product.variants || []);
+      });
+    }
+  }, [isOpen, product?.id]);
 
   if (!isOpen || !product) return null;
 
@@ -217,7 +230,7 @@ export default function ProductsModal({
           </div>
 
           {/* Variants */}
-          {product.variants && product.variants.length > 0 && (
+          {(variantsWithStock.length > 0 || product.variants?.length > 0) && (
             <div>
               <p className="text-sm text-black font-semibold uppercase mb-4">Variants & Pricing</p>
               <div className="overflow-x-auto">
@@ -231,7 +244,7 @@ export default function ProductsModal({
                     </tr>
                   </thead>
                   <tbody>
-                    {product.variants.map((variant, idx) => (
+                    {(variantsWithStock.length > 0 ? variantsWithStock : product.variants).map((variant, idx) => (
                       <tr key={variant.id} className="hover:bg-gray-50">
                         <td className="border border-gray-200 px-4 py-2">
                           {editMode ? (
@@ -278,7 +291,7 @@ export default function ProductsModal({
                           {editMode ? (
                             <input
                               type="number"
-                              value={editData.variants?.[idx]?.stockQuantity ?? variant.stockQuantity ?? ''}
+                              value={editData.variants?.[idx]?.stockQuantity !== undefined ? editData.variants[idx].stockQuantity : (variant.stockQuantity ?? '')}
                               onChange={(e) => onVariantChange(idx, 'stockQuantity', e.target.value)}
                               className="w-full px-2 py-1 bg-white border border-gray-300 text-xs text-black rounded focus:outline-none"
                             />

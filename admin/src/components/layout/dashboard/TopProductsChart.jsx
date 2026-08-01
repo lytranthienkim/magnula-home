@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { ChartSkeleton } from './ChartSkeleton';
+import ChartSkeleton from './ChartSkeleton';
 
 export default function TopProductsChart({ data }) {
   if (!data || data.length === 0) {

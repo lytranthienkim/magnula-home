@@ -1,13 +1,13 @@
 import { Table } from '@/components/common/table/Table';
 
-export const UsersTab = ({
+export default function UsersTab({
   users,
   loading,
   setShowCreateModal,
   setCreateData,
   userColumns,
   userActions,
-}) => {
+}) {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
@@ -21,4 +21,4 @@ export const UsersTab = ({
       <Table columns={userColumns} data={users} onAction={userActions} loading={loading} />
     </div>
   );
-};
+}

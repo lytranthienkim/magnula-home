@@ -1,1 +1,9 @@
 export { default as AccessControlHeader } from './AccessControlHeader';
+export { default as AccessControlTabs } from './AccessControlTabs';
+export { default as AccessControlModal } from './AccessControlModal';
+export { default as UsersTab } from './UsersTab';
+export { default as RolesTab } from './RolesTab';
+export { default as PermissionsTab } from './PermissionsTab';
+export { default as CreateUserModal } from './CreateUserModal';
+export { default as CreateRoleModal } from './CreateRoleModal';
+export { default as PasswordChangeModal } from './PasswordChangeModal';

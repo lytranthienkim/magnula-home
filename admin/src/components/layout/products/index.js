@@ -1,4 +1,4 @@
-export { ProductsHeader } from './ProductsHeader';
-export { ProductsTable } from './ProductsTable';
-export { ProductsModal } from './ProductsModal';
-export { ProductsAddForm } from './ProductsAddForm';
+export { default as ProductsHeader } from './ProductsHeader';
+export { default as ProductsTable } from './ProductsTable';
+export { default as ProductsModal } from './ProductsModal';
+export { default as ProductsAddForm } from './ProductsAddForm';

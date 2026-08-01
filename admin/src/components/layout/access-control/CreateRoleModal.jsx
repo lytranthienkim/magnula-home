@@ -1,12 +1,12 @@
 import { createRole } from '@/api/roles';
 
-export const CreateRoleModal = ({
+export default function CreateRoleModal({
   showCreateRoleModal,
   setShowCreateRoleModal,
   createRoleData,
   setCreateRoleData,
   fetchAllData,
-}) => {
+}) {
   if (!showCreateRoleModal) return null;
 
   return (
@@ -64,4 +64,4 @@ export const CreateRoleModal = ({
       </div>
     </div>
   );
-};
+}

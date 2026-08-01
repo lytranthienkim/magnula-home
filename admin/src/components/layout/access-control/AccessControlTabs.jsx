@@ -1,4 +1,4 @@
-export const AccessControlTabs = ({ activeTab, setActiveTab, tabs }) => {
+export default function AccessControlTabs({ activeTab, setActiveTab, tabs }) {
   return (
     <div className="mb-6 border-b border-gray-200">
       <div className="flex gap-8">
@@ -17,4 +17,4 @@ export const AccessControlTabs = ({ activeTab, setActiveTab, tabs }) => {
       </div>
     </div>
   );
-};
+}

@@ -5,15 +5,17 @@ import { useSelector } from 'react-redux';
 import { getAllUsers} from '@/api/users';
 import { getAllRoles,deleteRole, getRolePermissions } from '@/api/roles';
 import { getAllPermissions } from '@/api/permissions';
-import { AccessControlHeader } from '@/components/layout/access-control';
-import { AccessControlTabs } from '@/components/layout/access-control/AccessControlTabs';
-import { UsersTab } from '@/components/layout/access-control/UsersTab';
-import { RolesTab } from '@/components/layout/access-control/RolesTab';
-import { PermissionsTab } from '@/components/layout/access-control/PermissionsTab';
-import { AccessControlModal } from '@/components/layout/access-control/AccessControlModal';
-import { PasswordChangeModal } from '@/components/layout/access-control/PasswordChangeModal';
-import { CreateUserModal } from '@/components/layout/access-control/CreateUserModal';
-import { CreateRoleModal } from '@/components/layout/access-control/CreateRoleModal';
+import {
+  AccessControlHeader,
+  AccessControlTabs,
+  UsersTab,
+  RolesTab,
+  PermissionsTab,
+  AccessControlModal,
+  PasswordChangeModal,
+  CreateUserModal,
+  CreateRoleModal,
+} from '@/components/layout/access-control';
 
 export default function AccessControlPage() {
   const { user: currentUser } = useSelector((state) => state.auth);

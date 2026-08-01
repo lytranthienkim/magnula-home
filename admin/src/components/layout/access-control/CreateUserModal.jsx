@@ -1,13 +1,13 @@
 import { createUser } from '@/api/users';
 
-export const CreateUserModal = ({
+export default function CreateUserModal({
   showCreateModal,
   setShowCreateModal,
   createData,
   setCreateData,
   roles,
   fetchAllData,
-}) => {
+}) {
   if (!showCreateModal) return null;
 
   return (
@@ -106,4 +106,4 @@ export const CreateUserModal = ({
       </div>
     </div>
   );
-};
+}

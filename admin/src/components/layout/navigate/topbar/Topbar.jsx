@@ -196,4 +196,4 @@ function TopbarContent({ onMenuClick }) {
   );
 }
 
-export const Topbar = memo(TopbarContent);
+export default memo(TopbarContent);

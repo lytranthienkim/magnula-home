@@ -1,6 +1,6 @@
 'use client';
 
-export function OrderBreakdown({ stats }) {
+export default function OrderBreakdown({ stats }) {
   return (
     <div className="bg-white border border-gray-200 p-6 rounded-lg">
       <h2 className="text-sm font-bold text-black mb-6 uppercase">Order Breakdown</h2>

@@ -4,7 +4,7 @@
  * PermissionsModal Component
  * Displays permission details in a modal
  */
-export function PermissionsModal({ isOpen, permission, onClose }) {
+export default function PermissionsModal({ isOpen, permission, onClose }) {
   if (!isOpen || !permission) return null;
 
   return (

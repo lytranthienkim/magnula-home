@@ -67,7 +67,7 @@ const NAVIGATION_SECTIONS = [
   },
 ];
 
-export function Sidebar({ onClose }) {
+export default function Sidebar({ onClose }) {
   const pathname = usePathname();
   const { user } = useSelector((state) => state.auth);
   const userRole = Array.isArray(user?.roles)

@@ -2,7 +2,7 @@
 
 import { Table } from '@/components/common/table/Table';
 
-export function ProductsTable({
+export default function ProductsTable({
   displayData,
   products,
   loading,

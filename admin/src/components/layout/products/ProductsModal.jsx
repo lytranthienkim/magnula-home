@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { uploadImageToR2, deleteImageFromR2 } from '@/api/upload';
 
-export function ProductsModal({
+export default function ProductsModal({
   isOpen,
   product,
   editMode,

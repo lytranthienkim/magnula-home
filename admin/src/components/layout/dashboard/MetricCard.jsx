@@ -2,7 +2,7 @@
 
 import { HiOutlineArrowTrendingUp } from 'react-icons/hi2';
 
-export function MetricCard({ label, value, suffix = '', growth = null, isPrice = false }) {
+export default function MetricCard({ label, value, suffix = '', growth = null, isPrice = false }) {
   return (
     <div className="bg-white border border-gray-200 p-6 rounded-lg">
       <p className="text-xs text-gray-600 font-semibold uppercase mb-3">{label}</p>

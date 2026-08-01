@@ -2,7 +2,7 @@
 
 import { MetricCard } from './MetricCard';
 
-export function MetricsGrid({ stats }) {
+export default function MetricsGrid({ stats }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <MetricCard

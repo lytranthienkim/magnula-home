@@ -6,7 +6,7 @@ import { Table } from '@/components/common/table/Table';
  * PermissionsTable Component
  * Displays permissions in a table format
  */
-export function PermissionsTable({ permissions, loading, onViewDetails }) {
+export default function PermissionsTable({ permissions, loading, onViewDetails }) {
   const columns = [
     { key: 'id', label: 'ID', width: '50px' },
     { key: 'permissionKey', label: 'PERMISSION KEY' },

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { uploadImageToR2 } from '@/api/upload';
 
-export function ProductsAddForm({
+export default function ProductsAddForm({
   isOpen,
   formData,
   formErrors,

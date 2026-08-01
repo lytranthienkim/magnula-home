@@ -1,6 +1,6 @@
 'use client';
 
-export function DashboardHeader() {
+export default function DashboardHeader() {
   return (
     <div>
       <h1 className="text-3xl font-bold text-black uppercase">Dashboard Report</h1>

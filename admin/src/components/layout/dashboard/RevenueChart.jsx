@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ChartSkeleton } from './ChartSkeleton';
 
-export function RevenueChart({ data }) {
+export default function RevenueChart({ data }) {
   if (!data || data.length === 0) {
     return null;
   }

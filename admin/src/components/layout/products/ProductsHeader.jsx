@@ -2,7 +2,7 @@
 
 import { HiOutlinePlus } from 'react-icons/hi2';
 
-export function ProductsHeader({ canCreate, onAddClick }) {
+export default function ProductsHeader({ canCreate, onAddClick }) {
   return (
     <div className="mb-8 flex justify-between items-center">
       <div>

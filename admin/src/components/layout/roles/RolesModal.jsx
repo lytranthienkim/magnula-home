@@ -1,6 +1,6 @@
 'use client';
 
-export function RolesModal({
+export default function RolesModal({
   isOpen,
   role,
   editMode,

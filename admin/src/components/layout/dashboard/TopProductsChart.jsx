@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ChartSkeleton } from './ChartSkeleton';
 
-export function TopProductsChart({ data }) {
+export default function TopProductsChart({ data }) {
   if (!data || data.length === 0) {
     return null;
   }

@@ -1,7 +1,7 @@
 'use client';
 import { Table } from '@/components/common/table/Table';
 
-export function RolesTable({
+export default function RolesTable({
   displayData,
   loading,
   onViewDetails,

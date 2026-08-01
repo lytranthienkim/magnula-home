@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import apiClient from '@/api/config';
 import { HiOutlineEye, HiOutlineEyeSlash } from 'react-icons/hi2';
-import ProfileHeader from '@/components/layout/profile';
+import { ProfileHeader } from '@/components/layout/profile';
 
 export default function ProfilePage() {
   const { user: currentUser } = useSelector((state) => state.auth);

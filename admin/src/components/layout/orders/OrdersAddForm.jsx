@@ -35,7 +35,6 @@ export default function OrdersAddForm({
     },
   });
 
-  // Extended state for order form
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [states, setStates] = useState([]);
   const [productSelect, setProductSelect] = useState('');

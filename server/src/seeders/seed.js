@@ -1,35 +1,35 @@
 import db from '../config/db.js';
 import bcrypt from 'bcryptjs';
+import User from '../models/User.js';
 
 const seedAdmin = async () => {
   try {
-    const { User, UserRole } = db.models;
+    const hashedPassword = await bcrypt.hash('admin123', 10);
 
     const existingAdmin = await User.findOne({
       where: { email: 'test@gmail.com' },
     });
 
     if (existingAdmin) {
-      return;
+      existingAdmin.password_hash = hashedPassword;
+      existingAdmin.is_active = true;
+      await existingAdmin.save();
+
+    } else {
+      await User.create({
+        email: 'test@gmail.com',
+        password_hash: hashedPassword,
+        full_name: 'Test Admin',
+        is_active: true,
+      });
     }
-
-    const hashedPassword = await bcrypt.hash('admin123', 10);
-
-    const newAdmin = await User.create({
-      email: 'test@gmail.com',
-      passwordHash: hashedPassword,
-      fullName: 'Test',
-      isActive: true,
-    });
-
-    await UserRole.create({
-      userId: newAdmin.id,
-      roleId: 1,
-    });
   } catch (error) {
-    console.error(error.message);
   } finally {
-    await db.sequelize.close();
+    if (typeof db.close === 'function') {
+      await db.close();
+    } else if (db.sequelize && typeof db.sequelize.close === 'function') {
+      await db.sequelize.close();
+    }
     process.exit(0);
   }
 };

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 01, 2026 at 07:59 PM
+-- Generation Time: Aug 01, 2026 at 09:39 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -181,6 +181,22 @@ CREATE TABLE `orders` (
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `order_code`, `customer_name`, `customer_email`, `customer_phone`, `country_region`, `state_province`, `shipping_address`, `total_price`, `payment_method_id`, `status`, `created_at`, `updated_at`) VALUES
+(26, 'ORD-2026-08-01-5863CD', 'Trần Thị A', 'tranthia@gmail.com', '0946578887', 'Vietnam', 'Hồ Chí Minh', 'Hẻm 12 Hoàng Diệu, Phường 10, 72200, Phú Nhuận, Ho Chi Minh City, Vietnam', 240.00, 1, 'Pending', '2026-08-01 19:17:34', '2026-08-01 19:17:34'),
+(27, 'ORD-2026-08-01-3082E1', 'Lê Thị B', 'lethib@gmail.com', '09387423', 'Vietnam', 'Hồ Chí Minh', 'Hẻm 34 Cao Thị Bèo, Phước Hiệp, 71600, Tân An Hội, Ho Chi Minh City, Vietnam', 160.00, 2, 'Cancelled', '2026-08-01 19:18:24', '2026-08-01 19:29:55'),
+(28, 'ORD-2026-08-01-F63B85', 'Văn Như D', 'vannhud@gmail.com', '09387212', 'Vietnam', 'Hải Phòng', 'Ngõ 89 Lê Lợi, Máy Tơ, 04200, Gia Viên, Haiphong, Vietnam', 280.00, 1, 'Pending', '2026-08-01 19:19:13', '2026-08-01 19:19:13'),
+(29, 'ORD-2026-08-01-ACD928', 'Lương Mỹ H', 'luongmyh@gmail.com', '093872234', 'Vietnam', 'Khánh Hòa', 'Quảng Đức, 57100, Vĩnh Hòa, Bắc Nha Trang, Khánh Hòa, Vietnam', 160.00, 2, 'Processing', '2026-08-01 19:19:57', '2026-08-01 19:30:04'),
+(30, 'ORD-2026-08-01-BACF0F', 'Trần Việt A', 'tranvieta@gmail.com', '0938722223', 'Vietnam', 'Hồ Chí Minh', '98 Hẻm 125/42/9 Bùi Đình Túy, Phường 24, 72300, Bình Thạnh, Ho Chi Minh City, Vietnam', 220.00, 1, 'Shipping', '2026-08-01 19:21:14', '2026-08-01 19:29:39'),
+(31, 'ORD-2026-08-01-726C6C', 'Trần Long M', 'tranlongm@gmail.com', '099372632', 'Vietnam', 'Thanh Hóa', 'Đường Bộ Ven Biển Thanh Hóa, 42600, Quảng Hải, Quảng Ninh, Thanh Hóa, Vietnam', 180.00, 2, 'Pending', '2026-08-01 19:22:14', '2026-08-01 19:22:14'),
+(32, 'ORD-2026-08-01-C864B1', 'Bank C', 'bankc@gmail.com', '099372938', 'Denmark', 'Denmark', 'Duebakken 12, 3740 Svaneke, Denmark', 40.00, 1, 'Pending', '2026-08-01 19:23:30', '2026-08-01 19:23:30'),
+(33, 'ORD-2026-08-01-64647E', 'CiCi', 'cici@gmail.com', '0382748292', 'Denmark', 'North Denmark', 'Rønnevej 89, 3720 Aakirkeby, Denmark', 96.00, 2, 'Completed', '2026-08-01 19:24:13', '2026-08-01 19:29:47'),
+(34, 'ORD-2026-08-01-CF7828', 'Lia', 'lia@gmail.com', '073647283', 'China', 'Beijing', '12 Beijing, China', 800.00, 2, 'Pending', '2026-08-01 19:26:24', '2026-08-01 19:26:24'),
+(35, 'ORD-2026-08-01-797597', 'Elia', 'elia@gmail.com', '083746823', 'Philippines', 'Agusan del Norte', '18 Augusta Street Anabu II-D, Imus City, Cavite, Philippines', 160.00, 1, 'Completed', '2026-08-01 19:27:25', '2026-08-01 19:29:31');
+
 -- --------------------------------------------------------
 
 --
@@ -197,6 +213,23 @@ CREATE TABLE `order_items` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_variant_id`, `quantity`, `price_at_purchase`, `created_at`, `updated_at`) VALUES
+(32, 26, 2, 2, 2, 120.00, '2026-08-01 19:17:34', '2026-08-01 19:17:34'),
+(33, 27, 3, 3, 1, 160.00, '2026-08-01 19:18:24', '2026-08-01 19:18:24'),
+(34, 28, 6, 6, 1, 280.00, '2026-08-01 19:19:13', '2026-08-01 19:19:13'),
+(35, 29, 17, 17, 1, 160.00, '2026-08-01 19:19:57', '2026-08-01 19:19:57'),
+(36, 30, 12, 12, 1, 220.00, '2026-08-01 19:21:14', '2026-08-01 19:21:14'),
+(37, 31, 24, 24, 1, 20.00, '2026-08-01 19:22:14', '2026-08-01 19:22:14'),
+(38, 31, 10, 10, 1, 160.00, '2026-08-01 19:22:14', '2026-08-01 19:22:14'),
+(39, 32, 24, 24, 2, 20.00, '2026-08-01 19:23:30', '2026-08-01 19:23:30'),
+(40, 33, 23, 23, 3, 32.00, '2026-08-01 19:24:13', '2026-08-01 19:24:13'),
+(41, 34, 19, 19, 2, 400.00, '2026-08-01 19:26:24', '2026-08-01 19:26:24'),
+(42, 35, 17, 17, 1, 160.00, '2026-08-01 19:27:25', '2026-08-01 19:27:25');
 
 -- --------------------------------------------------------
 
@@ -459,6 +492,17 @@ CREATE TABLE `product_requests` (
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `product_requests`
+--
+
+INSERT INTO `product_requests` (`id`, `customer_name`, `customer_phone`, `product_id`, `product_variant_id`, `requested_quantity`, `description`, `status`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(7, 'Cecilia', '0393725367', 3, 3, 10, 'I would like to order 10 Ellora Sofas', 'pending', NULL, '2026-08-01 19:32:02', '2026-08-01 19:32:02'),
+(8, 'Bei', '0937362532', 17, 17, 6, 'I would like to order 6 chair, each with a different canvas fabric', 'approved', NULL, '2026-08-01 19:33:12', '2026-08-01 19:37:02'),
+(9, 'Ha', '0937462783', 24, 24, 2, 'Contact my sms', 'pending', NULL, '2026-08-01 19:34:05', '2026-08-01 19:34:05'),
+(10, 'Linh', '0938472637', 10, 10, 5, 'I would like to order 5 Beluga Sofas', 'approved', NULL, '2026-08-01 19:34:50', '2026-08-01 19:36:56'),
+(11, 'kaymark', '097836273', 29, 29, 10, 'I would like to order 10 cushion, direct my email: k@gmail.com', 'pending', NULL, '2026-08-01 19:35:59', '2026-08-01 19:35:59');
+
 -- --------------------------------------------------------
 
 --
@@ -484,29 +528,29 @@ CREATE TABLE `product_variants` (
 
 INSERT INTO `product_variants` (`id`, `product_id`, `overall_size`, `seat_size`, `color`, `price`, `stock_quantity`, `deleted_at`, `created_at`, `updated_at`) VALUES
 (1, 1, 'W30 x D28 x H17', 'W30 x D28 x H17', '#D6C4B3', 80.00, 7, NULL, '2026-06-20 08:06:11', '2026-08-01 09:12:35'),
-(2, 2, 'W36 x D38 x H27', 'W36 x D28 x H17', '#D6C4B3', 120.00, 8, NULL, '2026-06-20 13:13:47', '2026-08-01 09:54:43'),
-(3, 3, 'W43 x D38 x H27', 'W35 x D28 x H17', '#D6C4B3', 160.00, 5, NULL, '2026-06-20 13:15:00', '2026-06-29 14:28:18'),
+(2, 2, 'W36 x D38 x H27', 'W36 x D28 x H17', '#D6C4B3', 120.00, 6, NULL, '2026-06-20 13:13:47', '2026-08-01 19:17:34'),
+(3, 3, 'W43 x D38 x H27', 'W35 x D28 x H17', '#D6C4B3', 160.00, 4, NULL, '2026-06-20 13:15:00', '2026-08-01 19:18:24'),
 (4, 4, 'W43 x D72 x H27', 'W35 x D62 x H17', '#D6C4B3', 180.00, 10, NULL, '2026-06-20 13:16:20', '2026-06-20 13:16:20'),
 (5, 5, 'W48 x D48 x H27', 'W38 x D38 x H17', '#D6C4B3', 220.00, 10, NULL, '2026-06-20 13:17:38', '2026-06-20 13:17:38'),
-(6, 6, 'W44 x D38 x H27', 'W28 x D28 x H17', '#D6C4B3', 280.00, 8, NULL, '2026-06-20 13:20:26', '2026-07-31 17:02:50'),
+(6, 6, 'W44 x D38 x H27', 'W28 x D28 x H17', '#D6C4B3', 280.00, 7, NULL, '2026-06-20 13:20:26', '2026-08-01 19:19:13'),
 (7, 7, 'W44 x D38 x H27', 'W28 x D28 x H17', '#D6C4B3', 400.00, 10, NULL, '2026-06-20 13:21:50', '2026-06-20 13:21:50'),
 (8, 8, 'W30 x D28 x H27', 'W30 x D28 x H17', '#8F5D41', 80.00, 7, NULL, '2026-06-20 13:23:32', '2026-06-28 10:33:51'),
 (9, 9, 'W38 x D38 x H27', 'W38 x D28 x H17', '#8F5D41', 120.00, 10, NULL, '2026-06-20 13:28:12', '2026-06-20 13:28:12'),
-(10, 10, 'W48 x D38 x H27', 'W38 x D28 x H17', '#8F5D41', 160.00, 10, NULL, '2026-06-20 13:32:50', '2026-06-20 13:32:50'),
+(10, 10, 'W48 x D38 x H27', 'W38 x D28 x H17', '#8F5D41', 160.00, 9, NULL, '2026-06-20 13:32:50', '2026-08-01 19:22:14'),
 (11, 11, 'W48 x D72 x H27', 'W38 x D62 x H17', '#8F5D41', 180.00, 10, NULL, '2026-06-20 13:35:22', '2026-06-20 13:35:22'),
-(12, 12, 'W48 x D48 x H27', 'W38 x D38 x H17', '#8F5D41', 220.00, 10, NULL, '2026-06-20 13:36:21', '2026-06-20 13:36:21'),
+(12, 12, 'W48 x D48 x H27', 'W38 x D38 x H17', '#8F5D41', 220.00, 9, NULL, '2026-06-20 13:36:21', '2026-08-01 19:21:14'),
 (13, 13, 'W48 x D48 x H27', 'W38 x D38 x H17', '#8F5D41', 280.00, 10, NULL, '2026-06-20 13:37:42', '2026-06-20 13:37:42'),
 (14, 14, 'W72 x D38 x H27', ' W52 x D28 x H17', '#8F5D41', 400.00, 10, NULL, '2026-06-20 13:38:31', '2026-06-20 13:38:31'),
 (15, 15, 'W86 x D28 x H27', 'W76 x D28 x H17', '#8F5D41', 600.00, 8, NULL, '2026-06-20 13:39:42', '2026-07-31 19:40:26'),
 (16, 16, 'W36 x D36 x H16', 'W36 x D36 x H16', '#75472F', 80.00, 10, NULL, '2026-06-20 13:41:42', '2026-06-20 13:41:42'),
-(17, 17, 'W36 x D43.5 x H30', 'W36 x D28 x H16.5', '#75472F', 160.00, 7, NULL, '2026-06-20 13:42:53', '2026-07-01 09:56:38'),
+(17, 17, 'W36 x D43.5 x H30', 'W36 x D28 x H16.5', '#75472F', 160.00, 5, NULL, '2026-06-20 13:42:53', '2026-08-01 19:27:25'),
 (18, 18, 'W36 x D66 x H30', 'W36 x D51 x H16.5', '#75472F', 220.00, 10, NULL, '2026-06-20 13:44:23', '2026-06-20 13:44:23'),
-(19, 19, 'W60 x D43.5 x H30', 'W60 x D28 x H16.5', '#75472F', 400.00, 10, NULL, '2026-06-20 13:45:31', '2026-06-20 13:45:31'),
+(19, 19, 'W60 x D43.5 x H30', 'W60 x D28 x H16.5', '#75472F', 400.00, 8, NULL, '2026-06-20 13:45:31', '2026-08-01 19:26:24'),
 (20, 20, 'W84 x D43.5 x H30', 'W84 x D28 x H16.5', '#75472F', 600.00, 10, NULL, '2026-06-20 13:46:17', '2026-06-20 13:46:17'),
 (21, 21, 'W18 x H16', NULL, '#D6C4B3', 20.00, 10, NULL, '2026-06-22 12:49:47', '2026-06-22 12:49:47'),
 (22, 22, 'W22 x H16', NULL, '#D6C4B3', 26.00, 10, NULL, '2026-06-22 12:50:37', '2026-06-22 12:50:37'),
-(23, 23, 'Custom Width x H16', NULL, '#D6C4B3', 32.00, 6, NULL, '2026-06-22 12:51:19', '2026-08-01 16:51:13'),
-(24, 24, 'W18 x H16', NULL, '#8F5D41', 20.00, 10, NULL, '2026-06-22 12:55:13', '2026-06-22 12:55:13'),
+(23, 23, 'Custom Width x H16', NULL, '#D6C4B3', 32.00, 3, NULL, '2026-06-22 12:51:19', '2026-08-01 19:24:13'),
+(24, 24, 'W18 x H16', NULL, '#8F5D41', 20.00, 7, NULL, '2026-06-22 12:55:13', '2026-08-01 19:23:30'),
 (25, 25, 'W22 x H16', NULL, '#8F5D41', 26.00, 10, NULL, '2026-06-22 12:56:32', '2026-06-22 12:56:32'),
 (26, 26, 'Custom Width x H16', NULL, '#8F5D41', 32.00, 9, NULL, '2026-06-22 12:57:05', '2026-08-01 14:54:22'),
 (27, 27, 'W18 x H16', NULL, '#75472F', 20.00, 10, NULL, '2026-06-22 12:58:33', '2026-06-22 12:58:33'),
@@ -1187,13 +1231,13 @@ ALTER TABLE `materials`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `payment_methods`
@@ -1223,7 +1267,7 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT for table `product_requests`
 --
 ALTER TABLE `product_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `product_variants`
@@ -1247,7 +1291,7 @@ ALTER TABLE `room_suitabilities`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
@@ -1315,21 +1359,6 @@ ALTER TABLE `role_permissions`
 ALTER TABLE `user_roles`
   ADD CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `email`, `password_hash`, `full_name`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'test@gmail.com', '$2b$10$oZ9jR8XdGrK2lq4nP5mL6eL8nH7jQ9kR2sT3vW4xY5zB0aB1cD2eE', 'Test Admin', 1, '2026-08-02 00:00:00', '2026-08-02 00:00:00');
-
---
--- Dumping data for table `user_roles`
---
-
-INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
-(1, 1);
-
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

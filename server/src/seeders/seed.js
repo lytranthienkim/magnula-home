@@ -1,35 +1,31 @@
 import db from '../config/db.js';
 import bcrypt from 'bcryptjs';
-import User from '../models/User.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const seedAdmin = async () => {
   try {
     const hashedPassword = await bcrypt.hash('admin123', 10);
 
-    const existingAdmin = await User.findOne({
-      where: { email: 'test@gmail.com' },
-    });
+    await db.query(`
+      INSERT IGNORE INTO users (email, password_hash, full_name, is_active, created_at, updated_at)
+      VALUES ('test@gmail.com', '${hashedPassword}', 'Test Admin', 1, NOW(), NOW())
+    `);
 
-    if (existingAdmin) {
-      existingAdmin.password_hash = hashedPassword;
-      existingAdmin.is_active = true;
-      await existingAdmin.save();
+    const user = await db.query(`SELECT id FROM users WHERE email = 'test@gmail.com'`);
+    const userId = user[0][0]?.id;
 
-    } else {
-      await User.create({
-        email: 'test@gmail.com',
-        password_hash: hashedPassword,
-        full_name: 'Test Admin',
-        is_active: true,
-      });
+    if (userId) {
+      await db.query(`
+        INSERT IGNORE INTO user_roles (user_id, role_id)
+        VALUES (${userId}, 1)
+      `);
     }
   } catch (error) {
+    console.error(error.message);
   } finally {
-    if (typeof db.close === 'function') {
-      await db.close();
-    } else if (db.sequelize && typeof db.sequelize.close === 'function') {
-      await db.sequelize.close();
-    }
+    await db.close();
     process.exit(0);
   }
 };

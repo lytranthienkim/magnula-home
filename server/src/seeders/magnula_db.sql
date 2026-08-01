@@ -1315,6 +1315,21 @@ ALTER TABLE `role_permissions`
 ALTER TABLE `user_roles`
   ADD CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `password_hash`, `full_name`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'test@gmail.com', '$2b$10$oZ9jR8XdGrK2lq4nP5mL6eL8nH7jQ9kR2sT3vW4xY5zB0aB1cD2eE', 'Test Admin', 1, '2026-08-02 00:00:00', '2026-08-02 00:00:00');
+
+--
+-- Dumping data for table `user_roles`
+--
+
+INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
+(1, 1);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

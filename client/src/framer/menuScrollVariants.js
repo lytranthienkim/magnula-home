@@ -1,11 +1,3 @@
-// Menu Animation Variants - Scroll-based stagger animation
-
-/**
- * Calculate menu item animation based on scroll progress
- * @param {number} index - Item index in menu
- * @param {number} scrollProgress - Scroll progress (0-1)
- * @returns {object} Motion styles for the item
- */
 export const getMenuItemMotion = (index, scrollProgress) => {
   const itemStart = 0.3 + index * 0.1;
   const itemEnd = Math.min(1, itemStart + 0.4);
@@ -20,12 +12,11 @@ export const getMenuItemMotion = (index, scrollProgress) => {
 
   return {
     opacity: itemProgress,
-    y: movement, // Mobile: vertical movement
-    x: movement, // Desktop: horizontal movement
+    y: movement, 
+    x: movement,
   };
 };
 
-// Framer Motion variants for menu container
 export const menuContainerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -37,7 +28,6 @@ export const menuContainerVariants = {
   },
 };
 
-// Framer Motion variants for individual menu items
 export const menuItemVariants = {
   hidden: {
     opacity: 0,
@@ -48,7 +38,7 @@ export const menuItemVariants = {
     x: 0,
     transition: {
       duration: 0.8,
-      ease: [0.25, 1, 0.5, 1], // cubic-bezier
+      ease: [0.25, 1, 0.5, 1],
       delay: custom * 0.05,
     },
   }),

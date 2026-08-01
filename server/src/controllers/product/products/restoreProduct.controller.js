@@ -1,5 +1,3 @@
-// Restore Product Controller - Restore soft-deleted product
-
 import db from '../../../config/db.js';
 import { invalidateProductCache } from '../../../middleware/cache/cacheInvalidation.js';
 
@@ -8,7 +6,6 @@ export const restoreProduct = async (req, res) => {
     const { Product } = db.models;
     const { id } = req.params;
 
-    // Find the soft-deleted product
     const product = await Product.findByPk(id, { paranoid: false });
     if (!product) {
       return res.status(404).json({
@@ -17,7 +14,6 @@ export const restoreProduct = async (req, res) => {
       });
     }
 
-    // Check if product is actually deleted
     if (!product.deletedAt) {
       return res.status(400).json({
         success: false,
@@ -25,10 +21,8 @@ export const restoreProduct = async (req, res) => {
       });
     }
 
-    // Restore the product
     await product.restore();
 
-    // Verify restoration
     const restoredProduct = await Product.findByPk(id);
     if (!restoredProduct) {
       return res.status(500).json({

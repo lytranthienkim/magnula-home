@@ -1,5 +1,3 @@
-// Update Role Controller
-
 import db from '../../../config/db.js';
 
 export const updateRole = async (req, res) => {
@@ -8,7 +6,6 @@ export const updateRole = async (req, res) => {
     const { id } = req.params;
     const { roleName } = req.body;
 
-    // Get role
     const role = await Role.findByPk(id);
     if (!role) {
       return res.status(404).json({
@@ -17,7 +14,6 @@ export const updateRole = async (req, res) => {
       });
     }
 
-    // Validate new role name (if changing)
     if (roleName && roleName !== role.roleName) {
       if (typeof roleName !== 'string' || roleName.trim().length < 2) {
         return res.status(400).json({
@@ -37,7 +33,6 @@ export const updateRole = async (req, res) => {
       }
     }
 
-    // Update fields
     if (roleName) role.roleName = roleName.trim();
 
     await role.save();

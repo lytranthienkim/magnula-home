@@ -1,6 +1,5 @@
-// Update Fabric Type Controller
-
 import db from '../../../config/db.js';
+import { invalidateFabricTypeCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const updateFabricType = async (req, res) => {
   try {
@@ -8,7 +7,6 @@ export const updateFabricType = async (req, res) => {
     const { id } = req.params;
     const { name, description, isActive } = req.body;
 
-    // Get fabric type
     const fabricType = await FabricType.findByPk(id);
 
     if (!fabricType) {
@@ -18,7 +16,6 @@ export const updateFabricType = async (req, res) => {
       });
     }
 
-    // Validate name if changing
     if (name && name.trim() !== fabricType.name) {
       if (typeof name !== 'string' || name.trim().length === 0) {
         return res.status(400).json({
@@ -39,12 +36,13 @@ export const updateFabricType = async (req, res) => {
       }
     }
 
-    // Update fields
     if (name) fabricType.name = name.trim();
     if (description !== undefined) fabricType.description = description || null;
     if (isActive !== undefined) fabricType.isActive = isActive;
 
     await fabricType.save();
+
+    await invalidateFabricTypeCache();
 
     res.status(200).json({
       success: true,

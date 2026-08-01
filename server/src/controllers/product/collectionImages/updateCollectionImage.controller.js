@@ -1,5 +1,3 @@
-// Update Collection Image Controller
-
 import db from '../../../config/db.js';
 
 export const updateCollectionImage = async (req, res) => {
@@ -8,7 +6,6 @@ export const updateCollectionImage = async (req, res) => {
     const { imageId } = req.params;
     const { imageUrl } = req.body;
 
-    // Get collection image
     const collectionImage = await CollectionImage.findByPk(imageId);
     if (!collectionImage) {
       return res.status(404).json({
@@ -17,7 +14,6 @@ export const updateCollectionImage = async (req, res) => {
       });
     }
 
-    // Update imageUrl
     if (imageUrl) collectionImage.imageUrl = imageUrl;
 
     await collectionImage.save();

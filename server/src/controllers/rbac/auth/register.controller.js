@@ -1,6 +1,3 @@
-// Register Controller - User registration with stateless authentication
-// Creates new user account and sets HttpOnly cookie
-
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import db from '../../../config/db.js';
@@ -12,7 +9,6 @@ export const register = async (req, res) => {
     const { User, UserRole, Role } = db.models;
     const { email, password, fullName, rememberMe = false } = req.body;
 
-    // Validate input
     if (!email || !password || !fullName) {
       return res.status(400).json({
         success: false,
@@ -20,7 +16,6 @@ export const register = async (req, res) => {
       });
     }
 
-    // Validate email format
     if (!isValidEmail(email)) {
       return res.status(400).json({
         success: false,
@@ -28,7 +23,6 @@ export const register = async (req, res) => {
       });
     }
 
-    // Validate password strength
     if (password.length < 6) {
       return res.status(400).json({
         success: false,
@@ -36,7 +30,6 @@ export const register = async (req, res) => {
       });
     }
 
-    // Check if email already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(409).json({
@@ -45,10 +38,8 @@ export const register = async (req, res) => {
       });
     }
 
-    // Hash password
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Create new user with 'user' role (default role for new registrations)
     const newUser = await User.create({
       email,
       passwordHash,
@@ -56,7 +47,6 @@ export const register = async (req, res) => {
       isActive: true,
     });
 
-    // Assign 'user' role to new user
     const userRole = await Role.findOne({ where: { roleName: 'user' } });
     if (userRole) {
       await UserRole.create({
@@ -65,7 +55,6 @@ export const register = async (req, res) => {
       });
     }
 
-    // Get user with roles and permissions for JWT
     const userWithRoles = await User.findByPk(newUser.id, {
       include: [{
         model: UserRole,
@@ -85,7 +74,6 @@ export const register = async (req, res) => {
       }],
     });
 
-    // Extract unique permissions from all roles
     const permissions = new Set();
     userWithRoles.userRoles.forEach(userRole => {
       if (userRole.Role.rolePermissions) {
@@ -95,7 +83,6 @@ export const register = async (req, res) => {
       }
     });
 
-    // Generate JWT token with permissions
     const token = jwt.sign(
       {
         userId: newUser.id,
@@ -107,11 +94,9 @@ export const register = async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRY || '7d' }
     );
 
-    // Set HttpOnly cookie based on rememberMe flag
     const cookieOptions = getCookieOptions(rememberMe);
     res.cookie('authToken', token, cookieOptions);
 
-    // Send user data (without sensitive info, no token in response)
     res.status(201).json({
       success: true,
       data: {

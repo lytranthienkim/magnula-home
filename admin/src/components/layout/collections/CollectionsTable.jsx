@@ -1,6 +1,6 @@
 'use client';
 import { Table } from '@/components/common/table/Table';
-export default function CollectionsTable({ data, loading, onViewDetails, sortOrder, onSortOrderChange, statusFilter, onStatusFilterChange, onDelete, canDelete }) {
+export default function CollectionsTable({ data, loading, onViewDetails, sortOrder, onSortOrderChange, statusFilter, onStatusFilterChange, onDelete, canDelete, currentPage, totalPages }) {
   const columns = [
     { key: 'id', label: 'ID', width: '50px' },
     { key: 'collectionName', label: 'NAME', render: (row) => row.collectionName || 'N/A' },
@@ -52,6 +52,6 @@ export default function CollectionsTable({ data, loading, onViewDetails, sortOrd
         </div>
       </div>
     </div>
-    <Table columns={columns} data={data} onAction={actions} loading={loading} />
+    <Table columns={columns} data={data} onAction={actions} loading={loading} currentPage={currentPage} totalPages={totalPages} />
   </>;
 }

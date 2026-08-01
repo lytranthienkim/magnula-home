@@ -1,72 +1,61 @@
 import apiClient from './config';
+
 import { getAllRoles } from './roles';
 
-// Get deleted products
 export const getDeletedProducts = async () => {
-  const res = await apiClient.get('/products?deleted=true');
+  const res = await apiClient.get('/products', { params: { deleted: true } });
   return res.data;
 };
 
-// Get deleted categories
 export const getDeletedCategories = async () => {
-  const res = await apiClient.get('/products/categories?deleted=true');
+  const res = await apiClient.get('/products/categories', { params: { deleted: true } });
   return res.data;
 };
 
-// Get deleted collections
 export const getDeletedCollections = async () => {
-  const res = await apiClient.get('/products/collections?deleted=true');
+  const res = await apiClient.get('/products/collections', { params: { deleted: true } });
   return res.data;
 };
 
-// Get deleted materials
 export const getDeletedMaterials = async () => {
-  const res = await apiClient.get('/products/materials?deleted=true');
+  const res = await apiClient.get('/products/materials', { params: { deleted: true } });
   return res.data;
 };
 
-// Get deleted fabric types
 export const getDeletedFabricTypes = async () => {
-  const res = await apiClient.get('/products/fabric-types?deleted=true');
+  const res = await apiClient.get('/products/fabric-types', { params: { deleted: true } });
   return res.data;
 };
 
-// Get deleted room suitabilities
 export const getDeletedRoomSuitabilities = async () => {
-  const res = await apiClient.get('/products/room-suitabilities?deleted=true');
+  const res = await apiClient.get('/products/room-suitabilities', { params: { deleted: true } });
   return res.data;
 };
 
-// Get deleted images
 export const getDeletedImages = async () => {
-  const res = await apiClient.get('/products/images?deleted=true');
+  const res = await apiClient.get('/products/images', { params: { deleted: true } });
   return res.data;
 };
 
-// Get deleted users
 export const getDeletedUsers = async () => {
-  const res = await apiClient.get('/users?deleted=true');
+  const res = await apiClient.get('/users', { params: { deleted: true } });
   return res.data;
 };
 
-// Get deleted roles
 export const getDeletedRoles = async () => {
   return getAllRoles(true);
 };
 
-// Get deleted permissions
 export const getDeletedPermissions = async () => {
-  const res = await apiClient.get('/permissions?deleted=true');
+  const res = await apiClient.get('/permissions', { params: { deleted: true } });
   return res.data;
 };
 
-// Get deleted orders
 export const getDeletedOrders = async () => {
-  const res = await apiClient.get('/orders?deleted=true');
+  const res = await apiClient.get('/orders', { params: { deleted: true } });
   return res.data;
 };
 
-// Generic restore function
 export const restoreItem = async (type, itemId) => {
   const endpoints = {
     products: `/products/${itemId}/restore`,

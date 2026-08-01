@@ -1,5 +1,3 @@
-// Collections Controllers Index
-
 export { getAllCollections } from './getAllCollections.controller.js';
 export { getCollectionById } from './getCollectionById.controller.js';
 export { createCollection } from './createCollection.controller.js';

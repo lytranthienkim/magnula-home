@@ -1,5 +1,3 @@
-// Collection Images Routes
-
 import express from 'express';
 import {
   getAllCollectionImages,
@@ -9,22 +7,17 @@ import {
   deleteCollectionImage,
 } from '../../controllers/product/collectionImages/index.js';
 import { verifyToken, checkPermission } from '../../middleware/auth/index.js';
+import { cacheMiddleware } from '../../middleware/cache/index.js';
 
 const router = express.Router();
 
-// GET all collection images
 router.get('/collection-images', verifyToken, checkPermission('collections:read'), getAllCollectionImages);
+router.get('/collections/:collectionId/images', cacheMiddleware(3600), getCollectionImagesByCollectionId);
 
-// GET images of specific collection
-router.get('/collections/:collectionId/images', getCollectionImagesByCollectionId);
-
-// POST add image to collection
 router.post('/collections/:collectionId/images', verifyToken, checkPermission('collections:update'), addCollectionImage);
 
-// PUT update collection image
 router.put('/collection-images/:imageId', verifyToken, checkPermission('collections:update'), updateCollectionImage);
 
-// DELETE collection image
 router.delete('/collection-images/:imageId', verifyToken, checkPermission('collections:delete'), deleteCollectionImage);
 
 export default router;

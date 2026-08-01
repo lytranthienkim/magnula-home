@@ -1,14 +1,16 @@
 'use client';
 
 export default function CategoriesAddForm({
+  showAddForm,
   formData,
-  loading,
-  error,
+  formLoading,
+  formError,
   onFormDataChange,
-  onCreateCategory,
-  onClose,
+  onClearError,
+  onSubmit,
+  onCancel,
 }) {
-  if (!loading) return null;
+  if (!showAddForm) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -16,14 +18,22 @@ export default function CategoriesAddForm({
         <h3 className="text-xl font-bold text-black mb-6">Create New Category</h3>
 
         <div className="space-y-4 mb-8">
-          {error && (
+          {formError && (
             <div className="p-3 bg-red-50 border border-red-200 rounded">
-              <p className="text-xs text-red-600">{error}</p>
+              <p className="text-xs text-red-600">{formError}</p>
+              <button
+                onClick={onClearError}
+                className="text-xs text-red-600 hover:text-red-800 mt-1"
+              >
+                Dismiss
+              </button>
             </div>
           )}
 
           <div>
-            <label className="text-xs font-semibold text-black uppercase block mb-2">Category Name *</label>
+            <label className="text-xs font-semibold text-black uppercase block mb-2">
+              Category Name *
+            </label>
             <input
               type="text"
               value={formData.categoryName}
@@ -33,7 +43,9 @@ export default function CategoriesAddForm({
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-black uppercase block mb-2">Description</label>
+            <label className="text-xs font-semibold text-black uppercase block mb-2">
+              Description
+            </label>
             <textarea
               value={formData.description}
               onChange={(e) => onFormDataChange({ ...formData, description: e.target.value })}
@@ -57,18 +69,18 @@ export default function CategoriesAddForm({
 
         <div className="flex gap-3 justify-end">
           <button
-            onClick={onClose}
-            disabled={loading}
+            onClick={onCancel}
+            disabled={formLoading}
             className="px-6 py-2 border border-gray-300 text-black text-xs font-bold rounded hover:bg-gray-50 transition disabled:opacity-50"
           >
             Cancel
           </button>
           <button
-            onClick={onCreateCategory}
-            disabled={loading}
+            onClick={onSubmit}
+            disabled={formLoading}
             className="px-6 py-2 bg-black text-white text-xs font-bold rounded hover:bg-gray-800 transition disabled:opacity-50"
           >
-            {loading ? 'Creating...' : 'Create'}
+            {formLoading ? 'Creating...' : 'Create'}
           </button>
         </div>
       </div>

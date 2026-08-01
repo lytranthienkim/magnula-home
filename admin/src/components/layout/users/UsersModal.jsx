@@ -36,7 +36,6 @@ export default function UsersModal({
 
           {/* Content */}
           <div className="px-8 py-6 space-y-8">
-            {/* Personal Information */}
             <div>
               <p className="text-sm text-black font-semibold uppercase mb-4">Personal Information</p>
               <div className="space-y-4">
@@ -168,7 +167,6 @@ export default function UsersModal({
         </div>
       </div>
 
-      {/* Reset Password Modal */}
       {showResetPasswordModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
           <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-8">

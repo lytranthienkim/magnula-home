@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { getAllProducts } from '@/api/products';
 import { getAllOrders } from '@/api/orders';
-import { HiOutlineArrowTrendingUp } from 'react-icons/hi2';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-
-// Chart skeleton components for better perceived performance
-const ChartSkeleton = () => (
-  <div className="bg-gray-100 border border-gray-200 p-6 h-80 rounded-lg animate-pulse"></div>
-);
+import {
+  DashboardHeader,
+  MetricsGrid,
+  OrderBreakdown,
+  TopProductsChart,
+  RevenueChart,
+} from '@/components/layout/dashboard';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -35,7 +35,6 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Use pagination to limit data fetched
         const [productsRes, ordersRes] = await Promise.all([
           getAllProducts(100, 0),
           getAllOrders(100, 0),
@@ -44,12 +43,10 @@ export default function DashboardPage() {
         const products = productsRes.data || [];
         const orders = ordersRes.data || [];
 
-        // Calculate total revenue
         const totalRevenue = orders.reduce((sum, order) => {
           return sum + (parseFloat(order.totalPrice) || 0);
         }, 0);
 
-        // Calculate order status counts
         const orderStatus = {
           Completed: 0,
           Processing: 0,
@@ -65,10 +62,8 @@ export default function DashboardPage() {
           }
         });
 
-        // Calculate stock available
         const stockAvailable = products.filter(p => p.status === 'in stock').length;
 
-        // Calculate top products
         const productOrderCounts = {};
         orders.forEach(order => {
           if (order.items && Array.isArray(order.items)) {
@@ -87,13 +82,12 @@ export default function DashboardPage() {
           .sort((a, b) => b.value - a.value)
           .slice(0, 6);
 
-        // Generate revenue trend data
         const revenueData = generateRevenueData(orders);
 
         setStats({
           totalRevenue: Math.round(totalRevenue * 100) / 100,
           totalOrders: orders.length,
-          customerGrowth: Math.floor(Math.random() * 20) + 5, // Sample growth
+          customerGrowth: Math.floor(Math.random() * 20) + 5,
           stockAvailable,
           totalProducts: products.length,
           orderStatus,
@@ -139,25 +133,6 @@ export default function DashboardPage() {
     return data;
   };
 
-  const MetricCard = ({ label, value, suffix = '', growth = null, isPrice = false }) => (
-    <div className="bg-white border border-gray-200 p-6 rounded-lg">
-      <p className="text-xs text-gray-600 font-semibold uppercase mb-3">{label}</p>
-      <div className="flex items-end justify-between">
-        <div>
-          <p className="text-3xl font-bold text-black">
-            {isPrice ? '$' : ''}{typeof value === 'number' ? value.toLocaleString() : value}{suffix}
-          </p>
-          {growth !== null && (
-            <div className="flex items-center gap-1 mt-2">
-              <HiOutlineArrowTrendingUp className="w-4 h-4" />
-              <span className="text-xs font-medium">{growth}% from last week</span>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
   if (loading) {
     return (
       <div className="space-y-6">
@@ -173,134 +148,15 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-black uppercase">Dashboard Report</h1>
-        <p className="text-sm text-gray-600 mt-1">Commerce core tracking metrics</p>
-      </div>
+      <DashboardHeader />
+      <MetricsGrid stats={stats} />
 
-      {/* Top Metrics Grid - 3 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <MetricCard
-          label="Total Sales"
-          value={stats.totalRevenue}
-          suffix=""
-          growth={15.8}
-          isPrice={true}
-        />
-        <MetricCard
-          label="Total Orders"
-          value={stats.totalOrders}
-          growth={8.3}
-        />
-        <MetricCard
-          label="Customer Growth"
-          value={stats.customerGrowth}
-          suffix=""
-          growth={12.5}
-        />
-      </div>
-
-      {/* Charts Grid - 2 Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Order Breakdown */}
-        <div className="bg-white border border-gray-200 p-6 rounded-lg">
-          <h2 className="text-sm font-bold text-black mb-6 uppercase">Order Breakdown</h2>
-          <div className="space-y-4">
-            {Object.entries(stats.orderStatus).map(([status, count]) => {
-              const total = stats.totalOrders;
-              const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
-
-              return (
-                <div key={status}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-gray-700 font-medium">{status}</span>
-                    <span className="text-sm font-bold text-black">{count}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                    <div
-                      className="h-full bg-black transition-all duration-300"
-                      style={{ width: `${percentage}%` }}
-                    ></div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Top Products - Pie Chart - Lazy loaded */}
-        {chartData.topProductsData.length > 0 && (
-          <Suspense fallback={<ChartSkeleton />}>
-            <div className="bg-white border border-gray-200 p-3 sm:p-6 rounded-lg">
-              <h2 className="text-sm font-bold text-black mb-4 sm:mb-6 uppercase">Top Products</h2>
-              <div className="w-full h-64 sm:h-80 flex items-center justify-center">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={chartData.topProductsData}
-                      cx="50%"
-                      cy="45%"
-                      innerRadius={35}
-                      outerRadius={70}
-                      paddingAngle={2}
-                      dataKey="value"
-                    >
-                      <Cell fill="#000000" />
-                      <Cell fill="#1f2937" />
-                      <Cell fill="#374151" />
-                      <Cell fill="#6b7280" />
-                      <Cell fill="#9ca3af" />
-                      <Cell fill="#d1d5db" />
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '6px' }}
-                      formatter={(value) => `${value} orders`}
-                      labelStyle={{ color: '#000' }}
-                    />
-                    <Legend
-                      verticalAlign="bottom"
-                      height={28}
-                      formatter={(value) => <span style={{ color: '#6b7280', fontSize: '10px' }}>{value}</span>}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          </Suspense>
-        )}
+        <OrderBreakdown stats={stats} />
+        <TopProductsChart data={chartData.topProductsData} />
       </div>
 
-      {/* Revenue Trend - Full Width - Lazy loaded */}
-      {chartData.revenueData.length > 0 && (
-        <Suspense fallback={<ChartSkeleton />}>
-          <div className="bg-white border border-gray-200 p-3 sm:p-6 rounded-lg">
-            <h2 className="text-sm font-bold text-black mb-4 sm:mb-6 uppercase">Revenue Trend (Last 7 Days)</h2>
-            <div className="w-full h-64 sm:h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData.revenueData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                  <XAxis dataKey="date" stroke="#d1d5db" tick={{ fontSize: 11, fill: '#9ca3af' }} />
-                  <YAxis stroke="#d1d5db" tick={{ fontSize: 11, fill: '#9ca3af' }} />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '6px' }}
-                    formatter={(value) => `$${value.toLocaleString()}`}
-                    labelStyle={{ color: '#000' }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="revenue"
-                    stroke="#000"
-                    strokeWidth={3}
-                    dot={{ fill: '#000', r: 5 }}
-                    activeDot={{ r: 7 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </Suspense>
-      )}
+      <RevenueChart data={chartData.revenueData} />
     </div>
   );
 }

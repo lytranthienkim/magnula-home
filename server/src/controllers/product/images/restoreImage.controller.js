@@ -1,5 +1,3 @@
-// Restore Product Image Controller - Restore soft-deleted image
-
 import db from '../../../config/db.js';
 
 export const restoreImage = async (req, res) => {
@@ -7,9 +5,8 @@ export const restoreImage = async (req, res) => {
     const { ProductImage } = db.models;
     const { imageId } = req.params;
 
-    // Find soft-deleted image
     const image = await ProductImage.findByPk(imageId, {
-      paranoid: false, // Include soft-deleted records
+      paranoid: false,
     });
 
     if (!image) {
@@ -26,7 +23,6 @@ export const restoreImage = async (req, res) => {
       });
     }
 
-    // Restore image (set deletedAt to null)
     await image.restore();
 
     res.json({

@@ -19,13 +19,11 @@ export const CheckoutSummary = () => {
 
     return (
         <div className="h-screen sticky top-0 flex flex-col justify-start gap-6">
-
-            {/* Items List */}
             <div className="flex flex-col gap-4  overflow-y-auto no-scrollbar">
                 {
                     cartItems.map((item) => (
                         <div key={item.id} className="flex flex-col gap-3 pb-4">
-                            {/* Product Image */}
+                            {/* Product image */}
                             <div className="w-full overflow-hidden">
                                 <img
                                     src={item.imageUrl || ''}
@@ -35,7 +33,7 @@ export const CheckoutSummary = () => {
                                 />
                             </div>
 
-                            {/* Product Info */}
+                            {/* Product info */}
                             <div className="flex flex-col justify-between flex-1 gap-2">
                                 <p className="body-02 font-display-semibold line-clamp-2">
                                     {item.name}
@@ -57,7 +55,6 @@ export const CheckoutSummary = () => {
 
             <hr className='border-t-[0.25px] border-[#272727]/40'></hr>
 
-            {/* Summary Totals */}
             <div className="flex flex-col gap-2">
                 {/* Subtotal */}
                 <div className="flex flex-row justify-between items-center">
@@ -66,8 +63,7 @@ export const CheckoutSummary = () => {
                         {totalQuantity}
                     </p>
                 </div>
-
-                {/* Subtotal */}
+                
                 <div className="flex flex-row justify-between items-center">
                     <p className="body-02 font-display-regular">Shipping fee:</p>
                     <p className="body-02 font-display-regular">

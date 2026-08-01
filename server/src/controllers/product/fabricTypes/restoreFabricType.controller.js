@@ -1,13 +1,11 @@
-// Restore Fabric Type Controller - Restore soft-deleted fabric type
-
 import db from '../../../config/db.js';
+import { invalidateFabricTypeCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const restoreFabricType = async (req, res) => {
   try {
     const { FabricType } = db.models;
     const { id } = req.params;
 
-    // Find the soft-deleted fabric type
     const fabricType = await FabricType.findByPk(id, { paranoid: false });
     if (!fabricType) {
       return res.status(404).json({
@@ -16,7 +14,6 @@ export const restoreFabricType = async (req, res) => {
       });
     }
 
-    // Check if fabric type is actually deleted
     if (!fabricType.deletedAt) {
       return res.status(400).json({
         success: false,
@@ -24,10 +21,8 @@ export const restoreFabricType = async (req, res) => {
       });
     }
 
-    // Restore the fabric type
     await fabricType.restore();
 
-    // Verify restoration
     const restoredFabricType = await FabricType.findByPk(id);
     if (!restoredFabricType) {
       return res.status(500).json({

@@ -1,6 +1,5 @@
-// Create Product Variant Controller - Create new product variant
-
 import db from '../../../config/db.js';
+import { invalidateProductCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const createProductVariant = async (req, res) => {
   try {
@@ -8,7 +7,6 @@ export const createProductVariant = async (req, res) => {
     const { id } = req.params;
     const { overallSize, seatSize, price, stockQuantity } = req.body;
 
-    // Check product exists
     const product = await Product.findByPk(id);
     if (!product) {
       return res.status(404).json({
@@ -17,7 +15,6 @@ export const createProductVariant = async (req, res) => {
       });
     }
 
-    // Validate input
     if (!price) {
       return res.status(400).json({
         success: false,
@@ -25,7 +22,6 @@ export const createProductVariant = async (req, res) => {
       });
     }
 
-    // Create new variant
     const variant = await ProductVariant.create({
       productId: id,
       overallSize,
@@ -33,6 +29,8 @@ export const createProductVariant = async (req, res) => {
       price: parseFloat(price),
       stockQuantity: stockQuantity || 0,
     });
+
+    await invalidateProductCache();
 
     res.status(201).json({
       success: true,

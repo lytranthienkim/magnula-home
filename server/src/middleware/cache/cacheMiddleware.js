@@ -12,6 +12,10 @@ export const cacheMiddleware = (ttl = DEFAULT_CACHE_TTL) => {
       return next();
     }
 
+    if (!redisClient.isOpen) {
+      return next();
+    }
+
     const cacheKey = generateCacheKey(req);
 
     try {
@@ -22,17 +26,16 @@ export const cacheMiddleware = (ttl = DEFAULT_CACHE_TTL) => {
       }
       res.set('X-Cache', 'MISS');
     } catch (error) {
-      console.error('Cache get error:', error);
     }
 
     const originalJson = res.json.bind(res);
     res.json = function (data) {
-      try {
-        redisClient.setEx(cacheKey, ttl, JSON.stringify(data)).catch(err => {
-          console.error('Cache set error:', err);
-        });
-      } catch (error) {
-        console.error('Cache error:', error);
+      if (redisClient.isOpen) {
+        try {
+          redisClient.setEx(cacheKey, ttl, JSON.stringify(data)).catch(() => {
+          });
+        } catch (error) {
+        }
       }
 
       return originalJson(data);
@@ -43,6 +46,10 @@ export const cacheMiddleware = (ttl = DEFAULT_CACHE_TTL) => {
 };
 
 export const clearCache = async (patterns = null) => {
+  if (!redisClient.isOpen) {
+    return;
+  }
+
   try {
     if (patterns) {
       const keys = await redisClient.keys(patterns);
@@ -53,17 +60,19 @@ export const clearCache = async (patterns = null) => {
       await redisClient.flushDb();
     }
   } catch (error) {
-    console.error('Cache clear error:', error);
   }
 };
 
 export const invalidateCache = async (pattern) => {
+  if (!redisClient.isOpen) {
+    return;
+  }
+
   try {
     const keys = await redisClient.keys(pattern);
     if (keys.length > 0) {
       await redisClient.del(keys);
     }
   } catch (error) {
-    console.error('Cache invalidate error:', error);
   }
 };

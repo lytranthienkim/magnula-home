@@ -1,5 +1,3 @@
-// Image Controllers Index
-
 export { getAllImages } from './getAllImages.controller.js';
 export { addProductImage } from './addProductImage.controller.js';
 export { getProductImages } from './getProductImages.controller.js';

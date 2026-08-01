@@ -1,5 +1,3 @@
-// Get Collection Images By Collection ID Controller
-
 import db from '../../../config/db.js';
 
 export const getCollectionImagesByCollectionId = async (req, res) => {
@@ -7,7 +5,6 @@ export const getCollectionImagesByCollectionId = async (req, res) => {
     const { CollectionImage, Collection } = db.models;
     const { collectionId } = req.params;
 
-    // Verify collection exists
     const collection = await Collection.findByPk(collectionId);
     if (!collection) {
       return res.status(404).json({

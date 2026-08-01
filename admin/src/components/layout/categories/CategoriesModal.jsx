@@ -8,12 +8,10 @@ export default function CategoriesModal({
   onClose,
   onEditModeChange,
   onEditDataChange,
-  onSave,
-  onRestore,
+  onSave
 }) {
   if (!selectedCategory) return null;
 
-  const display = editMode ? editData : selectedCategory;
   const isDeleted = selectedCategory.deletedAt !== null;
 
   return (
@@ -111,13 +109,6 @@ export default function CategoriesModal({
                     className="px-3 py-1.5 bg-white border-2 border-gray-300 text-black text-xs font-bold hover:bg-gray-50 transition"
                   >
                     Close
-                  </button>
-                  <button
-                    onClick={onRestore}
-                    disabled={saving}
-                    className="px-3 py-1.5 bg-green-600 text-white text-xs font-bold hover:bg-green-700 transition disabled:opacity-50"
-                  >
-                    {saving ? 'Restoring...' : 'Restore'}
                   </button>
                 </>
               ) : (

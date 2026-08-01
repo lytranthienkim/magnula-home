@@ -14,7 +14,6 @@ export const updateOrder = async (req, res) => {
       });
     }
 
-    // Build update payload - only update fields that are provided
     const updateData = {};
     if (status !== undefined) updateData.status = status;
     if (customerName !== undefined) updateData.customerName = customerName;
@@ -24,7 +23,6 @@ export const updateOrder = async (req, res) => {
     if (stateProvince !== undefined) updateData.stateProvince = stateProvince;
     if (shippingAddress !== undefined) updateData.shippingAddress = shippingAddress;
 
-    // Validate at least one field is being updated
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({
         success: false,

@@ -1,5 +1,3 @@
-// Get Permission By ID Controller
-
 import db from '../../../config/db.js';
 
 export const getPermissionById = async (req, res) => {
@@ -17,8 +15,6 @@ export const getPermissionById = async (req, res) => {
         error: 'Permission not found',
       });
     }
-
-    // Format response - add isActive based on deletedAt
     const formattedPermission = {
       id: permission.id,
       permissionKey: permission.permissionKey,

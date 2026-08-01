@@ -1,9 +1,8 @@
 'use client';
 
-/**
- * ProductsModal Component
- * Displays product details modal with edit/view functionality
- */
+import { useState } from 'react';
+import { uploadImageToR2, deleteImageFromR2 } from '@/api/upload';
+
 export function ProductsModal({
   isOpen,
   product,
@@ -34,9 +33,58 @@ export function ProductsModal({
   error,
   onErrorClear,
 }) {
+  const [imagePreview, setImagePreview] = useState({});
+  const [uploadingImageIdx, setUploadingImageIdx] = useState(null);
+  const [uploadError, setUploadError] = useState({});
+
   if (!isOpen || !product) return null;
 
   const isDeleted = product.deletedAt;
+
+  const handleImageFileSelect = async (e, idx) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadError((prev) => ({
+      ...prev,
+      [idx]: '',
+    }));
+
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview((prev) => ({
+      ...prev,
+      [idx]: previewUrl,
+    }));
+
+    setUploadingImageIdx(idx);
+    try {
+      const result = await uploadImageToR2(file);
+      if (result.success && result.imageUrl) {
+        const newImages = [...(editData.images || product.images)];
+        newImages[idx] = {
+          ...newImages[idx],
+          imageUrl: result.imageUrl,
+        };
+        onEditDataChange({ ...editData, images: newImages });
+        setUploadError((prev) => ({
+          ...prev,
+          [idx]: '',
+        }));
+      } else {
+        setUploadError((prev) => ({
+          ...prev,
+          [idx]: 'Upload failed - no URL returned',
+        }));
+      }
+    } catch (err) {
+      setUploadError((prev) => ({
+        ...prev,
+        [idx]: err.message || 'Upload failed',
+      }));
+    } finally {
+      setUploadingImageIdx(null);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -48,7 +96,6 @@ export function ProductsModal({
 
         {/* Content */}
         <div className="px-8 py-6 space-y-8">
-          {/* Basic Information */}
           <div>
             <div className="space-y-4">
               <div className="flex items-start">
@@ -135,7 +182,7 @@ export function ProductsModal({
             </select>
           </div>
 
-          {/* Fabric Type */}
+          {/* Fabric type */}
           <div className="flex items-start">
             <p className="text-xs text-black font-semibold uppercase w-40">Fabric:</p>
             <select
@@ -152,7 +199,7 @@ export function ProductsModal({
             </select>
           </div>
 
-          {/* Room Suitability */}
+          {/* Room suitability */}
           <div className="flex items-start">
             <p className="text-xs text-black font-semibold uppercase w-40">Room Size:</p>
             <select
@@ -247,32 +294,67 @@ export function ProductsModal({
             </div>
           )}
 
-          {/* Product Images */}
+          {/* Product img*/}
           <div>
             <p className="text-sm text-black font-semibold uppercase mb-4">Product Images</p>
             {editMode && (
               <div className="mb-4">
-                <label className="text-xs text-black font-semibold uppercase block mb-2">Add Image URL:</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Enter image URL"
-                    value={editData.newImageUrl || ''}
-                    onChange={(e) => onEditDataChange({ ...editData, newImageUrl: e.target.value })}
-                    className="flex-1 px-4 py-2 bg-white border border-gray-300 text-xs text-black rounded focus:outline-none"
-                  />
+                <div className="flex justify-between items-center mb-3">
+                  <label className="text-xs text-black font-semibold uppercase">Add Image:</label>
                   <button
-                    onClick={() => onAddImage(editData.newImageUrl)}
-                    className="px-4 py-2 bg-black text-white text-xs font-bold rounded hover:bg-gray-800"
+                    type="button"
+                    onClick={() => onAddImage()}
+                    className="text-xs text-black hover:text-gray-600 font-semibold"
                   >
-                    Add
+                    + Add
                   </button>
                 </div>
+                {(editData.images || product.images)?.map((image, idx) => (
+                  <div key={idx} className="mb-3">
+                    <div className="flex gap-2 mb-2 items-start">
+                      <div className="flex-1">
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/gif,image/webp"
+                          onChange={(e) => handleImageFileSelect(e, idx)}
+                          disabled={uploadingImageIdx === idx}
+                          className="w-full px-3 py-2 border border-gray-300 rounded text-xs focus:outline-none focus:border-black disabled:opacity-50"
+                        />
+                        {image.imageUrl && (
+                          <p className="text-xs text-gray-600 mt-1 break-all line-clamp-2">{image.imageUrl}</p>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => onRemoveImage(idx)}
+                        disabled={((editData.images || product.images) || []).length === 1}
+                        className="px-3 py-2 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    {uploadError[idx] && (
+                      <div className="text-xs text-red-500 mb-2">{uploadError[idx]}</div>
+                    )}
+                    {uploadingImageIdx === idx && (
+                      <div className="text-xs text-gray-500 mb-2">Uploading...</div>
+                    )}
+                    {image.imageUrl && (
+                      <div className="flex items-center justify-center w-full h-24 bg-gray-100 rounded border border-gray-200 mb-2">
+                        <img
+                          src={imagePreview[idx] || image.imageUrl}
+                          alt={`Preview ${idx}`}
+                          className="h-full object-contain"
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
-            {(editData.images || product.images) && (editData.images || product.images).length > 0 && (
+            {!editMode && (editData.images || product.images) && (editData.images || product.images).length > 0 && (
               <div className="grid grid-cols-4 gap-3">
-                {(editData.images || product.images).map((img, idx) => (
+                {(editData.images || product.images).map((img) => (
                   <div key={img.id} className="flex flex-col">
                     <div className="relative bg-gray-100 rounded overflow-hidden aspect-square mb-2">
                       <img src={img.imageUrl} alt="Product" className="w-full h-full object-cover" />
@@ -280,16 +362,7 @@ export function ProductsModal({
                         <div className="absolute top-1 right-1 bg-yellow-500 text-white text-xs px-2 py-1 rounded font-semibold">MAIN</div>
                       )}
                     </div>
-                    <p className="text-xs text-gray-600 break-all line-clamp-2 mb-2">{img.imageUrl}</p>
-                    {editMode && (
-                      <button
-                        onClick={() => onRemoveImage(idx)}
-                        disabled={((editData.images || product.images) || []).length === 1}
-                        className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition w-full disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Remove
-                      </button>
-                    )}
+                    <p className="text-xs text-gray-600 break-all line-clamp-2">{img.imageUrl}</p>
                   </div>
                 ))}
               </div>

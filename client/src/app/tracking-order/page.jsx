@@ -25,7 +25,7 @@ export default function TrackingOrderPage() {
             <main className="w-full h-[90vh] flex items-center justify-center padding-wide py-6 md:py-10">
                 <div className="w-full max-w-[900px] flex flex-col items-center gap-4 md:gap-5">
 
-                    {/* Title Section */}
+                    {/* Title section */}
                     <motion.div
                         className='flex flex-col items-center justify-center gap-2'
                         variants={trackingHeaderContainerVariants}
@@ -47,7 +47,7 @@ export default function TrackingOrderPage() {
                         </motion.p>
                     </motion.div>
 
-                    {/* Tracking Form */}
+                    {/* Tracking form */}
                     <motion.div
                         variants={trackingFormContainerVariants}
                         initial="hidden"
@@ -64,7 +64,7 @@ export default function TrackingOrderPage() {
                         />
                     </motion.div>
 
-                    {/* Order Details */}
+                    {/* Order details */}
                     {trackingLoading && trackedOrder === null ? (
                         <SkeletonTrackingOrder />
                     ) : (

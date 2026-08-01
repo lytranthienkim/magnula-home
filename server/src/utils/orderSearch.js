@@ -1,5 +1,3 @@
-//getAllOrders
-
 import { Op } from 'sequelize';
 
 export const buildOrderSearchWhere = (queryParams) => {

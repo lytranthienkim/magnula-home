@@ -32,7 +32,7 @@ const RolePermission = db.define(
   },
   {
     tableName: 'role_permissions',
-    timestamps: false,  // Pivot table - no need to track created/updated
+    timestamps: false,
     underscored: true,
   }
 );

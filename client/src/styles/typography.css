@@ -1,4 +1,4 @@
-/* Hanken Design Co - Neue Einstellung */
+/* - typo -*/
 @font-face {
   font-family: 'Hanken Design Co - Neue Einstellung Light';
   src: url('/fonts/Hanken Design Co - Neue Einstellung Light.otf') format('opentype');
@@ -16,27 +16,20 @@
 
 @font-face {
   font-family: 'The Seasons Italic';
-  src: url('/fonts/The Seasons Italic.ttf') format('opentype');
+  src: url('/fonts/The Seasons Italic.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'TheSeasonsBold';
-  src: url('/fonts/TheSeasonsBold.ttf') format('opentype');
+  src: url('/fonts/TheSeasonsBold.ttf') format('truetype');
 }
 
-Link {
-    font-size: clamp(12px, 1vw, 14px);
-    font-weight: 300;
-}
-
-Link:hover {
-    font-weight: 500;
-}
+/*--*/
 
 h1 {
     font-size: clamp(32px, 2vw, 56px);
     line-height: 1.5;
-    letter-spacing: 0.5;
+    letter-spacing: 0.5px;
 }
 
 .h1-neu {
@@ -91,7 +84,16 @@ a {
     font-size: clamp(11px, 1vw, 13px);
 }
 
-/* Neue Einstellung Utilities */
+a {
+  font-size: clamp(12px, 1vw, 14px);
+  font-weight: 300;
+}
+
+a:hover {
+  font-weight: 500;
+}
+
+/* font */
 @layer utilities {
 
   .font-display-regular {

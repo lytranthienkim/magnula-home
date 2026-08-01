@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { Sidebar } from '@/components/layout/dashboard/Sidebar';
-import { Topbar } from '@/components/layout/dashboard/Topbar';
+import { Sidebar } from '@/components/layout/navigate/Sidebar';
+import { Topbar } from '@/components/layout/navigate/topbar/Topbar';
 
 export default function DashboardLayout({ children }) {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function DashboardLayout({ children }) {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push('/login');
+      router.push('/auth/login');
     }
   }, [isAuthenticated, router]);
 
@@ -30,7 +30,6 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
-      {/* Sidebar - Fixed on mobile/tablet, static on desktop */}
       <div className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-white transform transition-all duration-300 ease-in-out
         lg:static lg:translate-x-0 lg:z-auto
@@ -39,7 +38,6 @@ export default function DashboardLayout({ children }) {
         <Sidebar onClose={() => setSidebarOpen(false)} />
       </div>
 
-      {/* Mobile overlay - Click to close */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black/30 z-40 lg:hidden transition-opacity duration-300"
@@ -48,12 +46,8 @@ export default function DashboardLayout({ children }) {
         />
       )}
 
-      {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Topbar */}
         <Topbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} sidebarOpen={sidebarOpen} />
-
-        {/* Content */}
         <main className="flex-1 overflow-y-auto mt-16 p-4 md:p-6 lg:p-8 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             {children}

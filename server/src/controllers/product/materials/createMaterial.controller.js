@@ -1,13 +1,11 @@
-// Create Material Controller
-
 import db from '../../../config/db.js';
+import { invalidateMaterialCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const createMaterial = async (req, res) => {
   try {
     const { Material } = db.models;
     const { name, description } = req.body;
 
-    // Validate input
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
       return res.status(400).json({
         success: false,
@@ -15,7 +13,6 @@ export const createMaterial = async (req, res) => {
       });
     }
 
-    // Check if material already exists (only active)
     const existing = await Material.findOne({
       where: { name: name.trim(), isActive: true, deletedAt: null },
     });
@@ -27,12 +24,13 @@ export const createMaterial = async (req, res) => {
       });
     }
 
-    // Create material
     const material = await Material.create({
       name: name.trim(),
       description: description || null,
       isActive: true,
     });
+
+    await invalidateMaterialCache();
 
     res.status(201).json({
       success: true,

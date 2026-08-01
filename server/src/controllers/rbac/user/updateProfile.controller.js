@@ -15,7 +15,6 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    // Get target user
     const user = await User.findByPk(targetUserId);
     if (!user) {
       return res.status(404).json({
@@ -24,7 +23,6 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    // Validate email format if provided
     if (email) {
       if (!isValidEmail(email)) {
         return res.status(400).json({
@@ -33,7 +31,6 @@ export const updateProfile = async (req, res) => {
         });
       }
 
-      // Check email uniqueness
       const existingUser = await checkEmailUniqueness(User, email, targetUserId);
       if (existingUser) {
         return res.status(400).json({
@@ -43,14 +40,12 @@ export const updateProfile = async (req, res) => {
       }
     }
 
-    // Update basic fields (fullName, email only)
     const updateData = {};
     if (fullName) updateData.fullName = fullName;
     if (email) updateData.email = email;
 
     await user.update(updateData);
 
-    // Build response
     res.json({
       success: true,
       data: {

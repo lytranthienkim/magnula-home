@@ -1,5 +1,3 @@
-// Update Room Suitability Status Controller - Activate/Deactivate only
-
 import db from '../../../config/db.js';
 
 export const updateRoomSuitabilityStatus = async (req, res) => {

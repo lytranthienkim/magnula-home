@@ -45,41 +45,10 @@ export const AboutHero = () => {
     }, []);
 
     useLayoutEffect(() => {
-        const handleScroll = () => {
-            if (!trackRef.current) return;
-            const rect = trackRef.current.getBoundingClientRect();
-            const currentScroll = -rect.top;
-            const animationDistance = window.innerHeight * 0.4;
-            const currentProgress = Math.min(1, Math.max(0, currentScroll / animationDistance));
-            setProgress(currentProgress);
-
-            const scrollAmount = window.scrollY;
-
-            if (scrollAmount > window.innerHeight * 0.2) {
-                setShowContainer(true);
-            } else {
-                setShowContainer(false);
-            }
-
-            if (scrollAmount > window.innerHeight * 0.35) {
-                setShowDecor(true);
-            } else {
-                setShowDecor(false);
-            }
-
-            if (scrollAmount > window.innerHeight * 0.5) {
-                setShowText(true);
-            } else {
-                setShowText(false);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        handleScroll();
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
+        setProgress(1);
+        setShowContainer(true);
+        setShowDecor(true);
+        setShowText(true);
     }, []);
 
     const cartCount = useSelector((state) => state.cart.totalQuantity);

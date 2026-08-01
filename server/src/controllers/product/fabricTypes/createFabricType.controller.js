@@ -1,13 +1,11 @@
-// Create Fabric Type Controller
-
 import db from '../../../config/db.js';
+import { invalidateFabricTypeCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const createFabricType = async (req, res) => {
   try {
     const { FabricType } = db.models;
     const { name, description } = req.body;
 
-    // Validate input
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
       return res.status(400).json({
         success: false,
@@ -15,7 +13,6 @@ export const createFabricType = async (req, res) => {
       });
     }
 
-    // Check if fabric type already exists (only active)
     const existing = await FabricType.findOne({
       where: { name: name.trim(), isActive: true, deletedAt: null },
     });
@@ -27,12 +24,13 @@ export const createFabricType = async (req, res) => {
       });
     }
 
-    // Create fabric type
     const fabricType = await FabricType.create({
       name: name.trim(),
       description: description || null,
       isActive: true,
     });
+
+    await invalidateFabricTypeCache();
 
     res.status(201).json({
       success: true,

@@ -7,12 +7,11 @@ export const SkeletonCheckout = ({ className = '' }) => {
     return (
         <div className={`w-full ${className}`}>
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1px_1fr] gap-4 md:gap-6">
-                {/* Left - Checkout Form */}
                 <div className="flex flex-col gap-4 md:gap-6">
-                    {/* Section Title */}
+                    {/* Section title */}
                     <SkeletonText lines={1} height="h-6" width="w-1/3" />
 
-                    {/* Form Fields */}
+                    {/* Form fields */}
                     <div className="flex flex-col gap-3">
                         <SkeletonText lines={1} height="h-3" width="w-1/4" />
                         <SkeletonText lines={1} height="h-10" width="w-full" />
@@ -34,16 +33,14 @@ export const SkeletonCheckout = ({ className = '' }) => {
                         </div>
                     </div>
 
-                    {/* Submit Button */}
+                    {/* Submit button */}
                     <SkeletonText lines={1} height="h-12" width="w-full" />
                 </div>
 
-                {/* Divider */}
                 <div className="hidden lg:block w-[1px] bg-[#272727]/10"></div>
 
-                {/* Right - Order Summary */}
                 <div className="flex flex-col gap-4 md:gap-6">
-                    {/* Section Title */}
+                    {/* Section title */}
                     <SkeletonText lines={1} height="h-6" width="w-1/3" />
 
                     {/* Items */}

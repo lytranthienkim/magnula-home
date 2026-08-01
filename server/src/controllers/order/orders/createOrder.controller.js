@@ -19,7 +19,6 @@ export const createOrder = async (req, res) => {
       paymentMethodId,
     } = req.body;
 
-    // Validate required fields
     if (!fullName || !email || !phone || !countryRegion || !stateProvince || !shippingAddress) {
       await transaction.rollback();
       return res.status(400).json({
@@ -28,7 +27,6 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    // Validate shipping address (Layer 1: Regex & Logic)
     const addressValidation = validateShippingAddress(shippingAddress);
     if (!addressValidation.valid) {
       await transaction.rollback();
@@ -38,7 +36,6 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    // Validate phone format
     if (!isValidPhone(phone)) {
       await transaction.rollback();
       return res.status(400).json({
@@ -55,7 +52,6 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    // Verify payment method if provided
     if (paymentMethodId) {
       const paymentMethod = await PaymentMethod.findByPk(paymentMethodId, { transaction });
       if (!paymentMethod) {
@@ -70,7 +66,6 @@ export const createOrder = async (req, res) => {
     let totalPrice = 0;
     const orderItemsData = [];
 
-    // Validate all items first
     for (const item of items) {
       if (!item.productVariantId || !item.quantity) {
         await transaction.rollback();
@@ -106,10 +101,8 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    // Tạo mã đơn hàng gồm: ORD + ngày hiện tại + 6 ký tự ngẫu nhiên
     const orderCode = `ORD-${new Date().toISOString().split('T')[0]}-${uuidv4().substring(0, 6).toUpperCase()}`;
 
-    // Create order 
     const order = await Order.create(
       {
         orderCode,
@@ -126,7 +119,6 @@ export const createOrder = async (req, res) => {
       { transaction }
     );
 
-    // Create order items and update stock
     for (const itemData of orderItemsData) {
       await OrderItem.create({ orderId: order.id, ...itemData }, { transaction });
       const variant = await ProductVariant.findByPk(itemData.productVariantId, { transaction });

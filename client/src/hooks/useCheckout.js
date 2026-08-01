@@ -13,7 +13,6 @@ export const useCheckout = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // Tính tổng giá trị giỏ hàng dựa trên cartItems
     const cartTotal = useMemo(() => {
         return cartItems.reduce((sum, item) => sum + (parseFloat(item.price || 0) * item.quantity), 0).toFixed(2);
     }, [cartItems]);
@@ -23,7 +22,6 @@ export const useCheckout = () => {
         setError('');
 
         try {
-            // Trả về một mảng các đối tượng order items từ cartItems
             const orderItems = cartItems.map(item => ({
                 productVariantId: item.productVariantId,
                 quantity: item.quantity,
@@ -38,14 +36,12 @@ export const useCheckout = () => {
             const response = await createOrder(orderData);
 
             if (response.success) {
-                // Dọn dẹp giỏ hàng sau khi tạo đơn hàng thành công
                 dispatch(clearCart());
                 router.push(`/order-confirmation?orderCode=${response.data.orderCode}&orderId=${response.data.orderId}`);
             } else {
                 setError(response.error || 'Failed to create order');
             }
         } catch (err) {
-            // Extract error message from API response (for stock validation errors)
             const errorMessage = err.response?.data?.error || err?.error || err?.message || 'An error occurred during checkout';
             setError(errorMessage);
             console.error('Checkout error:', err);

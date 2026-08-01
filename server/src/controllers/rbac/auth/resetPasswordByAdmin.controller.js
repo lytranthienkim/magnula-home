@@ -5,9 +5,8 @@ export const resetPasswordByAdmin = async (req, res) => {
   try {
     const { User } = db.models;
     const { userId, newPassword } = req.body;
-    const adminId = req.user.userId; // Lấy từ JWT token
+    const adminId = req.user.userId; 
 
-    // Kiểm tra dữ liệu đầu vào
     if (!userId || !newPassword) {
       return res.status(400).json({
         success: false,
@@ -15,7 +14,6 @@ export const resetPasswordByAdmin = async (req, res) => {
       });
     }
 
-    // Kiểm tra độ mạnh của mật khẩu
     if (newPassword.length < 6) {
       return res.status(400).json({
         success: false,
@@ -23,7 +21,6 @@ export const resetPasswordByAdmin = async (req, res) => {
       });
     }
 
-    // Lấy thông tin người dùng cần đặt lại mật khẩu
     const targetUser = await User.findByPk(userId);
     if (!targetUser) {
       return res.status(404).json({
@@ -32,8 +29,6 @@ export const resetPasswordByAdmin = async (req, res) => {
       });
     }
 
-    // Ngăn chặn admin đặt lại mật khẩu của chính họ thông qua endpoint này
-    // admin nên sử dụng endpoint changePassword yêu cầu mật khẩu cũ
     if (adminId === userId) {
       return res.status(400).json({
         success: false,
@@ -41,10 +36,8 @@ export const resetPasswordByAdmin = async (req, res) => {
       });
     }
 
-    // Mã hóa mật khẩu mới
     const passwordHash = await bcrypt.hash(newPassword, 10);
-
-    // Cập nhật mật khẩu trong cơ sở dữ liệu
+    
     await targetUser.update({ passwordHash });
 
     res.json({

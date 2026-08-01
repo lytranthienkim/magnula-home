@@ -1,6 +1,5 @@
-// Update Room Suitability Controller
-
 import db from '../../../config/db.js';
+import { invalidateRoomSuitabilityCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const updateRoomSuitability = async (req, res) => {
   try {
@@ -8,7 +7,6 @@ export const updateRoomSuitability = async (req, res) => {
     const { id } = req.params;
     const { name, description, isActive } = req.body;
 
-    // Get room suitability
     const roomSuitability = await RoomSuitability.findByPk(id);
 
     if (!roomSuitability) {
@@ -18,7 +16,6 @@ export const updateRoomSuitability = async (req, res) => {
       });
     }
 
-    // Validate name if changing
     if (name && name.trim() !== roomSuitability.name) {
       if (typeof name !== 'string' || name.trim().length === 0) {
         return res.status(400).json({
@@ -39,12 +36,13 @@ export const updateRoomSuitability = async (req, res) => {
       }
     }
 
-    // Update fields
     if (name) roomSuitability.name = name.trim();
     if (description !== undefined) roomSuitability.description = description || null;
     if (isActive !== undefined) roomSuitability.isActive = isActive;
 
     await roomSuitability.save();
+
+    await invalidateRoomSuitabilityCache();
 
     res.status(200).json({
       success: true,

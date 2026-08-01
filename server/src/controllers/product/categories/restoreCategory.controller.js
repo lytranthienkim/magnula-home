@@ -1,13 +1,11 @@
-// Restore Category Controller - Restore soft-deleted category
-
 import db from '../../../config/db.js';
+import { invalidateCategoryCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const restoreCategory = async (req, res) => {
   try {
     const { Category } = db.models;
     const { id } = req.params;
 
-    // Find the soft-deleted category
     const category = await Category.findByPk(id, { paranoid: false });
     if (!category) {
       return res.status(404).json({
@@ -16,7 +14,6 @@ export const restoreCategory = async (req, res) => {
       });
     }
 
-    // Check if category is actually deleted
     if (!category.deletedAt) {
       return res.status(400).json({
         success: false,
@@ -24,10 +21,8 @@ export const restoreCategory = async (req, res) => {
       });
     }
 
-    // Restore the category
     await category.restore();
 
-    // Verify restoration
     const restoredCategory = await Category.findByPk(id);
     if (!restoredCategory) {
       return res.status(500).json({
@@ -35,6 +30,8 @@ export const restoreCategory = async (req, res) => {
         error: 'Failed to restore category - verification failed',
       });
     }
+
+    await invalidateCategoryCache();
 
     res.json({
       success: true,

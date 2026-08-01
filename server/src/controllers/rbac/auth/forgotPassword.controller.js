@@ -8,7 +8,6 @@ export const forgotPassword = async (req, res) => {
     const { User } = db.models;
     const { email, newPassword } = req.body;
 
-    // Validate input
     if (!email || !newPassword) {
       return res.status(400).json({
         success: false,
@@ -16,7 +15,6 @@ export const forgotPassword = async (req, res) => {
       });
     }
 
-    // Validate email format
     if (!isValidEmail(email)) {
       return res.status(400).json({
         success: false,
@@ -24,7 +22,6 @@ export const forgotPassword = async (req, res) => {
       });
     }
 
-    // Validate password strength
     if (newPassword.length < 6) {
       return res.status(400).json({
         success: false,
@@ -32,7 +29,6 @@ export const forgotPassword = async (req, res) => {
       });
     }
 
-    // Find user by email
     const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.status(404).json({
@@ -41,10 +37,8 @@ export const forgotPassword = async (req, res) => {
       });
     }
 
-    // Hash new password
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
-    // Update password
     await user.update({ passwordHash });
 
     res.json({

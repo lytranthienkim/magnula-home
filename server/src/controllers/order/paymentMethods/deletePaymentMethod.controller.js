@@ -1,5 +1,3 @@
-// Delete Payment Method Controller - Soft delete with order reference check
-
 import db from '../../../config/db.js';
 
 export const deletePaymentMethod = async (req, res) => {
@@ -7,7 +5,6 @@ export const deletePaymentMethod = async (req, res) => {
     const { PaymentMethod, Order } = db.models;
     const { id } = req.params;
 
-    // Get payment method
     const paymentMethod = await PaymentMethod.findByPk(id);
     if (!paymentMethod) {
       return res.status(404).json({
@@ -16,7 +13,6 @@ export const deletePaymentMethod = async (req, res) => {
       });
     }
 
-    // Check if any order uses this payment method
     const orderCount = await Order.count({
       where: { paymentMethodId: id, deletedAt: null },
     });
@@ -28,10 +24,8 @@ export const deletePaymentMethod = async (req, res) => {
       });
     }
 
-    // Safe to soft delete using Sequelize's destroy method
     await paymentMethod.destroy();
 
-    // Verify deletion was successful
     const deletedPaymentMethod = await PaymentMethod.findByPk(id, { paranoid: false });
     if (!deletedPaymentMethod || !deletedPaymentMethod.deletedAt) {
       return res.status(500).json({

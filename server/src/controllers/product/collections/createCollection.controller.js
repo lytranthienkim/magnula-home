@@ -1,6 +1,5 @@
-// Create Collection Controller - Create collection with images using transaction
-
 import db from '../../../config/db.js';
+import { invalidateCollectionCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const createCollection = async (req, res) => {
   const transaction = await db.transaction();
@@ -9,7 +8,6 @@ export const createCollection = async (req, res) => {
     const { Collection, CollectionImage } = db.models;
     const { collectionName, colorHex, description, images } = req.body;
 
-    // Validate input
     if (!collectionName || !colorHex) {
       await transaction.rollback();
       return res.status(400).json({
@@ -18,7 +16,6 @@ export const createCollection = async (req, res) => {
       });
     }
 
-    // Validate color format
     if (!/^#[0-9A-F]{6}$/i.test(colorHex)) {
       await transaction.rollback();
       return res.status(400).json({
@@ -27,7 +24,6 @@ export const createCollection = async (req, res) => {
       });
     }
 
-    // Check if collection name already exists
     const existingCollection = await Collection.findOne({
       where: { collectionName, deletedAt: null },
       transaction,
@@ -41,7 +37,6 @@ export const createCollection = async (req, res) => {
       });
     }
 
-    // Create collection
     const collection = await Collection.create(
       {
         collectionName,
@@ -51,7 +46,6 @@ export const createCollection = async (req, res) => {
       { transaction }
     );
 
-    // Create collection images if provided
     if (Array.isArray(images) && images.length > 0) {
       await CollectionImage.bulkCreate(
         images.map((img) => ({
@@ -62,7 +56,6 @@ export const createCollection = async (req, res) => {
       );
     }
 
-    // Fetch created collection with images
     const createdCollection = await Collection.findByPk(collection.id, {
       include: [
         {
@@ -74,6 +67,8 @@ export const createCollection = async (req, res) => {
     });
 
     await transaction.commit();
+
+    await invalidateCollectionCache();
 
     res.status(201).json({
       success: true,

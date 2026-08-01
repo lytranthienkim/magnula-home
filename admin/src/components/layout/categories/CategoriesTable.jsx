@@ -2,7 +2,7 @@
 
 import { Table } from '@/components/common/table/Table';
 
-export default function CategoriesTable({ data, loading, onViewDetails, sortOrder, onSortOrderChange, onDelete, canDelete }) {
+export default function CategoriesTable({ data, loading, onViewDetails, sortOrder, onSortOrderChange, onDelete, onRestore, canDelete }) {
   const columns = [
     { key: 'id', label: 'ID', width: '50px' },
     {

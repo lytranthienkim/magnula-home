@@ -5,13 +5,11 @@ export const getOrderItems = async (req, res) => {
     const { orderId } = req.params;
     const { Order, OrderItem, Product, ProductVariant } = db.models;
 
-    // Verify order exists
     const order = await Order.findByPk(orderId);
     if (!order) {
       return res.status(404).json({ success: false, error: 'Order not found' });
     }
 
-    // Get all items for this order
     const items = await OrderItem.findAll({
       where: { orderId },
       include: [

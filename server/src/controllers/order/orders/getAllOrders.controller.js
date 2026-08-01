@@ -1,5 +1,3 @@
-// Get All Orders Controller - Fetch all orders with search
-
 import db from '../../../config/db.js';
 import { buildCompleteOrderSearch } from '../../../utils/orderSearch.js';
 
@@ -7,11 +5,12 @@ export const getAllOrders = async (req, res) => {
   try {
     const { Order, OrderItem, Product, ProductVariant, PaymentMethod } = db.models;
 
-    // Build WHERE clause from query params (phone, orderCode, email, status)
-    // Note: Orders are immutable - no soft delete support
+    const limit = req.query.limit ? Math.min(parseInt(req.query.limit, 10), 100) : 10;
+    const offset = req.query.offset ? Math.max(parseInt(req.query.offset, 10), 0) : 0;
+
     const searchWhere = buildCompleteOrderSearch(req.query);
 
-    const orders = await Order.findAll({
+    const { count, rows: orders } = await Order.findAndCountAll({
       where: searchWhere,
       include: [
         {
@@ -35,11 +34,14 @@ export const getAllOrders = async (req, res) => {
         },
       ],
       order: [['createdAt', 'DESC']],
+      limit,
+      offset,
     });
 
     res.json({
       success: true,
       data: orders,
+      total: count,
     });
   } catch (error) {
     console.error('Get all orders error:', error);

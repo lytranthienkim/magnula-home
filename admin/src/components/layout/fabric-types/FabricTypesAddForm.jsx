@@ -1,0 +1,70 @@
+'use client';
+
+export default function FabricTypesAddForm({
+  showAddForm,
+  formData,
+  formLoading,
+  formError,
+  onFormDataChange,
+  onClearError,
+  onSubmit,
+  onCancel,
+}) {
+  if (!showAddForm) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-8">
+        <h3 className="text-xl font-bold text-black mb-6">Add New Fabric Type</h3>
+        <div className="space-y-4 mb-8">
+          {formError && <div className="p-3 bg-red-50 border border-red-200 rounded"><p className="text-xs text-red-600">{formError}</p></div>}
+          <div>
+            <label className="text-xs font-semibold text-black uppercase block mb-2">Name *</label>
+            <input
+              type="text"
+              value={formData.name || ''}
+              onChange={(e) => onFormDataChange({ ...formData, name: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded text-sm text-black focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-black uppercase block mb-2">Description</label>
+            <textarea
+              value={formData.description || ''}
+              onChange={(e) => onFormDataChange({ ...formData, description: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded text-sm text-black focus:outline-none"
+              rows="2"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-black uppercase block mb-2">Status</label>
+            <select
+              value={formData.isActive ? 'active' : 'inactive'}
+              onChange={(e) => onFormDataChange({ ...formData, isActive: e.target.value === 'active' })}
+              className="w-full px-4 py-2 border border-gray-300 rounded text-sm text-black focus:outline-none"
+            >
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex gap-3 justify-end">
+          <button
+            onClick={onCancel}
+            disabled={formLoading}
+            className="px-6 py-2 border border-gray-300 text-black text-xs font-bold rounded hover:bg-gray-50 transition disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onSubmit}
+            disabled={formLoading}
+            className="px-6 py-2 bg-black text-white text-xs font-bold rounded hover:bg-gray-800 transition disabled:opacity-50"
+          >
+            {formLoading ? 'Adding...' : 'Add'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

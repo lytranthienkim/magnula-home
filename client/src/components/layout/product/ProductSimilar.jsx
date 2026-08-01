@@ -31,8 +31,6 @@ export const ProductSimilar = () => {
                     generateSlug(p.productName) === slug
                 );
                 setProduct(foundProduct || null);
-
-                // Get products from same collection
                 if (foundProduct?.collectionId) {
                     const sameCollectionProducts = response.data.filter(
                         p => p.collectionId === foundProduct.collectionId && p.id !== foundProduct.id
@@ -64,7 +62,6 @@ export const ProductSimilar = () => {
             {/* Header */}
             <motion.h2 className="font-display-ss-regular text-center" variants={productSimilarHeaderVariants}>{collectionName} <span className="font-display-ss-italic">collection</span></motion.h2>
 
-            {/* Horizontal Scroll Container */}
             <motion.div
                 ref={scrollContainerRef}
                 className="flex gap-1 md:gap-2 lg:gap-3 overflow-x-auto pb-2 md:pb-3 lg:pb-4 no-scrollbar"

@@ -14,7 +14,6 @@ export const updateProductRequest = async (req, res) => {
       });
     }
 
-    // Update status only (Sequelize validates against ENUM: pending, approved, rejected)
     if (status) {
       request.status = status;
     }

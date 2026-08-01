@@ -1,5 +1,3 @@
-// Update Permission Controller
-
 import db from '../../../config/db.js';
 
 export const updatePermission = async (req, res) => {
@@ -8,7 +6,6 @@ export const updatePermission = async (req, res) => {
     const { id } = req.params;
     const { permissionKey, description } = req.body;
 
-    // Get permission
     const permission = await Permission.findByPk(id);
     if (!permission) {
       return res.status(404).json({
@@ -17,7 +14,6 @@ export const updatePermission = async (req, res) => {
       });
     }
 
-    // Validate new permission key (if changing)
     if (permissionKey && permissionKey !== permission.permissionKey) {
       if (typeof permissionKey !== 'string' || permissionKey.trim().length < 2) {
         return res.status(400).json({
@@ -40,7 +36,6 @@ export const updatePermission = async (req, res) => {
       }
     }
 
-    // Update fields
     if (permissionKey) permission.permissionKey = permissionKey.trim();
     if (description !== undefined) permission.description = description || null;
 

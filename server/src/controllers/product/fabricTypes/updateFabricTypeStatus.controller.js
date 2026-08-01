@@ -1,6 +1,5 @@
-// Update Fabric Type Status Controller - Activate/Deactivate only
-
 import db from '../../../config/db.js';
+import { invalidateFabricTypeCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const updateFabricTypeStatus = async (req, res) => {
   try {

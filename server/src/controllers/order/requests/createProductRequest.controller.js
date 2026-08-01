@@ -6,7 +6,6 @@ export const createProductRequest = async (req, res) => {
     const { ProductRequest, Product, ProductVariant } = db.models;
     const { customerName, customerPhone, productId, productVariantId, requestedQuantity, description } = req.body;
 
-    // Validate input
     if (!customerName || !customerPhone) {
       return res.status(400).json({
         success: false,
@@ -14,7 +13,6 @@ export const createProductRequest = async (req, res) => {
       });
     }
 
-    // Validate phone format
     if (!isValidPhone(customerPhone)) {
       return res.status(400).json({
         success: false,
@@ -36,7 +34,6 @@ export const createProductRequest = async (req, res) => {
       });
     }
 
-    // Verify product/variant exists if provided
     if (productId) {
       const product = await Product.findByPk(productId);
       if (!product) {
@@ -57,7 +54,6 @@ export const createProductRequest = async (req, res) => {
       }
     }
 
-    // Create product request (sanitize phone: remove special chars, keep only digits)
     const request = await ProductRequest.create({
       customerName,
       customerPhone: sanitizePhone(customerPhone),

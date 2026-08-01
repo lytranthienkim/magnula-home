@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
 import { Table } from '@/components/common/table/Table';
 import { VscChromeRestore } from "react-icons/vsc";
+import { ENTITY_TYPES } from '@/constants/entities';
 import {
   getDeletedProducts,
   getDeletedCategories,
@@ -15,12 +15,30 @@ import {
   getDeletedUsers,
   getDeletedRoles,
   getDeletedPermissions,
-  getDeletedOrders,
   restoreItem,
 } from '@/api/restore';
 
+const FETCHERS = {
+  products: getDeletedProducts,
+  categories: getDeletedCategories,
+  collections: getDeletedCollections,
+  materials: getDeletedMaterials,
+  'fabric-types': getDeletedFabricTypes,
+  'room-suitabilities': getDeletedRoomSuitabilities,
+  images: getDeletedImages,
+  users: getDeletedUsers,
+  roles: getDeletedRoles,
+  permissions: getDeletedPermissions,
+};
+
+const parseData = (res) => {
+  if (Array.isArray(res?.data)) return res.data;
+  if (Array.isArray(res?.data?.data)) return res.data.data;
+  if (Array.isArray(res)) return res;
+  return [];
+};
+
 export default function RestorePage() {
-  const { user: currentUser } = useSelector((state) => state.auth);
   const [deletedItems, setDeletedItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState('products');
@@ -28,68 +46,18 @@ export default function RestorePage() {
   const [success, setSuccess] = useState('');
   const [restoring, setRestoring] = useState(false);
 
-  // Entity types that support soft delete
-  // Note: Users use isActive flag (not paranoid), Orders are immutable
-  const entityTypes = [
-    { value: 'products', label: 'Products' },
-    { value: 'categories', label: 'Categories' },
-    { value: 'collections', label: 'Collections' },
-    { value: 'images', label: 'Images' },
-    { value: 'materials', label: 'Materials' },
-    { value: 'fabric-types', label: 'Fabric Types' },
-    { value: 'room-suitabilities', label: 'Room Suitabilities' },
-    { value: 'users', label: 'Users' },
-    { value: 'roles', label: 'Roles' },
-    { value: 'permissions', label: 'Permissions' },
-  ];
-
-  // Fetch deleted items when type changes
   useEffect(() => {
     fetchDeletedItems();
   }, [selectedType]);
 
-  const fetchDeletedItems = async () => {
+  const fetchDeletedItems = useCallback(async () => {
     setLoading(true);
     try {
-      let res;
+      const fetcher = FETCHERS[selectedType];
+      if (!fetcher) throw new Error('Unknown entity type');
 
-      // Call appropriate API function based on selected type
-      switch (selectedType) {
-        case 'products':
-          res = await getDeletedProducts();
-          break;
-        case 'categories':
-          res = await getDeletedCategories();
-          break;
-        case 'collections':
-          res = await getDeletedCollections();
-          break;
-        case 'materials':
-          res = await getDeletedMaterials();
-          break;
-        case 'fabric-types':
-          res = await getDeletedFabricTypes();
-          break;
-        case 'room-suitabilities':
-          res = await getDeletedRoomSuitabilities();
-          break;
-        case 'images':
-          res = await getDeletedImages();
-          break;
-        case 'users':
-          res = await getDeletedUsers();
-          break;
-        case 'roles':
-          res = await getDeletedRoles();
-          break;
-        case 'permissions':
-          res = await getDeletedPermissions();
-          break;
-        default:
-          throw new Error('Unknown entity type');
-      }
-
-      setDeletedItems(res.data || []);
+      const res = await fetcher();
+      setDeletedItems(parseData(res));
       setError('');
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Failed to load deleted items');
@@ -97,16 +65,14 @@ export default function RestorePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedType]);
 
-  const handleRestore = async (item) => {
+  const handleRestore = useCallback(async (item) => {
     if (!window.confirm(`Restore this item?`)) return;
 
     setRestoring(true);
     try {
       await restoreItem(selectedType, item.id);
-
-      // Remove from deleted list
       setDeletedItems((prev) => prev.filter((i) => i.id !== item.id));
       setSuccess('Restored successfully');
       setTimeout(() => setSuccess(''), 3000);
@@ -115,102 +81,78 @@ export default function RestorePage() {
     } finally {
       setRestoring(false);
     }
-  };
+  }, [selectedType]);
 
-  // Dynamic columns based on entity type
-  const getColumns = () => {
-    const baseColumns = [
+  const COLUMN_CONFIG = {
+    products: [
       { key: 'id', label: 'ID', width: '50px' },
-      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') || null },
-    ];
-
-    switch (selectedType) {
-      case 'products':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'productName', label: 'PRODUCT NAME' },
-          { key: 'price', label: 'PRICE' },
-          ...baseColumns.slice(1),
-        ];
-      case 'categories':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'categoryName', label: 'CATEGORY NAME' },
-          ...baseColumns.slice(1),
-        ];
-      case 'collections':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'collectionName', label: 'COLLECTION NAME' },
-          ...baseColumns.slice(1),
-        ];
-      case 'materials':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'name', label: 'MATERIAL NAME' },
-          ...baseColumns.slice(1),
-        ];
-      case 'fabric-types':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'name', label: 'FABRIC TYPE NAME' },
-          ...baseColumns.slice(1),
-        ];
-      case 'room-suitabilities':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'name', label: 'ROOM SUITABILITY NAME' },
-          ...baseColumns.slice(1),
-        ];
-      case 'images':
-        return [
-          ...baseColumns.slice(0, 1),
-          {
-            key: 'imageUrlPreview',
-            label: 'IMAGE',
-            render: (row) => (
-              <img
-                src={row.imageUrl}
-                alt="Product"
-                className="h-12 w-12 object-cover rounded"
-                onError={(e) => {
-                  e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22%3E%3Crect fill=%22%23f0f0f0%22 width=%2248%22 height=%2248%22/%3E%3C/svg%3E';
-                }}
-              />
-            ),
-          },
-          { key: 'imageUrlText', label: 'URL', render: (row) => <span className="text-xs truncate max-w-xs">{row.imageUrl}</span> },
-          ...baseColumns.slice(1),
-        ];
-      case 'users':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'email', label: 'EMAIL' },
-          { key: 'fullName', label: 'FULL NAME' },
-        ];
-      case 'roles':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'roleName', label: 'ROLE NAME' },
-          ...baseColumns.slice(1),
-        ];
-      case 'permissions':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'permissionKey', label: 'PERMISSION KEY' },
-          ...baseColumns.slice(1),
-        ];
-      case 'orders':
-        return [
-          ...baseColumns.slice(0, 1),
-          { key: 'orderCode', label: 'ORDER CODE' },
-          { key: 'totalAmount', label: 'TOTAL AMOUNT' },
-          ...baseColumns.slice(1),
-        ];
-      default:
-        return baseColumns;
-    }
+      { key: 'productName', label: 'PRODUCT NAME' },
+      { key: 'price', label: 'PRICE' },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
+    categories: [
+      { key: 'id', label: 'ID', width: '50px' },
+      { key: 'categoryName', label: 'CATEGORY NAME' },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
+    collections: [
+      { key: 'id', label: 'ID', width: '50px' },
+      { key: 'collectionName', label: 'COLLECTION NAME' },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
+    materials: [
+      { key: 'id', label: 'ID', width: '50px' },
+      { key: 'name', label: 'MATERIAL NAME' },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
+    'fabric-types': [
+      { key: 'id', label: 'ID', width: '50px' },
+      { key: 'name', label: 'FABRIC TYPE NAME' },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
+    'room-suitabilities': [
+      { key: 'id', label: 'ID', width: '50px' },
+      { key: 'name', label: 'ROOM SUITABILITY NAME' },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
+    images: [
+      { key: 'id', label: 'ID', width: '50px' },
+      {
+        key: 'imageUrl',
+        label: 'IMAGE',
+        render: (row) => (
+          <img
+            src={row.imageUrl}
+            alt="Product"
+            className="h-12 w-12 object-cover rounded"
+            onError={(e) => { e.target.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22%3E%3Crect fill=%22%23f0f0f0%22 width=%2248%22 height=%2248%22/%3E%3C/svg%3E'; }}
+          />
+        ),
+      },
+      { key: 'imageUrlText', label: 'URL', render: (row) => <span className="text-xs truncate max-w-xs">{row.imageUrl}</span> },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
+    users: [
+      { key: 'id', label: 'ID', width: '50px' },
+      { key: 'email', label: 'EMAIL' },
+      { key: 'fullName', label: 'FULL NAME' },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
+    roles: [
+      { key: 'id', label: 'ID', width: '50px' },
+      { key: 'roleName', label: 'ROLE NAME' },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
+    permissions: [
+      { key: 'id', label: 'ID', width: '50px' },
+      { key: 'permissionKey', label: 'PERMISSION KEY' },
+      { key: 'deletedAt', label: 'DELETED', render: (row) => new Date(row.deletedAt).toLocaleString('vi-VN') },
+    ],
   };
+
+  const getColumns = useCallback(() => {
+    return COLUMN_CONFIG[selectedType] || [];
+  }, [selectedType]);
 
   const actions = (item) => [
     {
@@ -229,10 +171,8 @@ export default function RestorePage() {
           <p className="body-02 text-black">Restore permanently deleted data</p>
         </div>
       </div>
-
-      {/* Type Selector */}
       <div className="mb-6 flex gap-2 flex-wrap">
-        {entityTypes.map((type) => (
+        {ENTITY_TYPES.map((type) => (
           <button
             key={type.value}
             onClick={() => setSelectedType(type.value)}

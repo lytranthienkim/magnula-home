@@ -1,5 +1,3 @@
-// Get Category By ID Controller
-
 import db from '../../../config/db.js';
 
 export const getCategoryById = async (req, res) => {

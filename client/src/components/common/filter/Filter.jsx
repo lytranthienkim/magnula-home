@@ -7,8 +7,6 @@ import { IoSearchOutline } from "react-icons/io5";
 const CustomSelectField = ({ label, options, selectedValue, onSelect, placeholder = "---" }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
-
-    // Tìm kiếm name tương ứng với ID để hiển thị lên label nút bấm
     const currentOption = options.find(opt => String(opt.id) === String(selectedValue));
     const displayText = currentOption ? currentOption.name : placeholder;
 
@@ -26,7 +24,6 @@ const CustomSelectField = ({ label, options, selectedValue, onSelect, placeholde
         <div className="flex flex-col gap-1.5 w-full md:min-w-[240px]" ref={dropdownRef}>
             <p className="body-03 font-display-regular">{label}</p>
             <div className="relative">
-                {/* Thanh hiển thị chính */}
                 <button
                     type="button"
                     onClick={() => setIsOpen(!isOpen)}
@@ -123,7 +120,6 @@ export const Filter = ({
 
     return (
         <div className="w-full flex flex-col gap-4 mb-4" ref={filterBoxRef}>
-            {/* Categories Navigation */}
             <div className="flex flex-wrap items-center gap-3 md:gap-5 lg:gap-10">
                     {categories.map((c) => {
                         const isActive = selectedCategory === c.categoryName;
@@ -140,9 +136,7 @@ export const Filter = ({
                     })}
             </div>
 
-            {/* Filter Button + Clear Button */}
             <div className="flex items-center justify-between gap-4">
-                {/* Cụm Nút bấm & Bảng lọc Filter */}
                 <div className="relative">
                     <button
                         onClick={() => setOpenFilter(!openFilter)}
@@ -153,7 +147,7 @@ export const Filter = ({
 
                     {openFilter && (
                         <div className="absolute w-[calc(100vw-32px)] md:w-[320px] p-6 top-10 left-0 md:left-0 border-[0.25px] border-[#272727] flex flex-col items-start gap-5 bg-background-primary rounded-none ">
-                            {/* Color Options */}
+                            {/* Color options */}
                             {colors.length > 0 && (
                                 <div className="flex flex-col gap-1.5 w-full">
                                     <p className="body-03 font-display-regular">Color</p>
@@ -172,7 +166,6 @@ export const Filter = ({
                                 </div>
                             )}
 
-                            {/* Fabric Type Custom Options */}
                             {fabricTypes.length > 0 && (
                                 <CustomSelectField
                                     label="Fabric"
@@ -183,7 +176,6 @@ export const Filter = ({
                                 />
                             )}
 
-                            {/* Material Type Custom Options */}
                             {materials.length > 0 && (
                                 <CustomSelectField
                                     label="Material"
@@ -194,7 +186,6 @@ export const Filter = ({
                                 />
                             )}
 
-                            {/* Room Suitability Custom Options */}
                             {roomSuitabilities.length > 0 && (
                                 <CustomSelectField
                                     label="Room"
@@ -205,7 +196,6 @@ export const Filter = ({
                                 />
                             )}
 
-                            {/* Price Range Input */}
                             <div className="flex flex-col gap-1.5 w-full">
                                 <p className="body-03 font-display-regular">Price</p>
                                 <div className="flex flex-row gap-1.5 items-center pt-1">
@@ -214,8 +204,8 @@ export const Filter = ({
                                         placeholder={`e.g. ${minPriceLimit || 0}`}
                                         value={tempMinPrice}
                                         onChange={(e) => setTempMinPrice(e.target.value)}
-                                        min={minPriceLimit || 0} // Set min price về 0 nếu minPriceLimit không tồn tại
-                                        max={maxPriceLimit || undefined} // Set max price về undefined nếu maxPriceLimit không tồn tại
+                                        min={minPriceLimit || 0} 
+                                        max={maxPriceLimit || undefined} 
                                         className="w-full p-1 font-display-regular body-03 border-[0.25px] border-[#272727] bg-background-primary outline-none rounded-none"
                                     />
                                     <span className="body-03 text-gray-400">-</span>
@@ -232,34 +222,26 @@ export const Filter = ({
                                         onClick={() => {
                                             let error = '';
 
-
-                                            // Kiểm tra giá trị min price
                                             if (tempMinPrice) {
                                                 const minVal = parseFloat(tempMinPrice);
-                                                // Kiểm tra xem có phải là số hợp lệ và dương không
                                                 if (isNaN(minVal) || minVal < 0) {
-                                                    error = 'Min price must be a valid positive number'; // Trả về thông báo lỗi nếu không hợp lệ
+                                                    error = 'Min price must be a valid positive number'; 
                                                 }
-                                                // Kiểm tra xem có phải nhập số có số 0 đứng đầu không vì đây là trường hợp loại trừ 0
                                                 if (tempMinPrice.toString().match(/^0\d/) && tempMinPrice !== '0') {
                                                     error = 'Min price cannot have leading zeros'; 
                                                 }
                                             }
 
-                                            // Kiểm tra giá trị max price
                                             if (!error && tempMaxPrice) {
                                                 const maxVal = parseFloat(tempMaxPrice);
-                                                // Check if it's a valid number
                                                 if (isNaN(maxVal) || maxVal < 0) {
                                                     error = 'Max price must be a valid positive number';
                                                 }
-                                                // Check for leading zeros (except for "0")
                                                 if (tempMaxPrice.toString().match(/^0\d/) && tempMaxPrice !== '0') {
                                                     error = 'Max price cannot have leading zeros';
                                                 }
                                             }
 
-                                            // So sánh min price và max price nếu cả hai đều tồn tại
                                             if (!error && tempMinPrice && tempMaxPrice) {
                                                 const minVal = parseFloat(tempMinPrice);
                                                 const maxVal = parseFloat(tempMaxPrice);

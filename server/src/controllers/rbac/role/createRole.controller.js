@@ -1,5 +1,3 @@
-// Create Role Controller
-
 import db from '../../../config/db.js';
 
 export const createRole = async (req, res) => {
@@ -7,7 +5,6 @@ export const createRole = async (req, res) => {
     const { Role } = db.models;
     const { roleName } = req.body;
 
-    // Validate input
     if (!roleName || typeof roleName !== 'string' || roleName.trim().length < 2) {
       return res.status(400).json({
         success: false,
@@ -15,7 +12,6 @@ export const createRole = async (req, res) => {
       });
     }
 
-    // Check if role already exists
     const existingRole = await Role.findOne({ where: { roleName: roleName.trim() } });
     if (existingRole) {
       return res.status(400).json({
@@ -24,7 +20,6 @@ export const createRole = async (req, res) => {
       });
     }
 
-    // Create new role
     const role = await Role.create({
       roleName: roleName.trim(),
     });
@@ -37,7 +32,6 @@ export const createRole = async (req, res) => {
   } catch (error) {
     console.error('Create role error:', error);
 
-    // Handle validation errors
     if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
       const message = error.errors?.[0]?.message || 'Role name already exists';
       return res.status(400).json({

@@ -1,5 +1,3 @@
-// Delete Permission Controller (Soft Delete)
-
 import db from '../../../config/db.js';
 
 export const deletePermission = async (req, res) => {
@@ -7,7 +5,6 @@ export const deletePermission = async (req, res) => {
     const { Permission, RolePermission } = db.models;
     const { id } = req.params;
 
-    // Get permission
     const permission = await Permission.findByPk(id);
     if (!permission) {
       return res.status(404).json({
@@ -16,7 +13,6 @@ export const deletePermission = async (req, res) => {
       });
     }
 
-    // Check if any role has this permission
     const rolesWithPermission = await RolePermission.findOne({
       where: { permissionId: id },
     });
@@ -28,10 +24,8 @@ export const deletePermission = async (req, res) => {
       });
     }
 
-    // Soft delete using Sequelize's destroy method
     await permission.destroy();
 
-    // Verify deletion was successful by checking with paranoid: false
     const deletedPermission = await Permission.findByPk(id, { paranoid: false });
     if (!deletedPermission || !deletedPermission.deletedAt) {
       return res.status(500).json({

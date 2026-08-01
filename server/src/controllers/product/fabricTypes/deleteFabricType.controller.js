@@ -1,6 +1,5 @@
-// Delete Fabric Type Controller - Soft delete with product reference check
-
 import db from '../../../config/db.js';
+import { invalidateFabricTypeCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const deleteFabricType = async (req, res) => {
   try {
@@ -15,7 +14,6 @@ export const deleteFabricType = async (req, res) => {
       });
     }
 
-    // Check if any product uses this fabric type (regardless of product status)
     const productCount = await Product.count({
       where: { fabricTypeId: id, deletedAt: null },
     });
@@ -27,10 +25,8 @@ export const deleteFabricType = async (req, res) => {
       });
     }
 
-    // Safe to soft delete using Sequelize's destroy method
     await fabricType.destroy();
 
-    // Verify deletion was successful
     const deletedFabricType = await FabricType.findByPk(id, { paranoid: false });
     if (!deletedFabricType || !deletedFabricType.deletedAt) {
       return res.status(500).json({
@@ -38,6 +34,8 @@ export const deleteFabricType = async (req, res) => {
         error: 'Failed to delete fabric type - verification failed',
       });
     }
+
+    await invalidateFabricTypeCache();
 
     res.status(200).json({
       success: true,

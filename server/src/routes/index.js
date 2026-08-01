@@ -1,5 +1,3 @@
-// Main Routes File - - Kết nối tất cả API routes - - Định nghĩa base paths
-
 import express from 'express';
 
 // Import route modules

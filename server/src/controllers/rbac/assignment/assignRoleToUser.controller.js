@@ -1,5 +1,3 @@
-// Assign Role to User Controller
-
 import db from '../../../config/db.js';
 
 export const assignRoleToUser = async (req, res) => {
@@ -8,7 +6,6 @@ export const assignRoleToUser = async (req, res) => {
     const { id } = req.params;
     const { roleId } = req.body;
 
-    // Validate input
     if (!roleId) {
       return res.status(400).json({
         success: false,
@@ -16,7 +13,6 @@ export const assignRoleToUser = async (req, res) => {
       });
     }
 
-    // Get user
     const user = await User.findByPk(id);
     if (!user) {
       return res.status(404).json({
@@ -25,7 +21,6 @@ export const assignRoleToUser = async (req, res) => {
       });
     }
 
-    // Get role
     const role = await Role.findByPk(roleId);
     if (!role) {
       return res.status(404).json({
@@ -34,10 +29,8 @@ export const assignRoleToUser = async (req, res) => {
       });
     }
 
-    // Remove all existing roles for this user
     await UserRole.destroy({ where: { userId: id } });
 
-    // Assign new role
     const userRole = await UserRole.create({
       userId: id,
       roleId,

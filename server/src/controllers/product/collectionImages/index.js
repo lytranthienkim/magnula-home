@@ -1,5 +1,3 @@
-// Collection Images Controllers Index
-
 export { getAllCollectionImages } from './getAllCollectionImages.controller.js';
 export { getCollectionImagesByCollectionId } from './getCollectionImagesByCollectionId.controller.js';
 export { addCollectionImage } from './addCollectionImage.controller.js';

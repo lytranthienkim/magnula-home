@@ -1,5 +1,3 @@
-// Get All Active Fabric Types Controller
-
 import db from '../../../config/db.js';
 import { Op } from 'sequelize';
 
@@ -7,7 +5,6 @@ export const getAllFabricTypes = async (req, res) => {
   try {
     const { FabricType } = db.models;
 
-    // Check if requesting deleted items
     const isDeleted = req.query.deleted === 'true';
 
     const fabricTypes = await FabricType.findAll({

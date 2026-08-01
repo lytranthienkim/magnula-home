@@ -13,8 +13,7 @@ export function AuthInitializer({ children }) {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      // Skip auth check on login and register pages
-      if (pathname === '/login' || pathname === '/register' || pathname === '/forgot-password') {
+      if (pathname === '/auth/login' || pathname === '/auth/register' || pathname === '/auth/forgot-password') {
         return;
       }
 
@@ -32,8 +31,8 @@ export function AuthInitializer({ children }) {
       } catch (error) {
         dispatch(logout());
 
-        if (pathname !== '/login') {
-          router.push('/login');
+        if (pathname !== '/auth/login') {
+          router.push('/auth/login');
         }
       }
     };

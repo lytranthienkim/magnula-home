@@ -7,7 +7,6 @@ export const changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
     const userId = req.user.userId;
 
-    // Validate input
     if (!oldPassword || !newPassword) {
       return res.status(400).json({
         success: false,
@@ -15,7 +14,6 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    // Validate new password strength (minimum 6 characters)
     if (newPassword.length < 6) {
       return res.status(400).json({
         success: false,
@@ -23,7 +21,6 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    // Prevent using same password
     if (oldPassword === newPassword) {
       return res.status(400).json({
         success: false,
@@ -31,7 +28,6 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    // Get user
     const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({
@@ -40,7 +36,6 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    // Verify old password
     const isOldPasswordValid = await bcrypt.compare(oldPassword, user.passwordHash);
     if (!isOldPasswordValid) {
       return res.status(401).json({
@@ -49,7 +44,6 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    // Hash new password
     const newPasswordHash = await bcrypt.hash(newPassword, 10);
     await user.update({ passwordHash: newPasswordHash });
 

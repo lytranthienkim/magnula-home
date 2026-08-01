@@ -1,23 +1,72 @@
 'use client';
 import { useState } from 'react';
+import { uploadImageToR2 } from '@/api/upload';
 
 export default function CollectionsModal({ selected, editMode, editData, saving, onClose, onEditModeChange, onEditDataChange, onSave, onRestore }) {
   if (!selected) return null;
   const isDeleted = selected.deletedAt !== null;
   const [imageUrl, setImageUrl] = useState('');
+  const [imagePreview, setImagePreview] = useState({});
+  const [uploadingImageIdx, setUploadingImageIdx] = useState(null);
+  const [uploadError, setUploadError] = useState({});
+
+  const handleImageFileSelect = async (e, idx) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadError((prev) => ({
+      ...prev,
+      [idx]: '',
+    }));
+
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview((prev) => ({
+      ...prev,
+      [idx]: previewUrl,
+    }));
+
+    setUploadingImageIdx(idx);
+    try {
+      const result = await uploadImageToR2(file);
+      if (result.success && result.imageUrl) {
+        const currentImages = editData.images || [];
+        const newImages = [...currentImages];
+        newImages[idx] = { imageUrl: result.imageUrl };
+        onEditDataChange({ ...editData, images: newImages });
+        setUploadError((prev) => ({
+          ...prev,
+          [idx]: '',
+        }));
+      } else {
+        setUploadError((prev) => ({
+          ...prev,
+          [idx]: 'Upload failed - no URL returned',
+        }));
+      }
+    } catch (err) {
+      setUploadError((prev) => ({
+        ...prev,
+        [idx]: err.message || 'Upload failed',
+      }));
+    } finally {
+      setUploadingImageIdx(null);
+    }
+  };
 
   const handleAddImage = () => {
-    if (!imageUrl.trim()) return;
     const currentImages = editData.images || [];
     onEditDataChange({
       ...editData,
-      images: [...currentImages, { imageUrl }],
+      images: [...currentImages, { imageUrl: '' }],
     });
-    setImageUrl('');
   };
 
   const handleRemoveImage = (index) => {
     const currentImages = editData.images || [];
+    const imageUrl = currentImages[index]?.imageUrl;
+    if (imageUrl) {
+      deleteImageFromR2(imageUrl).catch((err) => console.error('Failed to delete image from R2:', err));
+    }
     onEditDataChange({
       ...editData,
       images: currentImages.filter((_, i) => i !== index),
@@ -73,24 +122,29 @@ export default function CollectionsModal({ selected, editMode, editData, saving,
           </div>
 
           <div>
-            <p className="text-sm text-black font-semibold uppercase mb-4">Collection Images</p>
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-sm text-black font-semibold uppercase">Collection Images</p>
+              {editMode && (
+                <button type="button" onClick={handleAddImage} className="text-xs text-black hover:text-gray-600 font-semibold">+ Add</button>
+              )}
+            </div>
             {editMode ? (
-              <div className="space-y-3">
-                <div className="flex gap-2">
-                  <input type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="Image URL" className="flex-1 px-3 py-2 border border-gray-400 text-xs text-black focus:outline-none" />
-                  <button onClick={handleAddImage} className="px-3 py-2 bg-gray-600 text-white text-xs font-bold hover:bg-gray-700">Add</button>
-                </div>
-                {(editData.images || []).length > 0 && (
-                  <div className="space-y-2">
-                    {(editData.images || []).map((img, idx) => (
-                      <div key={idx} className="flex items-center justify-between bg-gray-50 p-2 rounded text-xs">
-                        <span className="truncate text-gray-700">{img.imageUrl}</span>
-                        <button onClick={() => handleRemoveImage(idx)} className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">Remove</button>
+              (editData.images || []).length > 0 && (
+                <div className="space-y-2">
+                  {(editData.images || []).map((img, idx) => (
+                    <div key={idx} className="flex gap-2 items-start">
+                      <div className="flex-1">
+                        <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={(e) => handleImageFileSelect(e, idx)} disabled={uploadingImageIdx === idx} className="w-full px-3 py-2 border border-gray-300 rounded text-xs focus:outline-none focus:border-black disabled:opacity-50" />
+                        {uploadError[idx] && (<div className="text-xs text-red-500 mt-1">{uploadError[idx]}</div>)}
+                        {uploadingImageIdx === idx && (<div className="text-xs text-gray-500 mt-1">Uploading...</div>)}
+                        {img.imageUrl && (<p className="text-xs text-gray-600 mt-1 break-all line-clamp-2">{img.imageUrl}</p>)}
+                        {img.imageUrl && (<div className="flex items-center justify-center w-full h-16 bg-gray-100 rounded border border-gray-200 mt-1"><img src={imagePreview[idx] || img.imageUrl} alt={`Preview ${idx}`} className="h-full object-contain" /></div>)}
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                      <button type="button" onClick={() => handleRemoveImage(idx)} disabled={(editData.images || []).length === 1} className="px-2 py-2 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed">✕</button>
+                    </div>
+                  ))}
+                </div>
+              )
             ) : (
               <div className="space-y-2">
                 {selected.images && selected.images.length > 0 ? (

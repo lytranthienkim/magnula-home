@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 import { decreaseQuantity, increaseQuantity, removeFromCart } from '@/redux/cartSlice';
 
 export const CartModal = ({ isOpen, onClose }) => {
-    const [mounted, setMounted] = useState(false);
     const cartItems = useSelector((state) => state.cart.items);
     const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
@@ -38,11 +37,6 @@ export const CartModal = ({ isOpen, onClose }) => {
     }, [dispatch]);
 
     useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    useEffect(() => {
-        // Lock body scroll when modal is open
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -54,9 +48,6 @@ export const CartModal = ({ isOpen, onClose }) => {
         };
     }, [isOpen]);
 
-    if (!mounted) return null;
-
-    // Calculate totals
     const subtotal = useMemo(() => {
         return cartItems.reduce((sum, item) => {
             const itemPrice = parseFloat(item.price || 0);
@@ -71,7 +62,6 @@ export const CartModal = ({ isOpen, onClose }) => {
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Backdrop */}
                     <motion.div
                         key="backdrop"
                         className="fixed inset-0 bg-transparent md:bg-black/5 z-[1000]"
@@ -81,7 +71,6 @@ export const CartModal = ({ isOpen, onClose }) => {
                         onClick={onClose}
                     />
 
-                    {/* Cart Modal */}
                     <motion.div
                         key="cart"
                         className="fixed w-full h-[100dvh] top-0 right-0 md:right-2 md:top-2 xl:right-2 xl:top-2  md:h-[98vh] md:w-[50vw] xl:w-[28vw] bg-background-primary z-[1001] flex flex-col overflow-hidden rounded-none md:rounded-md xl:rounded-lg"
@@ -90,7 +79,6 @@ export const CartModal = ({ isOpen, onClose }) => {
                         exit={{ x: '100%' }}
                         transition={{ type: 'easeIn' }}
                     >
-                        {/* Header */}
                         <div className="flex flex-row justify-between items-center  pt-4 px-4">
                             <h3 className='h3-neu font-display-regular text-left'>Cart</h3>
                             <button
@@ -100,7 +88,6 @@ export const CartModal = ({ isOpen, onClose }) => {
                             </button>
                         </div>
 
-                        {/* Cart Items */}
                         <div className="h-full flex-1 overflow-y-auto no-scrollbar p-4 flex flex-col justify-start gap-4">
                             {cartItems.length === 0 ? (
                                 <div className='h-full flex flex-col items-center justify-center gap-2'>
@@ -111,7 +98,6 @@ export const CartModal = ({ isOpen, onClose }) => {
                                 </div>
                             ) : (
                                 cartItems.map((item) => {
-                                    // Check stock validation
                                     const itemStock = item.stock || 0;
                                     const isStockExceeded = item.quantity >= itemStock;
                                     const isIncreaseDisabled = itemStock <= 0 || isStockExceeded;
@@ -120,7 +106,6 @@ export const CartModal = ({ isOpen, onClose }) => {
                                     <div key={item.id} className="flex flex-col justfy-between border-b-[0.25px] border-[#272727]/10">
                                         <div className='flex flex-col gap-4 mb-2'>
 
-                                            {/* Product Image */}
                                             <div className="w-full h-full overflow-hidden">
                                                 <img
                                                     src={item.imageUrl}
@@ -133,7 +118,6 @@ export const CartModal = ({ isOpen, onClose }) => {
                                             <div className='flex flex-row justify-between'>
 
 
-                                                {/* Product Name & Price */}
                                                 <div className="flex flex-col justify-between items-start gap-2">
                                                     <div className='flex flex-col gap-1'>
                                                         <p className="body-01 font-display-semibold flex-1">
@@ -143,13 +127,12 @@ export const CartModal = ({ isOpen, onClose }) => {
                                                             Quantity: {item.quantity}
                                                         </p>
                                                     </div>
-                                                    
+
                                                     {isIncreaseDisabled && (
                                                         <p className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>
                                                             Cannot exceed available stock.
                                                         </p>
                                                     )}
-                                                    {/* Quantity Control */}
                                                     <div className="flex flex-row items-center border-[0.25px] border-[#272727]/10">
                                                         <button className="px-2 py-0.5 body-03 text-display-regular" onClick={() => handleDecreaseQuantity(item.id)}>
                                                             -
@@ -167,7 +150,6 @@ export const CartModal = ({ isOpen, onClose }) => {
                                                     </div>
                                                 </div>
 
-                                                {/* Quantity & Total Price */}
                                                 <div className="flex flex-col justify-between items-end">
 
                                                     <button
@@ -176,7 +158,6 @@ export const CartModal = ({ isOpen, onClose }) => {
                                                     >
                                                         <PiTrashSimple size={14} />
                                                     </button>
-                                                    {/* Price */}
                                                     <p className="body-02 font-display-semibold">
                                                         {(parseFloat(item.price || 0) * item.quantity)}$
                                                     </p>
@@ -191,10 +172,8 @@ export const CartModal = ({ isOpen, onClose }) => {
 
                         <hr className='opacity-10'></hr>
 
-                        {/* Summary */}
                         <div className="p-4 flex flex-col gap-4">
 
-                            {/* Total */}
                             <div className="flex flex-row justify-between items-center">
                                 <p className="font-display-semibold body-01">Quantity:</p>
                                 <p className="font-display-semibold body-01">
@@ -202,7 +181,6 @@ export const CartModal = ({ isOpen, onClose }) => {
                                 </p>
                             </div>
 
-                            {/* Total */}
                             <div className="flex flex-row justify-between items-center">
                                 <p className="font-display-semibold body-01">Total:</p>
                                 <p className="font-display-semibold body-01">

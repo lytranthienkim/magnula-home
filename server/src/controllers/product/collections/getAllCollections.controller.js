@@ -1,5 +1,3 @@
-// Get All Collections Controller
-
 import db from '../../../config/db.js';
 import { Op } from 'sequelize';
 
@@ -7,14 +5,16 @@ export const getAllCollections = async (req, res) => {
   try {
     const { Collection } = db.models;
 
-    // Check if requesting deleted items
+    const limit = req.query.limit ? Math.min(parseInt(req.query.limit, 10), 100) : 10;
+    const offset = req.query.offset ? Math.max(parseInt(req.query.offset, 10), 0) : 0;
+
     const isDeleted = req.query.deleted === 'true';
 
-    const collections = await Collection.findAll({
+    const { count, rows: collections } = await Collection.findAndCountAll({
       where: isDeleted
-        ? { deletedAt: { [Op.not]: null } } // Only deleted items
-        : { deletedAt: null }, // Only active items
-      paranoid: !isDeleted, // Disable paranoid mode to include deleted items when requested
+        ? { deletedAt: { [Op.not]: null } }
+        : { deletedAt: null },
+      paranoid: !isDeleted,
       include: [
         {
           association: 'images',
@@ -22,11 +22,14 @@ export const getAllCollections = async (req, res) => {
         },
       ],
       order: [['createdAt', 'DESC']],
+      limit,
+      offset,
     });
 
     res.status(200).json({
       success: true,
       data: collections,
+      total: count,
     });
   } catch (error) {
     console.error('Get collections error:', error);

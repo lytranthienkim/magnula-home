@@ -1,5 +1,3 @@
-// Get User Roles Controller
-
 import db from '../../../config/db.js';
 
 export const getUserRoles = async (req, res) => {
@@ -7,7 +5,6 @@ export const getUserRoles = async (req, res) => {
     const { User, Role, UserRole } = db.models;
     const { id } = req.params;
 
-    // Get user
     const user = await User.findByPk(id);
     if (!user) {
       return res.status(404).json({
@@ -16,7 +13,6 @@ export const getUserRoles = async (req, res) => {
       });
     }
 
-    // Get user roles
     const userRoles = await UserRole.findAll({
       where: { userId: id },
       include: [

@@ -1,13 +1,11 @@
-// Delete Material Controller - Soft delete with product reference check
-
 import db from '../../../config/db.js';
+import { invalidateMaterialCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const deleteMaterial = async (req, res) => {
   try {
     const { Material, Product } = db.models;
     const { id } = req.params;
 
-    // Get material
     const material = await Material.findByPk(id);
     if (!material) {
       return res.status(404).json({
@@ -16,7 +14,6 @@ export const deleteMaterial = async (req, res) => {
       });
     }
 
-    // Check if any product uses this material (regardless of product status)
     const productCount = await Product.count({
       where: { materialId: id, deletedAt: null },
     });
@@ -28,10 +25,8 @@ export const deleteMaterial = async (req, res) => {
       });
     }
 
-    // Safe to soft delete using Sequelize's destroy method
     await material.destroy();
 
-    // Verify deletion was successful
     const deletedMaterial = await Material.findByPk(id, { paranoid: false });
     if (!deletedMaterial || !deletedMaterial.deletedAt) {
       return res.status(500).json({
@@ -39,6 +34,8 @@ export const deleteMaterial = async (req, res) => {
         error: 'Failed to delete material - verification failed',
       });
     }
+
+    await invalidateMaterialCache();
 
     res.status(200).json({
       success: true,

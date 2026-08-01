@@ -1,5 +1,3 @@
-// Update Collection Status Controller - Activate/Deactivate only
-
 import db from '../../../config/db.js';
 
 export const updateCollectionStatus = async (req, res) => {

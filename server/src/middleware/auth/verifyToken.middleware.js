@@ -3,7 +3,6 @@ import db from '../../config/db.js';
 
 export const verifyToken = async (req, res, next) => {
   try {
-    // Get token from HttpOnly cookie
     const token = req.cookies?.authToken;
 
     if (!token) {
@@ -13,13 +12,11 @@ export const verifyToken = async (req, res, next) => {
       });
     }
 
-    // Verify and decode JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Check if user account is still active in DB
     const { User } = db.models;
     const user = await User.findByPk(decoded.userId, {
-      attributes: ['id', 'isActive'], // Only fetch isActive flag
+      attributes: ['id', 'isActive'], 
     });
 
     if (!user) {
@@ -36,13 +33,12 @@ export const verifyToken = async (req, res, next) => {
       });
     }
 
-    // Attach decoded token data to request (includes permissions from JWT)
     req.user = {
       id: decoded.userId,
       userId: decoded.userId,
       email: decoded.email,
       roles: decoded.roles,
-      permissions: decoded.permissions || [], // Permissions from JWT token
+      permissions: decoded.permissions || [],
     };
 
     next();

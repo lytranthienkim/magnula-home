@@ -1,5 +1,3 @@
-// Add Product Image Controller - Add image to product
-
 import db from '../../../config/db.js';
 
 export const addProductImage = async (req, res) => {
@@ -8,7 +6,6 @@ export const addProductImage = async (req, res) => {
     const { id } = req.params;
     const { imageUrl, isMain } = req.body;
 
-    // Check product exists
     const product = await Product.findByPk(id);
     if (!product) {
       return res.status(404).json({
@@ -17,7 +14,6 @@ export const addProductImage = async (req, res) => {
       });
     }
 
-    // Validate URL
     if (!imageUrl) {
       return res.status(400).json({
         success: false,
@@ -25,15 +21,12 @@ export const addProductImage = async (req, res) => {
       });
     }
 
-    // Check how many images this product already has
     const existingImagesCount = await ProductImage.count({
       where: { productId: id, deletedAt: null },
     });
 
-    // If this is the first image, automatically set as main
     let shouldBeMain = existingImagesCount === 0 ? true : isMain || false;
 
-    // If main image, unset main from other images
     if (shouldBeMain) {
       await ProductImage.update(
         { isMain: false },
@@ -41,7 +34,6 @@ export const addProductImage = async (req, res) => {
       );
     }
 
-    // Create image
     const image = await ProductImage.create({
       productId: id,
       imageUrl,

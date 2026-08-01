@@ -1,5 +1,6 @@
 'use client'
 
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { getAllProducts } from "@/api/products";
@@ -20,14 +21,12 @@ export const ProductItem = () => {
     const [loading, setLoading] = useState(true);
     const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
 
-    // Get cart items from Redux to track quantity
     const cartItems = useSelector((state) => state.cart.items);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
                 setLoading(true);
-                // Fetch all products and find by slug (product name)
                 const response = await getAllProducts('');
                 const foundProduct = response.data.find(p =>
                     generateSlug(p.productName) === slug
@@ -43,21 +42,17 @@ export const ProductItem = () => {
         if (slug) fetchProduct();
     }, [slug]);
 
-    // Declare all hooks before early returns
     const images = product?.images || [];
     const mainImage = images[selectedImageIndex]?.imageUrl || '';
     const price = product?.variants?.[0]?.price || 0;
     const description = product?.Collection?.description || '';
     const stock = product?.variants?.[0]?.stockQuantity || 0;
-
-    // Get current quantity of this product in cart (search by product ID, not slug)
     const currentCartItem = cartItems.find(item => item.id === product?.id);
     const quantityInCart = currentCartItem?.quantity || 0;
 
     const handleAddToCArt = useCallback(() => {
         if (!product) return;
 
-        //Check stock
         if (quantityInCart + 1 > stock) {
             return;
         }
@@ -74,12 +69,11 @@ export const ProductItem = () => {
         dispatch(addToCart(itemPayload));
     }, [product, quantityInCart, stock, price, mainImage, dispatch]);
 
-    // Check if button should be disabled
+
     const isOutOfStock = stock <= 0;
     const isExceedsStock = quantityInCart >= stock;
     const isButtonDisabled = isOutOfStock || isExceedsStock;
 
-    // Early return with conditional JSX instead of preventing hooks
     if (loading || !product) {
         return <SkeletonProductItem />;
     }
@@ -88,54 +82,49 @@ export const ProductItem = () => {
         <div className="w-full h-fit padding-wide">
             <div className="grid grid-cols-1 xl:grid-cols-[1fr_1fr] gap-10 xl:gap-20">
                 <div className="w-full flex flex-col md:flex-row justify-between gap-2">
-                    {/* Column 2: Main Image */}
-                    <div className="flex items-center justify-center">
-                        <img
+                    <div className="relative flex items-center justify-center w-full h-[400px] md:h-[500px]">
+                        <Image
                             src={mainImage}
                             alt={product.productName}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
+                            fill
+                            className="object-cover"
                         />
                     </div>
 
-                    {/* Column 1: Thumbnails */}
                     <div className="h-full flex flex-row md:flex-col justify-start gap-2 md:gap-3 xl:gap-4">
                         {images.map((image, index) => (
                             <div
                                 key={index}
-                                className="relative flex flex-col cursor-pointer gap-2"
+                                className="relative flex flex-col cursor-pointer gap-2 w-[70px] h-[70px]"
                                 onClick={() => setSelectedImageIndex(index)}
                             >
-                                <img
+                                <Image
                                     src={image.imageUrl}
                                     alt={`${product.productName} view ${index + 1}`}
-                                    className={`w-[70px] h-[70px] ${selectedImageIndex === index
+                                    fill
+                                    className={`object-cover ${selectedImageIndex === index
                                         ? 'border-[0.25px] border-[#272727]'
                                         : 'border-[0.25px] border-transparent'
                                         }`}
-                                    loading="lazy"
                                 />
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Column 3: Product Details */}
                 <div className="flex flex-col justify-between gap-4 md:gap-6 overflow-hidden">
                     <div className="flex flex-col gap-4">
-                        {/* Title & Price */}
                         <h1 className="font-display-ss-regular">{product.productName}</h1>
 
-                        {/* Description */}
                         <p className="body-01 leading-regular font-display-regular">
                             {description}
                         </p>
                     </div>
+
                     <hr className="opacity-20 h-[0.25px]"></hr>
-                    {/* Specs */}
+
                     <div className="flex flex-col gap-3">
                         <p className="body-02 font-display-semibold uppercase">Details -</p>
-                        {/* Overall Size */}
                         <div className="flex flex-row flex-wrap items-center gap-1">
                             <span className="body-02 font-display-semibold min-w-fit">Overall:</span>
                             <span className="body-02 font-display-regular">
@@ -143,7 +132,6 @@ export const ProductItem = () => {
                             </span>
                         </div>
 
-                        {/* Seat Size */}
                         <div className="flex flex-row flex-wrap items-center gap-1">
                             <span className="body-02 font-display-semibold min-w-fit">Seat:</span>
                             <span className="body-02 font-display-regular">
@@ -151,7 +139,6 @@ export const ProductItem = () => {
                             </span>
                         </div>
 
-                        {/* Fabric Type */}
                         <div className="flex flex-col flex-wrap items-start gap-1">
                             <div className="flex flex-row flex-wrap items-center gap-1">
                                 <span className="body-02 font-display-semibold min-w-fit">Fabric:</span>
@@ -166,7 +153,6 @@ export const ProductItem = () => {
                             )}
                         </div>
 
-                        {/* Material */}
                         <div className="flex flex-col flex-wrap items-start gap-1">
                             <div className="flex flex-row flex-wrap items-center gap-1">
                                 <span className="body-02 font-display-semibold min-w-fit">Material:</span>
@@ -181,7 +167,6 @@ export const ProductItem = () => {
                             )}
                         </div>
 
-                        {/* Room Suitability */}
                         <div className="flex flex-col flex-wrap items-start gap-1">
                             <div className="flex flex-row flex-wrap items-center gap-1">
                                 <span className="body-02 font-display-semibold min-w-fit">Room:</span>
@@ -199,13 +184,11 @@ export const ProductItem = () => {
 
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-row items-center justify-between">
-                            {/* Stock */}
                             <div className="flex justify-between items-center">
                                 <span className="body-02 font-display-semibold">Stock:</span>
                                 <span className="body-02 font-display-regular">{stock > 0 ? stock : 'Out of Stock'}</span>
                             </div>
 
-                            {/* Request for Quantity */}
                             <button
                                 onClick={() => setIsRequestFormOpen(true)}
                                 className="body-02 font-display-regular text-gray-500 underline cursor-pointer hover:text-gray-700 bg-transparent border-none p-0"
@@ -221,7 +204,6 @@ export const ProductItem = () => {
                             </p>
                         )}
 
-                        {/* Add to Cart Button */}
                         <button
                             disabled={isButtonDisabled}
                             className={`w-full py-2 body-02 font-display-semibold  rounded-none ${isButtonDisabled
@@ -236,7 +218,6 @@ export const ProductItem = () => {
                 </div>
             </div>
 
-            {/* Request Form Modal */}
             <RequestForm
                 isOpen={isRequestFormOpen}
                 onClose={() => setIsRequestFormOpen(false)}

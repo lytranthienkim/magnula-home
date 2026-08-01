@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MENU } from '@/constants/menu';
 import { menuContainerVariants, menuItemVariants } from '@/framer/menuVariants';
-import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
 
 export const MobileMenu = ({ isOpen, onClose }) => {
     const pathname = usePathname();

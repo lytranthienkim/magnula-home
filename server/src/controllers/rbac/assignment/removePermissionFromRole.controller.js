@@ -1,5 +1,3 @@
-// Remove Permission from Role Controller
-
 import db from '../../../config/db.js';
 
 export const removePermissionFromRole = async (req, res) => {
@@ -7,7 +5,6 @@ export const removePermissionFromRole = async (req, res) => {
     const { Role, Permission, RolePermission } = db.models;
     const { id, permissionId } = req.params;
 
-    // Get role
     const role = await Role.findByPk(id);
     if (!role) {
       return res.status(404).json({
@@ -16,7 +13,6 @@ export const removePermissionFromRole = async (req, res) => {
       });
     }
 
-    // Get permission
     const permission = await Permission.findByPk(permissionId);
     if (!permission) {
       return res.status(404).json({
@@ -25,7 +21,6 @@ export const removePermissionFromRole = async (req, res) => {
       });
     }
 
-    // Get role permission assignment
     const rolePermission = await RolePermission.findOne({
       where: { roleId: id, permissionId },
     });
@@ -36,7 +31,6 @@ export const removePermissionFromRole = async (req, res) => {
       });
     }
 
-    // Remove permission
     await rolePermission.destroy();
 
     res.json({

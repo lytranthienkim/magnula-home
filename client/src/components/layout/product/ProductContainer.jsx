@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { ProductCard } from "./ProductCard";
 import { Filter } from "@/components/common/filter/Filter";
 import { useProduct } from "@/hooks/useProduct";
@@ -9,7 +9,12 @@ import { productContainerVariants, productCardVariants } from "@/framer/productC
 import { SkeletonGrid } from "@/components/skeleton";
 
 export const ProductContainer = () => {
-    const [currentPage, setCurrentPage] = useState(1);
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+
+    const currentPage = parseInt(searchParams.get('page') || '1', 10);
+
     const ITEMS_PER_PAGE = 6;
     const imageSizes = [
         [280, 0, 340, 380],
@@ -55,11 +60,21 @@ export const ProductContainer = () => {
     let productIndex = 0;
 
     const handlePreviousPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
+        if (currentPage > 1) {
+            const params = new URLSearchParams(searchParams);
+            params.set('page', (currentPage - 1).toString());
+            router.push(`${pathname}?${params.toString()}`);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     };
 
     const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+        if (currentPage < totalPages) {
+            const params = new URLSearchParams(searchParams);
+            params.set('page', (currentPage + 1).toString());
+            router.push(`${pathname}?${params.toString()}`);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     };
 
     return (

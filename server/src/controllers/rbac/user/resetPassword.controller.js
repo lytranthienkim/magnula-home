@@ -7,7 +7,6 @@ export const resetPassword = async (req, res) => {
     const userId = req.params.id;
     const { newPassword } = req.body;
 
-    // Validate input
     if (!newPassword) {
       return res.status(400).json({
         success: false,
@@ -15,7 +14,6 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-    // Validate password strength
     if (newPassword.length < 6) {
       return res.status(400).json({
         success: false,
@@ -23,7 +21,6 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-    // Get user
     const user = await User.findByPk(userId);
 
     if (!user) {
@@ -33,10 +30,8 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-    // Hash new password
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
-    // Update password
     await user.update({ passwordHash });
 
     res.json({

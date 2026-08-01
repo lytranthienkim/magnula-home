@@ -1,0 +1,29 @@
+input,
+textarea,
+select {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+}
+
+button {
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.border-light {
+    border: 0.25px solid #272727;
+}
+
+.border-dark {
+    border: 1px solid #000000;
+}

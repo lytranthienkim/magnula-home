@@ -1,4 +1,3 @@
-// Preloader component - splash screen hiển thị lần đầu vào web
 'use client'
 
 import { motion } from 'framer-motion'

@@ -8,14 +8,14 @@ import { ProductSimilar } from "@/components/layout/product/ProductSimilar"
 export default function ProductItemPage() {
     return (
         <div className="w-full min-h-screen flex flex-col justify-between">
-            <Navbar/>
-            <main className="flex flex-col gap-5 overflow-hidden my-4">
-                <ProductItem/>
-                <ProductCushion/>
-                <ProductFeature/>
-                <ProductSimilar/>
-            </main>
-            <Footer/>
-        </div>
+                <Navbar/>
+                <main className="flex flex-col gap-5 overflow-hidden my-4">
+                    <ProductItem/>
+                    <ProductCushion/>
+                    <ProductFeature/>
+                    <ProductSimilar/>
+                </main>
+                <Footer/>
+            </div>
     )
 }

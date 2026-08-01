@@ -4,14 +4,16 @@ import { Table } from '@/components/common/table/Table';
 
 const ORDER_STATUSES = ['Pending', 'Processing', 'Shipping', 'Completed', 'Cancelled'];
 
-export default function OrdersTable({ 
-  orders, 
-  loading, 
-  statusFilter, 
-  sortOrder, 
-  onStatusFilterChange, 
+export default function OrdersTable({
+  orders,
+  loading,
+  statusFilter,
+  sortOrder,
+  onStatusFilterChange,
   onSortOrderChange,
-  onViewDetails 
+  onViewDetails,
+  currentPage,
+  totalPages
 }) {
   const getStatusColor = (status) => {
     const colors = {
@@ -106,7 +108,7 @@ export default function OrdersTable({
         </div>
       </div>
 
-      <Table columns={columns} data={orders} onAction={actions} loading={loading} />
+      <Table columns={columns} data={orders} onAction={actions} loading={loading} currentPage={currentPage} totalPages={totalPages} />
     </>
   );
 }

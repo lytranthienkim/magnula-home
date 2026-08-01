@@ -1,13 +1,11 @@
-// Create Category Controller
-
 import db from '../../../config/db.js';
+import { invalidateCategoryCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const createCategory = async (req, res) => {
   try {
     const { Category } = db.models;
     const { categoryName, description } = req.body;
 
-    // Validate required fields
     if (!categoryName) {
       return res.status(400).json({
         success: false,
@@ -15,12 +13,13 @@ export const createCategory = async (req, res) => {
       });
     }
 
-    // Create category
     const category = await Category.create({
       categoryName,
       description: description || null,
       isActive: true,
     });
+
+    await invalidateCategoryCache();
 
     res.status(201).json({
       success: true,

@@ -1,5 +1,3 @@
-// Restore Payment Method Controller - Restore soft-deleted payment method
-
 import db from '../../../config/db.js';
 
 export const restorePaymentMethod = async (req, res) => {
@@ -7,7 +5,6 @@ export const restorePaymentMethod = async (req, res) => {
     const { PaymentMethod } = db.models;
     const { id } = req.params;
 
-    // Find the soft-deleted payment method
     const paymentMethod = await PaymentMethod.findByPk(id, { paranoid: false });
     if (!paymentMethod) {
       return res.status(404).json({
@@ -16,7 +13,6 @@ export const restorePaymentMethod = async (req, res) => {
       });
     }
 
-    // Check if payment method is actually deleted
     if (!paymentMethod.deletedAt) {
       return res.status(400).json({
         success: false,
@@ -24,10 +20,8 @@ export const restorePaymentMethod = async (req, res) => {
       });
     }
 
-    // Restore the payment method
     await paymentMethod.restore();
 
-    // Verify restoration
     const restoredPaymentMethod = await PaymentMethod.findByPk(id);
     if (!restoredPaymentMethod) {
       return res.status(500).json({

@@ -1,5 +1,3 @@
-// Get Collection By ID Controller
-
 import db from '../../../config/db.js';
 
 export const getCollectionById = async (req, res) => {
@@ -7,7 +5,6 @@ export const getCollectionById = async (req, res) => {
     const { Collection } = db.models;
     const { id } = req.params;
 
-    // findByPk with paranoid: true automatically excludes soft-deleted records
     const collection = await Collection.findByPk(id, {
       include: [
         {

@@ -6,16 +6,11 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        damion: ['Damion', 'cursive'],
-      },
-    },
+    extend: {}
   },
   plugins: [],
-  // Blocklist patterns that shouldn't generate CSS
   blocklist: [
-    /^bg-\[url\(''\)\]/, // Prevent empty URL classes
-    /^bg-\[url\(""\)\]/, // Prevent empty URL classes with double quotes
+    /^bg-\[url\(''\)\]/,
+    /^bg-\[url\(""\)\]/, 
   ],
 };

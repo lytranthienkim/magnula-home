@@ -1,16 +1,14 @@
 import axios from 'axios';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://magnula-home-production.up.railway.app/api';
+import { config } from '@/config/env';
 
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: config.apiUrl, 
   headers: {
     'Content-Type': 'application/json',
   },
   withCredentials: true,
 });
 
-// Response interceptor - handle errors
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -18,7 +16,7 @@ apiClient.interceptors.response.use(
       const isLoginEndpoint = error.config?.url?.includes('/auth/login');
 
       if (!isLoginEndpoint && typeof window !== 'undefined') {
-        window.location.href = '/login';
+        window.location.href = '/auth/login'; 
       }
     }
     return Promise.reject(error);

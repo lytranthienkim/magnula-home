@@ -1,10 +1,7 @@
-// Logout Controller - Stateless logout (just clear cookie)
-
 import { COOKIE_OPTIONS } from '../../../config/cookies.js';
 
 export const logout = async (req, res) => {
   try {
-    // Clear the authToken cookie using standard cookie options
     res.clearCookie('authToken', COOKIE_OPTIONS);
 
     res.json({

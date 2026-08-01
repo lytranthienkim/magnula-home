@@ -6,9 +6,8 @@ import { getCookieOptions } from '../../../config/cookies.js';
 export const login = async (req, res) => {
   try {
     const { User, UserRole, Role } = db.models;
-    const { email, password, rememberMe = false } = req.body; //check remember me
+    const { email, password, rememberMe = false } = req.body; 
 
-    // Validate input
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -16,7 +15,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Find user by email with roles and permissions
     const user = await User.findOne({
       where: { email },
       include: [{
@@ -37,7 +35,6 @@ export const login = async (req, res) => {
       }],
     });
 
-    // Check user exists
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -45,7 +42,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -54,7 +50,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Check if user account is active
     if (!user.isActive) {
       return res.status(403).json({
         success: false,
@@ -62,7 +57,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Extract unique permissions from all roles
     const permissions = new Set();
     user.userRoles.forEach(userRole => {
       if (userRole.Role.rolePermissions) {
@@ -72,7 +66,6 @@ export const login = async (req, res) => {
       }
     });
 
-    // Generate JWT token with permissions
     const token = jwt.sign(
       {
         userId: user.id,
@@ -84,11 +77,9 @@ export const login = async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRY || '7d' }
     );
 
-    // Set HttpOnly cookie based on rememberMe flag
     const cookieOptions = getCookieOptions(rememberMe);
     res.cookie('authToken', token, cookieOptions);
 
-    // Send user data (without sensitive info, no token in response)
     res.json({
       success: true,
       data: {

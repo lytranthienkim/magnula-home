@@ -1,5 +1,3 @@
-// Get Current User Controller - Fetch current authenticated user
-
 import db from '../../../config/db.js';
 
 export const getCurrentUser = async (req, res) => {
@@ -34,7 +32,6 @@ export const getCurrentUser = async (req, res) => {
       });
     }
 
-    // Extract unique permissions from all roles
     const permissions = new Set();
     user.userRoles.forEach(userRole => {
       if (userRole.Role.rolePermissions) {

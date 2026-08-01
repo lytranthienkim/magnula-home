@@ -1,5 +1,3 @@
-// Get All Roles Controller
-
 import db from '../../../config/db.js';
 import { Op } from 'sequelize';
 

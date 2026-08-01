@@ -25,7 +25,6 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
             [name]: name === 'requestedQuantity' ? value : value
         }));
         if (error) setError('');
-        // Clear field error when user starts typing
         if (fieldErrors[name]) {
             setFieldErrors(prev => ({
                 ...prev,
@@ -59,7 +58,6 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
         setError('');
         setFieldErrors({});
 
-        // Validate form
         const errors = validateForm();
         if (Object.keys(errors).length > 0) {
             setFieldErrors(errors);
@@ -140,7 +138,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
 
                         {/* Form */}
                         <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:gap-4 lg:gap-5">
-                            {/* Customer Name */}
+                            {/* Customer name */}
                             <div className="flex flex-col gap-1 md:gap-2">
                                 <label className="body-03 md:body-02 font-display-regular">Full Name (*)</label>
                                 <input
@@ -160,7 +158,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
                                 )}
                             </div>
 
-                            {/* Customer Phone */}
+                            {/* Customer phone */}
                             <div className="flex flex-col gap-1 md:gap-2">
                                 <label className="body-03 md:body-02 font-display-regular">Phone Number (*)</label>
                                 <input
@@ -180,7 +178,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
                                 )}
                             </div>
 
-                            {/* Requested Quantity */}
+                            {/* Requested quantity */}
                             <div className="flex flex-col gap-1 md:gap-2">
                                 <label className="body-03 md:body-02 font-display-regular">Requested Quantity (*)</label>
                                 <input
@@ -200,7 +198,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
                                 )}
                             </div>
 
-                            {/* Description */}
+                            
                             <div className="flex flex-col gap-1 md:gap-2">
                                 <label className="body-03 md:body-02 font-display-regular">Description</label>
                                 <textarea

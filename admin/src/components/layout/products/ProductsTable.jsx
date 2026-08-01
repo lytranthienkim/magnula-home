@@ -2,10 +2,6 @@
 
 import { Table } from '@/components/common/table/Table';
 
-/**
- * ProductsTable Component
- * Displays the products table with filters and sorting
- */
 export function ProductsTable({
   displayData,
   products,
@@ -15,8 +11,11 @@ export function ProductsTable({
   onSortChange,
   onStatusFilterChange,
   onViewDetails,
-  onDeleteFromTable,
+  onDelete,
   canDelete,
+  currentPage,
+  totalPages,
+  totalProducts = 0
 }) {
   const columns = [
     { key: 'id', label: 'ID', width: '50px' },
@@ -74,7 +73,7 @@ export function ProductsTable({
         label: 'Delete',
         onClick: () => {
           if (window.confirm(`Delete "${product.productName}"?`)) {
-            onDeleteFromTable(product);
+            onDelete(product);
           }
         },
         variant: 'danger',
@@ -86,10 +85,9 @@ export function ProductsTable({
 
   return (
     <>
-      {/* Filter and Sort */}
       <div className="flex items-center justify-between mb-6">
         <span className="text-xs text-gray-500">
-          {displayData.length} of {products.length}
+          Total: {displayData?.length || 0} products
         </span>
 
         <div className="flex items-center gap-6">
@@ -121,8 +119,12 @@ export function ProductsTable({
         </div>
       </div>
 
-      {/* Table */}
-      <Table columns={columns} data={displayData} onAction={actions} loading={loading} />
+      <Table
+        columns={columns}
+        data={displayData}
+        onAction={actions}
+        loading={loading}
+      />
     </>
   );
 }

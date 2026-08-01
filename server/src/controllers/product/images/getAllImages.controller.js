@@ -1,5 +1,3 @@
-// Get All Product Images Controller
-
 import db from '../../../config/db.js';
 
 export const getAllImages = async (req, res) => {

@@ -1,5 +1,3 @@
-// Restore Product Request Controller - Restore soft-deleted product request
-
 import db from '../../../config/db.js';
 
 export const restoreProductRequest = async (req, res) => {
@@ -7,7 +5,6 @@ export const restoreProductRequest = async (req, res) => {
     const { ProductRequest } = db.models;
     const { id } = req.params;
 
-    // Find the soft-deleted request
     const request = await ProductRequest.findByPk(id, { paranoid: false });
     if (!request) {
       return res.status(404).json({
@@ -16,7 +13,6 @@ export const restoreProductRequest = async (req, res) => {
       });
     }
 
-    // Check if request is actually deleted
     if (!request.deletedAt) {
       return res.status(400).json({
         success: false,
@@ -24,10 +20,8 @@ export const restoreProductRequest = async (req, res) => {
       });
     }
 
-    // Restore the request
     await request.restore();
 
-    // Verify restoration
     const restoredRequest = await ProductRequest.findByPk(id);
     if (!restoredRequest) {
       return res.status(500).json({

@@ -1,6 +1,5 @@
-// Update Category Controller
-
 import db from '../../../config/db.js';
+import { invalidateCategoryCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const updateCategory = async (req, res) => {
   try {
@@ -8,7 +7,6 @@ export const updateCategory = async (req, res) => {
     const { id } = req.params;
     const { categoryName, description, isActive } = req.body;
 
-    // Get category
     const category = await Category.findByPk(id);
     if (!category) {
       return res.status(404).json({
@@ -17,12 +15,13 @@ export const updateCategory = async (req, res) => {
       });
     }
 
-    // Update fields
     if (categoryName) category.categoryName = categoryName;
     if (description !== undefined) category.description = description;
     if (isActive !== undefined) category.isActive = isActive;
 
     await category.save();
+
+    await invalidateCategoryCache();
 
     res.json({
       success: true,

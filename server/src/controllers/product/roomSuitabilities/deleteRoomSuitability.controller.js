@@ -1,6 +1,5 @@
-// Delete Room Suitability Controller - Soft delete with product reference check
-
 import db from '../../../config/db.js';
+import { invalidateRoomSuitabilityCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const deleteRoomSuitability = async (req, res) => {
   try {
@@ -15,7 +14,6 @@ export const deleteRoomSuitability = async (req, res) => {
       });
     }
 
-    // Check if any product uses this room suitability (regardless of product status)
     const productCount = await Product.count({
       where: { roomSuitabilityId: id, deletedAt: null },
     });
@@ -27,10 +25,8 @@ export const deleteRoomSuitability = async (req, res) => {
       });
     }
 
-    // Safe to soft delete using Sequelize's destroy method
     await roomSuitability.destroy();
 
-    // Verify deletion was successful
     const deletedRoomSuitability = await RoomSuitability.findByPk(id, { paranoid: false });
     if (!deletedRoomSuitability || !deletedRoomSuitability.deletedAt) {
       return res.status(500).json({
@@ -38,6 +34,8 @@ export const deleteRoomSuitability = async (req, res) => {
         error: 'Failed to delete room suitability - verification failed',
       });
     }
+
+    await invalidateRoomSuitabilityCache();
 
     res.status(200).json({
       success: true,

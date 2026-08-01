@@ -1,5 +1,3 @@
-// Create Product Controller - Create product with variants, images, and attributes using transaction
-
 import db from '../../../config/db.js';
 import { invalidateProductCache } from '../../../middleware/cache/cacheInvalidation.js';
 
@@ -29,7 +27,6 @@ export const createProduct = async (req, res) => {
       images
     } = req.body;
 
-    // Validate required fields
     if (!productName || typeof productName !== 'string' || productName.trim().length === 0) {
       await transaction.rollback();
       return res.status(400).json({
@@ -86,7 +83,6 @@ export const createProduct = async (req, res) => {
       });
     }
 
-    // Verify required attribute IDs exist
     const [material, fabricType, roomSuitability, category] = await Promise.all([
       Material.findByPk(materialId, { transaction }),
       FabricType.findByPk(fabricTypeId, { transaction }),
@@ -126,7 +122,6 @@ export const createProduct = async (req, res) => {
       });
     }
 
-    // Verify collection if provided
     if (collectionId) {
       const collection = await Collection.findByPk(collectionId, { transaction });
       if (!collection) {
@@ -138,7 +133,6 @@ export const createProduct = async (req, res) => {
       }
     }
 
-    // Create product
     const product = await Product.create(
       {
         productName: productName.trim(),
@@ -152,20 +146,18 @@ export const createProduct = async (req, res) => {
       { transaction }
     );
 
-    // Create variants (map request fields to model field names)
     const productVariants = await ProductVariant.bulkCreate(
       variants.map(v => ({
         productId: product.id,
-        overallSize: v.overallSize || v.size, // Support both field names
+        overallSize: v.overallSize || v.size,
         seatSize: v.seatSize || null,
         color: v.color || null,
         price: v.price,
-        stockQuantity: v.stockQuantity || v.stock || 0, // Support both field names
+        stockQuantity: v.stockQuantity || v.stock || 0,
       })),
       { transaction }
     );
 
-    // Create images
     const productImages = await ProductImage.bulkCreate(
       images.map(img => ({
         productId: product.id,

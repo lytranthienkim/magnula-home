@@ -1,5 +1,3 @@
-// Create Permission Controller
-
 import db from '../../../config/db.js';
 
 export const createPermission = async (req, res) => {
@@ -7,7 +5,6 @@ export const createPermission = async (req, res) => {
     const { Permission } = db.models;
     const { permissionKey, description } = req.body;
 
-    // Validate input
     if (!permissionKey || typeof permissionKey !== 'string' || permissionKey.trim().length < 2) {
       return res.status(400).json({
         success: false,
@@ -15,7 +12,6 @@ export const createPermission = async (req, res) => {
       });
     }
 
-    // Check if permission already exists
     const existingPermission = await Permission.findOne({
       where: { permissionKey: permissionKey.trim() },
     });
@@ -26,7 +22,6 @@ export const createPermission = async (req, res) => {
       });
     }
 
-    // Create new permission
     const permission = await Permission.create({
       permissionKey: permissionKey.trim(),
       description: description || null,

@@ -8,10 +8,8 @@ export const checkPermission = (requiredPermission) => {
         });
       }
 
-      // Get permissions from JWT token 
       const userPermissions = req.user.permissions || [];
 
-      // Check if user has the required permission
       const hasPermission = userPermissions.includes(requiredPermission);
 
       if (!hasPermission) {

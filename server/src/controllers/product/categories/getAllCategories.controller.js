@@ -1,5 +1,3 @@
-// Get All Categories Controller
-
 import db from '../../../config/db.js';
 import { Op } from 'sequelize';
 
@@ -7,17 +5,15 @@ export const getAllCategories = async (req, res) => {
   try {
     const { Category } = db.models;
 
-    // Check if requesting deleted items
     const isDeleted = req.query.deleted === 'true';
 
-    // Build where clause based on deleted status
     const whereClause = isDeleted
-      ? { deletedAt: { [Op.not]: null } } // Only deleted items
-      : { deletedAt: null }; // Only non-deleted items (both active and inactive)
+      ? { deletedAt: { [Op.not]: null } }
+      : { deletedAt: null };
 
     const categories = await Category.findAll({
       where: whereClause,
-      paranoid: !isDeleted, // Disable paranoid mode to include deleted items when requested
+      paranoid: !isDeleted,
       order: [['createdAt', 'DESC']],
     });
 

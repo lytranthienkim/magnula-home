@@ -6,7 +6,6 @@ export const checkUserRole = async (req, res) => {
     const { User, UserRole, Role } = db.models;
     const { email } = req.body;
 
-    // Kiểm tra input
     if (!email) {
       return res.status(400).json({
         success: false,
@@ -14,7 +13,6 @@ export const checkUserRole = async (req, res) => {
       });
     }
 
-    // Kiểm tra format email
     if (!isValidEmail(email)) {
       return res.status(400).json({
         success: false,
@@ -22,7 +20,6 @@ export const checkUserRole = async (req, res) => {
       });
     }
 
-    // Tìm user theo email với role
     const user = await User.findOne({
       where: { email },
       include: [{
@@ -42,7 +39,6 @@ export const checkUserRole = async (req, res) => {
       });
     }
 
-    // Lấy role chính của user
     const primaryRole = user.userRoles?.[0]?.Role?.roleName;
 
     res.json({

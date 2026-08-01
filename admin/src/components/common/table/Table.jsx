@@ -1,27 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
 import { Pagination } from './Pagination';
 
-const ITEMS_PER_PAGE = 10;
-
-export function Table({ columns, data, onAction, loading }) {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // Calculate pagination
-  const totalPages = Math.ceil((data?.length || 0) / ITEMS_PER_PAGE);
-  const paginatedData = useMemo(() => {
-    if (!data || data.length === 0) return [];
-    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIdx = startIdx + ITEMS_PER_PAGE;
-    return data.slice(startIdx, endIdx);
-  }, [data, currentPage]);
-
-  // Reset to page 1 when data changes
-  if (data && data.length > 0 && currentPage > totalPages && totalPages > 0) {
-    setCurrentPage(1);
-  }
-
+export function Table({ columns, data, onAction, loading, totalPages, currentPage }) {
   if (loading) {
     return (
       <div className="space-y-3">
@@ -60,7 +41,7 @@ export function Table({ columns, data, onAction, loading }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {paginatedData.map((row, rowIdx) => (
+            {data.map((row, rowIdx) => (
             <tr key={row.id || rowIdx} className="hover:bg-gray-50 transition-colors">
               {columns.map((col) => (
                 <td key={col.key} className="px-6 py-4 text-sm text-gray-900">
@@ -94,12 +75,10 @@ export function Table({ columns, data, onAction, loading }) {
         </table>
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
         />
       )}
     </div>

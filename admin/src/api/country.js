@@ -1,13 +1,14 @@
+import { config } from '@/config/env';
+
 export const getAllCountries = async () => {
     try {
-        if (!process.env.NEXT_PUBLIC_COUNTRY_API_KEY) {
+        if (!config.countryApiKey) {
             return [];
         }
 
         const res = await fetch('https://api.countrystatecity.in/v1/countries',
             {
-                headers: { 'X-CSCAPI-KEY': `${process.env.NEXT_PUBLIC_COUNTRY_API_KEY}` },
-                timeout: 5000
+                headers: { 'X-CSCAPI-KEY': config.countryApiKey }
             }
         );
 
@@ -25,14 +26,13 @@ export const getAllCountries = async () => {
 
 export const getAllStateByCountry = async (countryCode) => {
     try {
-        if (!process.env.NEXT_PUBLIC_COUNTRY_API_KEY) {
+        if (!config.countryApiKey) {
             return [];
         }
 
         const res = await fetch(`https://api.countrystatecity.in/v1/countries/${countryCode}/states`,
             {
-                headers: { 'X-CSCAPI-KEY': `${process.env.NEXT_PUBLIC_COUNTRY_API_KEY}` },
-                timeout: 5000
+                headers: { 'X-CSCAPI-KEY': config.countryApiKey }
             }
         );
 

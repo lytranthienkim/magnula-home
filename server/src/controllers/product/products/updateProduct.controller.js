@@ -1,5 +1,3 @@
-// Update Product Controller - Update product info
-
 import db from '../../../config/db.js';
 import { invalidateProductCache } from '../../../middleware/cache/cacheInvalidation.js';
 
@@ -24,7 +22,6 @@ export const updateProduct = async (req, res) => {
       status,
     } = req.body;
 
-    // Get product
     const product = await Product.findByPk(id);
     if (!product) {
       return res.status(404).json({
@@ -33,7 +30,6 @@ export const updateProduct = async (req, res) => {
       });
     }
 
-    // Validate productName if changing
     if (productName && typeof productName === 'string' && productName.trim().length === 0) {
       return res.status(400).json({
         success: false,
@@ -41,7 +37,6 @@ export const updateProduct = async (req, res) => {
       });
     }
 
-    // Verify reference IDs if changing
     const updates = {};
 
     if (productName) updates.productName = productName.trim();
@@ -147,7 +142,6 @@ export const updateProduct = async (req, res) => {
       }
     }
 
-    // Update product
     await product.update(updates);
     await invalidateProductCache();
 

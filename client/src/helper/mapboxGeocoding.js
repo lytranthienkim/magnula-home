@@ -1,4 +1,5 @@
-const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+import { config } from '@/config/env';
+
 const MAPBOX_API_URL = 'https://api.mapbox.com/geocoding/v5';
 
 export const searchAddresses = async (query, country = null) => {
@@ -6,17 +7,16 @@ export const searchAddresses = async (query, country = null) => {
         return [];
     }
 
-    if (!MAPBOX_ACCESS_TOKEN) {
+    if (!config.mapboxToken) {
         console.error('Mapbox Access Token not found. Add NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN to .env.local');
         return [];
     }
 
     try {
-        // Build URL with optional country filter
         let url = `${MAPBOX_API_URL}/mapbox.places/${encodeURIComponent(query)}.json`;
-        url += `?access_token=${MAPBOX_ACCESS_TOKEN}`;
+        url += `?access_token=${config.mapboxToken}`;
         url += '&types=address,place';
-        url += '&limit=10'; // Show 10 suggestions max
+        url += '&limit=10';
 
         if (country) {
             url += `&country=${country.toLowerCase()}`;
@@ -30,7 +30,6 @@ export const searchAddresses = async (query, country = null) => {
 
         const data = await response.json();
 
-        // Transform Mapbox response to our format
         return data.features.map(feature => ({
             id: feature.id,
             address: feature.place_name,

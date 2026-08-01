@@ -39,15 +39,11 @@ export default function OrderConfirmationPage() {
             <Navbar />
             <main className="flex-1 padding-wide py-10">
                 <div className="max-w-[700px] mx-auto">
-                    {/* Title */}
                     <h2 className="h2-neu font-display-semibold mb-6 text-center">
                         Order Confirmed
                     </h2>
-
-                    {/* Order Details Component */}
                     <OrderConfirmationDetails order={order} />
 
-                    {/* Action Buttons Component */}
                     <div className="mt-8">
                         <OrderConfirmationActions />
                     </div>

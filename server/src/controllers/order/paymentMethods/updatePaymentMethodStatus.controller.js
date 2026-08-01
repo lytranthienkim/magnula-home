@@ -1,5 +1,3 @@
-// Update Payment Method Status Controller - Activate/Deactivate only
-
 import db from '../../../config/db.js';
 
 export const updatePaymentMethodStatus = async (req, res) => {
@@ -8,7 +6,6 @@ export const updatePaymentMethodStatus = async (req, res) => {
     const { id } = req.params;
     const { isActive } = req.body;
 
-    // Validate input
     if (isActive === undefined || typeof isActive !== 'boolean') {
       return res.status(400).json({
         success: false,
@@ -16,7 +13,6 @@ export const updatePaymentMethodStatus = async (req, res) => {
       });
     }
 
-    // Get payment method
     const paymentMethod = await PaymentMethod.findByPk(id);
     if (!paymentMethod) {
       return res.status(404).json({
@@ -25,7 +21,6 @@ export const updatePaymentMethodStatus = async (req, res) => {
       });
     }
 
-    // Check current status
     if (paymentMethod.isActive === isActive) {
       return res.status(400).json({
         success: false,
@@ -33,7 +28,6 @@ export const updatePaymentMethodStatus = async (req, res) => {
       });
     }
 
-    // Update status
     await paymentMethod.update({ isActive });
 
     res.json({

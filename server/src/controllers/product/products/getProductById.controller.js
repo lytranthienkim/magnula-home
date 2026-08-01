@@ -1,5 +1,3 @@
-// Get Product By ID Controller - Fetch product details by ID
-
 import db from '../../../config/db.js';
 import { Op } from 'sequelize';
 
@@ -16,11 +14,10 @@ export const getProductById = async (req, res) => {
     } = db.models;
     const { id } = req.params;
 
-    // Xây dựng WHERE clause - loại bỏ discontinued products
     const whereClause = {
       deletedAt: null,
       id,
-      status: { [Op.ne]: 'discontinued' } // Loại bỏ discontinued products
+      status: { [Op.ne]: 'discontinued' }
     };
 
     const product = await Product.findOne({
@@ -45,7 +42,7 @@ export const getProductById = async (req, res) => {
         {
           model: ProductVariant,
           as: 'variants',
-          attributes: ['id', 'overallSize', 'seatSize', 'price', 'stockQuantity'],
+          attributes: ['id', 'overallSize', 'seatSize', 'price'],
         },
         {
           model: ProductImage,

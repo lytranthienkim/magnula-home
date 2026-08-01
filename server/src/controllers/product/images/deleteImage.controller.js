@@ -1,5 +1,3 @@
-// Delete Image (Soft Delete) Controller
-
 import db from '../../../config/db.js';
 import { Op } from 'sequelize';
 
@@ -16,12 +14,11 @@ export const deleteImage = async (req, res) => {
       });
     }
 
-    // Check if this is the last non-deleted image for the product
     const remainingImagesCount = await ProductImage.count({
       where: {
         productId: image.productId,
         deletedAt: null,
-        id: { [Op.ne]: imageId } // Exclude current image
+        id: { [Op.ne]: imageId }
       },
     });
 
@@ -32,7 +29,6 @@ export const deleteImage = async (req, res) => {
       });
     }
 
-    // Soft delete using destroy() - proper way with paranoid: true
     await image.destroy();
 
     res.json({

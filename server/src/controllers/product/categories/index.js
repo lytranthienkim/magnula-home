@@ -1,5 +1,3 @@
-// Category Controllers Index
-
 export { getAllCategories } from './getAllCategories.controller.js';
 export { getCategoryById } from './getCategoryById.controller.js';
 export { createCategory } from './createCategory.controller.js';

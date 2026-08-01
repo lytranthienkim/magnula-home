@@ -45,7 +45,7 @@ export const Navbar = () => {
                         </Link>
                     </ul>
                 ))}
-                {/* Cart - Desktop */}
+                {/* Cart - desktop */}
                 <button
                     onClick={() => setIsCartOpen(!isCartOpen)}
                     className="hidden lg:flex flex-row items-center gap-2 relative hover:opacity-70 transition-opacity duration-200 cursor-pointer"
@@ -60,7 +60,7 @@ export const Navbar = () => {
             </div>
 
             <div className="flex lg:hidden flex-row items-center gap-6">
-                {/* Cart - Mobile/Tablet */}
+                {/* Cart - mobile/tablet */}
                 <button
                     onClick={() => setIsCartOpen(!isCartOpen)}
                     className="relative flex flex-row items-center gap-1 hover:opacity-70 transition-opacity duration-200 cursor-pointer"

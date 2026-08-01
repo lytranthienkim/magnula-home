@@ -1,5 +1,3 @@
-// Get Role By ID Controller
-
 import db from '../../../config/db.js';
 
 export const getRoleById = async (req, res) => {

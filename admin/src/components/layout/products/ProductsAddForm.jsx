@@ -1,9 +1,8 @@
 'use client';
 
-/**
- * ProductsAddForm Component
- * Modal form for adding new products
- */
+import { useState } from 'react';
+import { uploadImageToR2 } from '@/api/upload';
+
 export function ProductsAddForm({
   isOpen,
   formData,
@@ -23,6 +22,55 @@ export function ProductsAddForm({
   onSubmit,
   onCancel,
 }) {
+  const [imagePreview, setImagePreview] = useState({});
+  const [uploadingImageIdx, setUploadingImageIdx] = useState(null);
+  const [uploadError, setUploadError] = useState({});
+
+  const handleImageFileSelect = async (e, idx) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadError((prev) => ({
+      ...prev,
+      [idx]: '',
+    }));
+
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview((prev) => ({
+      ...prev,
+      [idx]: previewUrl,
+    }));
+
+    setUploadingImageIdx(idx);
+    try {
+      const result = await uploadImageToR2(file);
+      if (result.success && result.imageUrl) {
+        const newImages = [...formData.images];
+        newImages[idx] = {
+          ...newImages[idx],
+          imageUrl: result.imageUrl,
+        };
+        onFormDataChange({ ...formData, images: newImages });
+        setUploadError((prev) => ({
+          ...prev,
+          [idx]: '',
+        }));
+      } else {
+        setUploadError((prev) => ({
+          ...prev,
+          [idx]: 'Upload failed - no URL returned',
+        }));
+      }
+    } catch (err) {
+      setUploadError((prev) => ({
+        ...prev,
+        [idx]: err.message || 'Upload failed',
+      }));
+    } finally {
+      setUploadingImageIdx(null);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -37,7 +85,6 @@ export function ProductsAddForm({
         )}
 
         <div className="space-y-4 mb-8">
-          {/* Product Name */}
           <div>
             <label className="text-xs font-semibold text-black uppercase block mb-2">Product Name *</label>
             <input
@@ -49,9 +96,7 @@ export function ProductsAddForm({
             {formErrors.productName && <span className="text-xs text-red-500">{formErrors.productName}</span>}
           </div>
 
-          {/* Attributes Row 1 */}
           <div className="grid grid-cols-2 gap-4">
-            {/* Category */}
             <div>
               <label className="text-xs font-semibold text-black uppercase block mb-2">Category *</label>
               <select
@@ -67,7 +112,6 @@ export function ProductsAddForm({
               {formErrors.categoryId && <span className="text-xs text-red-500">{formErrors.categoryId}</span>}
             </div>
 
-            {/* Material */}
             <div>
               <label className="text-xs font-semibold text-black uppercase block mb-2">Material *</label>
               <select
@@ -84,9 +128,7 @@ export function ProductsAddForm({
             </div>
           </div>
 
-          {/* Attributes Row 2 */}
           <div className="grid grid-cols-2 gap-4">
-            {/* Fabric Type */}
             <div>
               <label className="text-xs font-semibold text-black uppercase block mb-2">Fabric Type *</label>
               <select
@@ -102,7 +144,6 @@ export function ProductsAddForm({
               {formErrors.fabricTypeId && <span className="text-xs text-red-500">{formErrors.fabricTypeId}</span>}
             </div>
 
-            {/* Room Suitability */}
             <div>
               <label className="text-xs font-semibold text-black uppercase block mb-2">Room Suitability *</label>
               <select
@@ -119,7 +160,6 @@ export function ProductsAddForm({
             </div>
           </div>
 
-          {/* Collection (Optional) */}
           <div>
             <label className="text-xs font-semibold text-black uppercase block mb-2">Collection (Optional)</label>
             <select
@@ -134,7 +174,6 @@ export function ProductsAddForm({
             </select>
           </div>
 
-          {/* Variants Section */}
           <div className="border-t pt-4">
             <div className="flex justify-between items-center mb-3">
               <label className="text-xs font-semibold text-black uppercase block">Variants *</label>
@@ -238,7 +277,6 @@ export function ProductsAddForm({
             </div>
           </div>
 
-          {/* Images Section */}
           <div className="border-t pt-4">
             <div className="flex justify-between items-center mb-3">
               <label className="text-xs font-semibold text-black uppercase block">Images *</label>
@@ -253,26 +291,39 @@ export function ProductsAddForm({
             {formErrors.images && <span className="text-xs text-red-500 block mb-2">{formErrors.images}</span>}
             <div className="space-y-2">
               {formData.images.map((image, idx) => (
-                <div key={idx} className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Enter image URL"
-                    value={image.imageUrl}
-                    onChange={(e) => {
-                      const newImages = [...formData.images];
-                      newImages[idx].imageUrl = e.target.value;
-                      onFormDataChange({ ...formData, images: newImages });
-                    }}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded text-xs focus:outline-none focus:border-black"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => onRemoveImage(idx)}
-                    className="text-red-500 hover:text-red-700 font-bold text-lg"
-                    title="Remove image"
-                  >
-                    ✕
-                  </button>
+                <div key={idx} className="flex gap-2 flex-col">
+                  <div className="flex gap-2">
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/gif,image/webp"
+                      onChange={(e) => handleImageFileSelect(e, idx)}
+                      disabled={uploadingImageIdx === idx}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded text-xs focus:outline-none focus:border-black disabled:opacity-50"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => onRemoveImage(idx)}
+                      className="text-red-500 hover:text-red-700 font-bold text-lg"
+                      title="Remove image"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  {uploadError[idx] && (
+                    <div className="text-xs text-red-500">{uploadError[idx]}</div>
+                  )}
+                  {uploadingImageIdx === idx && (
+                    <div className="text-xs text-gray-500">Uploading...</div>
+                  )}
+                  {image.imageUrl && imagePreview[idx] && (
+                    <div className="flex items-center justify-center w-full h-32 bg-gray-100 rounded border border-gray-200">
+                      <img
+                        src={imagePreview[idx]}
+                        alt={`Preview ${idx}`}
+                        className="h-full object-contain"
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

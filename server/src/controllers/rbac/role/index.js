@@ -1,6 +1,3 @@
-// Role Controllers Index - Export all role controllers
-
-// Role CRUD Operations
 export { getAllRoles } from './getAllRoles.controller.js';
 export { createRole } from './createRole.controller.js';
 export { getRoleById } from './getRoleById.controller.js';

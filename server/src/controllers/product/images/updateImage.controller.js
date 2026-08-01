@@ -1,5 +1,3 @@
-// Update Image Controller - Update product image
-
 import db from '../../../config/db.js';
 
 export const updateImage = async (req, res) => {
@@ -16,7 +14,6 @@ export const updateImage = async (req, res) => {
       });
     }
 
-    // If setting as main image, unset main from other images
     if (isMain) {
       await ProductImage.update(
         { isMain: false },
@@ -24,7 +21,6 @@ export const updateImage = async (req, res) => {
       );
     }
 
-    // Update fields
     if (imageUrl) image.imageUrl = imageUrl;
     if (isMain !== undefined) image.isMain = isMain;
 

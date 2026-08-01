@@ -13,10 +13,8 @@ export const deleteProductRequest = async (req, res) => {
       });
     }
 
-    // Soft delete - preserve lead data in archive
     await request.destroy();
 
-    // Verify deletion was successful by checking with paranoid: false
     const deletedRequest = await ProductRequest.findByPk(id, { paranoid: false });
     if (!deletedRequest || !deletedRequest.deletedAt) {
       return res.status(500).json({

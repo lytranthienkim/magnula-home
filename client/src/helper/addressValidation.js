@@ -2,27 +2,18 @@ const MIN_LENGTH = 5;
 const MAX_LENGTH = 150;
 
 const checkRepeatingSequences = (str) => {
-    // Ký tự lặp liên tiếp 4+ lần (aaaa, 1111, !!!!)
     return /(.)\1{3,}/.test(str);
 };
 
-/**
- * Check địa chỉ có cả chữ và số không
- */
 const hasAlphanumeric = (str) => {
     const hasLetters = /[a-zA-Z]/.test(str);
     const hasNumbers = /[0-9]/.test(str);
     return hasLetters && hasNumbers;
 };
 
-/**
- * Validate Shipping Address (Client Side)
- */
 export const validateShippingAddress = (address) => {
-    // Trim whitespace
     const trimmed = address?.trim() || '';
 
-    // 1. Check length
     if (trimmed.length < MIN_LENGTH) {
         return {
             valid: false,
@@ -37,7 +28,6 @@ export const validateShippingAddress = (address) => {
         };
     }
 
-    // 2. Check repeating sequences
     if (checkRepeatingSequences(trimmed)) {
         return {
             valid: false,
@@ -45,7 +35,6 @@ export const validateShippingAddress = (address) => {
         };
     }
 
-    // 3. Check alphanumeric (must have both letters and numbers)
     if (!hasAlphanumeric(trimmed)) {
         return {
             valid: false,

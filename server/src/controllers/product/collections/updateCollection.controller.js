@@ -1,6 +1,5 @@
-// Update Collection Controller
-
 import db from '../../../config/db.js';
+import { invalidateCollectionCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const updateCollection = async (req, res) => {
   const transaction = await db.transaction();
@@ -10,7 +9,6 @@ export const updateCollection = async (req, res) => {
     const { id } = req.params;
     const { collectionName, colorHex, description, images } = req.body;
 
-    // Check if collection exists
     const collection = await Collection.findByPk(id, { transaction });
 
     if (!collection) {
@@ -21,7 +19,6 @@ export const updateCollection = async (req, res) => {
       });
     }
 
-    // Validate color format if provided
     if (colorHex && !/^#[0-9A-F]{6}$/i.test(colorHex)) {
       await transaction.rollback();
       return res.status(400).json({
@@ -30,7 +27,6 @@ export const updateCollection = async (req, res) => {
       });
     }
 
-    // Check if new collection name already exists (if changing - only active collections)
     if (collectionName && collectionName !== collection.collectionName) {
       const existingCollection = await Collection.findOne({
         where: { collectionName, deletedAt: null },
@@ -46,7 +42,6 @@ export const updateCollection = async (req, res) => {
       }
     }
 
-    // Update collection
     await collection.update(
       {
         collectionName: collectionName || collection.collectionName,
@@ -57,13 +52,11 @@ export const updateCollection = async (req, res) => {
     );
 
     if (images && Array.isArray(images)) {
-      // Xoa 1 image
       await CollectionImage.destroy({
         where: { collectionId: id },
         transaction,
       });
 
-      // Create new images if array is not empty
       if (images.length > 0) {
         const imageData = images.map((image) => ({
           collectionId: id,
@@ -74,7 +67,6 @@ export const updateCollection = async (req, res) => {
       }
     }
 
-    // Fetch updated collection with images
     const updatedCollection = await Collection.findByPk(id, {
       include: [
         {
@@ -86,6 +78,8 @@ export const updateCollection = async (req, res) => {
     });
 
     await transaction.commit();
+
+    await invalidateCollectionCache();
 
     res.status(200).json({
       success: true,

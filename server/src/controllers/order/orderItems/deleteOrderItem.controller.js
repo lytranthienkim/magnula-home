@@ -7,7 +7,6 @@ export const deleteOrderItem = async (req, res) => {
     const { itemId } = req.params;
     const { OrderItem, ProductVariant, Order } = db.models;
 
-    // Find the order item
     const orderItem = await OrderItem.findByPk(itemId, { transaction });
     if (!orderItem) {
       await transaction.rollback();
@@ -18,7 +17,6 @@ export const deleteOrderItem = async (req, res) => {
     const quantity = orderItem.quantity;
     const productVariantId = orderItem.productVariantId;
 
-    // Restore stock
     const variant = await ProductVariant.findByPk(productVariantId, { transaction });
     if (variant) {
       await variant.update(
@@ -27,10 +25,8 @@ export const deleteOrderItem = async (req, res) => {
       );
     }
 
-    // Delete the order item
     await orderItem.destroy({ transaction });
 
-    // Recalculate order total
     const order = await Order.findByPk(orderId, { transaction });
     const remainingItems = await OrderItem.findAll(
       {

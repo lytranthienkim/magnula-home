@@ -5,13 +5,13 @@ export const OrderConfirmationDetails = ({ order }) => {
 
     return (
         <div className="border-[0.25px] border-[#272727] flex flex-col p-6 gap-12">
-            {/* Order Code - Highlight */}
+            {/* Order code */}
             <div className=" rounded-none text-center">
                 <p className="body-03 font-display-regular text-gray-600 mb-2">Order Code</p>
                 <p className="h3-neu font-display-semibold">{order.orderCode}</p>
             </div>
 
-            {/* Order Details */}
+            {/* Order details */}
             <div className=" rounded-none flex flex-col gap-2">
                 <div className="flex justify-between items-center pb-4 border-b-[0.25px] border-[#272727]">
                     <p className="body-02 font-display-regular text-gray-600">Order Date</p>
@@ -31,7 +31,7 @@ export const OrderConfirmationDetails = ({ order }) => {
                 </div>
             </div>
 
-            {/* Customer Info */}
+            {/* Customer info */}
             <div className=" rounded-none flex flex-col gap-2">
                 <p className="body-02 font-display-semibold uppercase">-/ Customer Information</p>
 
@@ -41,7 +41,7 @@ export const OrderConfirmationDetails = ({ order }) => {
                 </div>
             </div>
 
-            {/* Order Items */}
+            {/* Order items */}
             {order.items && order.items.length > 0 && (
                 <div className=" rounded-none flex flex-col gap-2">
                     <p className="body-02 font-display-semibold uppercase">-/ Order Items</p>

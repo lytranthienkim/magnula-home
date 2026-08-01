@@ -1,5 +1,3 @@
-// Auth Controllers Index - Export all auth controllers
-
 export { login } from './login.controller.js';
 export { register } from './register.controller.js';
 export { checkAuth } from './checkAuth.controller.js';

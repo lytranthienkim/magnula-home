@@ -1,5 +1,3 @@
-// Bulk Create Collections Controller - Create multiple collections at once
-
 import db from '../../../config/db.js';
 
 export const bulkCreateCollections = async (req, res) => {
@@ -7,7 +5,6 @@ export const bulkCreateCollections = async (req, res) => {
     const { Collection } = db.models;
     const { collections } = req.body;
 
-    // Validate input
     if (!Array.isArray(collections) || collections.length === 0) {
       return res.status(400).json({
         success: false,
@@ -15,7 +12,6 @@ export const bulkCreateCollections = async (req, res) => {
       });
     }
 
-    // Validate each collection
     for (const collection of collections) {
       if (!collection.collectionName || !collection.colorHex) {
         return res.status(400).json({
@@ -24,7 +20,6 @@ export const bulkCreateCollections = async (req, res) => {
         });
       }
 
-      // Validate color format (#RRGGBB)
       if (!/^#[0-9A-F]{6}$/i.test(collection.colorHex)) {
         return res.status(400).json({
           success: false,
@@ -32,7 +27,6 @@ export const bulkCreateCollections = async (req, res) => {
         });
       }
 
-      // Check for duplicates (only active collections)
       const existing = await Collection.findOne({
         where: { collectionName: collection.collectionName, deletedAt: null },
       });
@@ -44,7 +38,6 @@ export const bulkCreateCollections = async (req, res) => {
       }
     }
 
-    // Bulk create collections
     const createdCollections = await Collection.bulkCreate(collections);
 
     res.status(201).json({

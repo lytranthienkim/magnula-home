@@ -12,21 +12,7 @@ export const HomeHero = () => {
     const trackRef = useRef(null); 
 
     useLayoutEffect(() => {
-        const handleScroll = () => {
-            if (!trackRef.current) return;
-            const rect = trackRef.current.getBoundingClientRect(); 
-            const currentScroll = -rect.top; 
-            const animationDistance = window.innerHeight * 0.4; 
-            const currentProgress = Math.min(1, Math.max(0, currentScroll / animationDistance)); 
-            setProgress(currentProgress); 
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true }); 
-        handleScroll();
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
+        setProgress(1);
     }, []);
 
     useEffect(() => {
@@ -56,7 +42,7 @@ export const HomeHero = () => {
                 <div className="absolute inset-0 bg-[#413B33] pointer-events-none" style={{ opacity: bgOpacity }} />
 
                 <div className="w-full h-full flex flex-col justify-center md:justify-end md:items-center padding-wide relative z-10">
-                    {/* Title Magnula */}
+                    {/* Title magnula */}
                     <div
                         className="lg:hidden w-full text-[80px] md:text-[160px] font-damion text-third flex items-center md:items-start justify-center md:justify-start leading-[1.5]"
                         style={{
@@ -69,7 +55,7 @@ export const HomeHero = () => {
                         Magnula
                     </div>
 
-                    <motion.div className="md:absolute w-full h-fit md:h-full flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-40">
+                    <motion.div className="hidden md:absolute md:flex w-full h-full flex-row items-center justify-center gap-8 lg:gap-40">
                         {MENU.map((item, index) => {
                             const itemMotion = getMenuItemMotion(index, progress);
 

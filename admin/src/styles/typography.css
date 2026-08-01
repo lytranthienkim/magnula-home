@@ -1,0 +1,50 @@
+h1 {
+    font-size: clamp(32px, 2vw, 56px);
+    line-height: 1.5;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: clamp(24px, 2vw, 32px);
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: clamp(20px, 2vw, 24px);
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+h4 {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+.body-01 {
+    font-size: clamp(14px, 1vw, 16px);
+    font-weight: 400;
+}
+
+.body-02 {
+    font-size: clamp(13px, 1vw, 14px);
+    font-weight: 400;
+}
+
+.body-03 {
+    font-size: clamp(11px, 1vw, 13px);
+    font-weight: 400;
+}
+
+.error-text {
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.success-text {
+    color: #22c55e;
+    font-size: 12px;
+    margin-top: 4px;
+}

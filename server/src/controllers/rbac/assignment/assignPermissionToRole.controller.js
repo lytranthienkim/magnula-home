@@ -1,5 +1,3 @@
-// Assign Permission to Role Controller
-
 import db from '../../../config/db.js';
 
 export const assignPermissionToRole = async (req, res) => {
@@ -8,7 +6,6 @@ export const assignPermissionToRole = async (req, res) => {
     const { id } = req.params;
     const { permissionId } = req.body;
 
-    // Validate input
     if (!permissionId) {
       return res.status(400).json({
         success: false,
@@ -16,7 +13,6 @@ export const assignPermissionToRole = async (req, res) => {
       });
     }
 
-    // Get role
     const role = await Role.findByPk(id);
     if (!role) {
       return res.status(404).json({
@@ -25,7 +21,6 @@ export const assignPermissionToRole = async (req, res) => {
       });
     }
 
-    // Get permission
     const permission = await Permission.findByPk(permissionId);
     if (!permission) {
       return res.status(404).json({
@@ -34,7 +29,6 @@ export const assignPermissionToRole = async (req, res) => {
       });
     }
 
-    // Check if role already has this permission
     const existing = await RolePermission.findOne({
       where: { roleId: id, permissionId },
     });
@@ -45,7 +39,6 @@ export const assignPermissionToRole = async (req, res) => {
       });
     }
 
-    // Assign permission
     const rolePermission = await RolePermission.create({
       roleId: id,
       permissionId,

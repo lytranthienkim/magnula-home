@@ -1,5 +1,3 @@
-// User Controllers Index - Export all user controllers
-
 export { getAllUsers } from './getAllUsers.controller.js';
 export { getUserById } from './getUserById.controller.js';
 export { createUser } from './createUser.controller.js';

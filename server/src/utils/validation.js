@@ -1,5 +1,3 @@
-//checkUserRole, register, forgotPassword, createUser, updateProfile, createOrder, createProductRequest
-
 import { Op } from 'sequelize';
 
 export const isValidEmail = (email) => {
@@ -25,11 +23,9 @@ export const isValidPhone = (phone) => {
   return true;
 };
 
-
 export const sanitizePhone = (phone) => {
   return phone.replace(/\D/g, '');
 };
-
 
 export const checkEmailUniqueness = async (User, email, excludeUserId = null) => {
   const where = { email };

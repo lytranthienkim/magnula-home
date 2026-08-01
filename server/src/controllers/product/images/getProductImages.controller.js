@@ -1,5 +1,3 @@
-// Get Product Images Controller - Fetch all images for a product
-
 import db from '../../../config/db.js';
 
 export const getProductImages = async (req, res) => {
@@ -7,7 +5,6 @@ export const getProductImages = async (req, res) => {
     const { Product, ProductImage } = db.models;
     const { id } = req.params;
 
-    // Check product exists
     const product = await Product.findByPk(id);
     if (!product) {
       return res.status(404).json({
@@ -16,7 +13,6 @@ export const getProductImages = async (req, res) => {
       });
     }
 
-    // Get images, main image first (exclude deleted)
     const images = await ProductImage.findAll({
       where: { productId: id, deletedAt: null },
       order: [['isMain', 'DESC'], ['createdAt', 'ASC']],

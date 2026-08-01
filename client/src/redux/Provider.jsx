@@ -8,7 +8,7 @@ export function Providers({ children }) {
     return (
         <Provider store={store}>
             <PersistGate
-                loading={<div>Loading...</div>}
+                loading={null}
                 persistor={persistor}
             >
                 {children}

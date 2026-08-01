@@ -20,7 +20,6 @@ export function PermissionsModal({ isOpen, permission, onClose }) {
 
         {/* Content */}
         <div className="px-8 py-6 space-y-6">
-          {/* Permission Key */}
           <div>
             <p className="text-xs text-gray-600 font-semibold uppercase mb-3">Permission Key</p>
             <div className="bg-gray-50 px-4 py-2">
@@ -28,7 +27,7 @@ export function PermissionsModal({ isOpen, permission, onClose }) {
             </div>
           </div>
 
-          {/* Description */}
+          
           <div>
             <p className="text-xs text-gray-600 font-semibold uppercase mb-3">Description</p>
             <div className="bg-gray-50 px-4 py-2">

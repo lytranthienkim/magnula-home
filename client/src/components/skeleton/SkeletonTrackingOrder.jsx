@@ -17,10 +17,8 @@ export const SkeletonTrackingOrder = ({ className = '' }) => {
                 <SkeletonText lines={1} height="h-10" width="w-full" />
             </div>
 
-            {/* Order Details */}
             <div className="w-full flex flex-col items-center gap-1">
                 <div className="w-full flex flex-col items-center justify-center gap-4 md:gap-6 border-[0.25px] border-[#272727] py-3 md:py-4 px-3 md:px-4">
-                    {/* Order Code & Status */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 w-full">
                         <SkeletonText lines={1} height="h-4" width="w-full" />
                         <SkeletonText lines={1} height="h-4" width="w-full" />
@@ -40,7 +38,6 @@ export const SkeletonTrackingOrder = ({ className = '' }) => {
                         ))}
                     </div>
 
-                    {/* Total */}
                     <div className="flex flex-col gap-2 pt-2 border-t-[0.25px] border-[#272727] w-full">
                         <SkeletonText lines={1} height="h-4" width="w-1/2" />
                     </div>

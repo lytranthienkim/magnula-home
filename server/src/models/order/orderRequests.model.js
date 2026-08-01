@@ -80,7 +80,7 @@ const ProductRequest = db.define(
     tableName: 'product_requests',
     timestamps: true,
     underscored: true,
-    paranoid: true,  // Enable soft delete - preserves lead data in archive
+    paranoid: true, 
   }
 );
 

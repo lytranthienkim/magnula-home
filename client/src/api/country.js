@@ -1,33 +1,45 @@
-import { getCache, setCache, generateCacheKey } from "../utils/cache";
+import { config } from '@/config/env';
 
 export const getAllCountries = async () => {
-    const cacheKey = generateCacheKey('countries');
-    const cached = getCache(cacheKey);
+    try {
+        if (!config.countryApiKey) {
+            return [];
+        }
 
-    if (cached) {
-        return cached;
+        const res = await fetch('https://api.countrystatecity.in/v1/countries',
+            { headers: { 'X-CSCAPI-KEY': config.countryApiKey } }
+        );
+
+        if (!res.ok) {
+            console.error(`Country API error: ${res.status} ${res.statusText}`);
+            return [];
+        }
+
+        return res.json();
+    } catch (error) {
+        console.error('Failed to fetch countries:', error.message);
+        return [];
     }
-
-    const res = await fetch('https://api.countrystatecity.in/v1/countries',
-        {headers: { 'X-CSCAPI-KEY': `${process.env.NEXT_PUBLIC_COUNTRY_API_KEY}` }}
-    );
-    const data = await res.json();
-    setCache(cacheKey, data, 86400000);
-    return data;
 }
 
 export const getAllStateByCountry = async (countryCode) => {
-    const cacheKey = generateCacheKey(`states/${countryCode}`);
-    const cached = getCache(cacheKey);
+    try {
+        if (!config.countryApiKey) {
+            return [];
+        }
 
-    if (cached) {
-        return cached;
+        const res = await fetch(`https://api.countrystatecity.in/v1/countries/${countryCode}/states`,
+            { headers: { 'X-CSCAPI-KEY': config.countryApiKey } }
+        );
+
+        if (!res.ok) {
+            console.error(`State API error: ${res.status} ${res.statusText}`);
+            return [];
+        }
+
+        return res.json();
+    } catch (error) {
+        console.error('Failed to fetch states:', error.message);
+        return [];
     }
-
-    const res = await fetch(`https://api.countrystatecity.in/v1/countries/${countryCode}/states`,
-        {headers: { 'X-CSCAPI-KEY': `${process.env.NEXT_PUBLIC_COUNTRY_API_KEY}` }}
-    );
-    const data = await res.json();
-    setCache(cacheKey, data, 86400000);
-    return data;
 }

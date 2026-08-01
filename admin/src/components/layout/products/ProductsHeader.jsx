@@ -2,10 +2,6 @@
 
 import { HiOutlinePlus } from 'react-icons/hi2';
 
-/**
- * ProductsHeader Component
- * Displays the page header and add button for products management
- */
 export function ProductsHeader({ canCreate, onAddClick }) {
   return (
     <div className="mb-8 flex justify-between items-center">

@@ -1,5 +1,3 @@
-// Update Payment Method Controller
-
 import db from '../../../config/db.js';
 
 export const updatePaymentMethod = async (req, res) => {
@@ -8,7 +6,6 @@ export const updatePaymentMethod = async (req, res) => {
     const { id } = req.params;
     const { code, name, description } = req.body;
 
-    // Get payment method
     const paymentMethod = await PaymentMethod.findByPk(id);
     if (!paymentMethod) {
       return res.status(404).json({
@@ -17,7 +14,6 @@ export const updatePaymentMethod = async (req, res) => {
       });
     }
 
-    // Check if new code already exists (if code is being updated)
     if (code && code !== paymentMethod.code) {
       const existing = await PaymentMethod.findOne({ where: { code }, paranoid: false });
       if (existing) {
@@ -28,7 +24,6 @@ export const updatePaymentMethod = async (req, res) => {
       }
     }
 
-    // Update payment method
     await paymentMethod.update({
       code: code || paymentMethod.code,
       name: name || paymentMethod.name,

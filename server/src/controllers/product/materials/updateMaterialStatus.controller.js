@@ -1,5 +1,3 @@
-// Update Material Status Controller - Activate/Deactivate only
-
 import db from '../../../config/db.js';
 
 export const updateMaterialStatus = async (req, res) => {
@@ -8,7 +6,6 @@ export const updateMaterialStatus = async (req, res) => {
     const { id } = req.params;
     const { isActive } = req.body;
 
-    // Validate input
     if (isActive === undefined || typeof isActive !== 'boolean') {
       return res.status(400).json({
         success: false,
@@ -16,7 +13,6 @@ export const updateMaterialStatus = async (req, res) => {
       });
     }
 
-    // Get material
     const material = await Material.findByPk(id);
     if (!material) {
       return res.status(404).json({
@@ -25,7 +21,6 @@ export const updateMaterialStatus = async (req, res) => {
       });
     }
 
-    // Check current status
     if (material.isActive === isActive) {
       return res.status(400).json({
         success: false,
@@ -33,7 +28,6 @@ export const updateMaterialStatus = async (req, res) => {
       });
     }
 
-    // Update status
     await material.update({ isActive });
 
     res.json({

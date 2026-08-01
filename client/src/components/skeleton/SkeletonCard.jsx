@@ -9,10 +9,10 @@ export const SkeletonCard = ({ className = '' }) => {
             {/* Image */}
             <SkeletonImage width="w-full" height="h-48" />
 
-            {/* Title */}
+            
             <SkeletonText lines={1} height="h-5" width="w-3/4" />
 
-            {/* Description */}
+            
             <SkeletonText lines={2} height="h-3" width="w-full" />
 
             {/* Price */}

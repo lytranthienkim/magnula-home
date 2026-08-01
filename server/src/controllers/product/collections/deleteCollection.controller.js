@@ -1,6 +1,5 @@
-// Delete Collection Controller - Soft delete with product reference check
-
 import db from '../../../config/db.js';
+import { invalidateCollectionCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const deleteCollection = async (req, res) => {
   try {
@@ -15,7 +14,6 @@ export const deleteCollection = async (req, res) => {
       });
     }
 
-    // Check if any product uses this collection (regardless of product status)
     const productCount = await Product.count({
       where: { collectionId: id, deletedAt: null },
     });
@@ -27,10 +25,8 @@ export const deleteCollection = async (req, res) => {
       });
     }
 
-    // Soft delete collection only - products remain intact
     await collection.destroy();
 
-    // Verify deletion was successful
     const deletedCollection = await Collection.findByPk(id, { paranoid: false });
     if (!deletedCollection || !deletedCollection.deletedAt) {
       return res.status(500).json({
@@ -38,6 +34,8 @@ export const deleteCollection = async (req, res) => {
         error: 'Failed to delete collection - verification failed',
       });
     }
+
+    await invalidateCollectionCache();
 
     res.status(200).json({
       success: true,

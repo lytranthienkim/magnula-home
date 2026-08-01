@@ -1,5 +1,3 @@
-// Remove Role from User Controller
-
 import db from '../../../config/db.js';
 
 export const removeRoleFromUser = async (req, res) => {
@@ -7,7 +5,6 @@ export const removeRoleFromUser = async (req, res) => {
     const { User, Role, UserRole } = db.models;
     const { id, roleId } = req.params;
 
-    // Get user
     const user = await User.findByPk(id);
     if (!user) {
       return res.status(404).json({
@@ -15,8 +12,6 @@ export const removeRoleFromUser = async (req, res) => {
         error: 'User not found',
       });
     }
-
-    // Get role
     const role = await Role.findByPk(roleId);
     if (!role) {
       return res.status(404).json({
@@ -25,7 +20,6 @@ export const removeRoleFromUser = async (req, res) => {
       });
     }
 
-    // Get user role assignment
     const userRole = await UserRole.findOne({
       where: { userId: id, roleId },
     });
@@ -36,7 +30,6 @@ export const removeRoleFromUser = async (req, res) => {
       });
     }
 
-    // Remove role
     await userRole.destroy();
 
     res.json({

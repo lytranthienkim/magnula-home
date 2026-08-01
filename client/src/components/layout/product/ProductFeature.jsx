@@ -49,7 +49,6 @@ export const ProductFeature = () => {
 
     if (loading || !product) return null;
 
-    // Handle carousel scroll
     const handleCarouselScroll = (e) => {
         const width = e.currentTarget.offsetWidth;
         const index = Math.round(e.currentTarget.scrollLeft / width);
@@ -72,7 +71,7 @@ export const ProductFeature = () => {
                 </p>
             </motion.div>
 
-            {/* Grid Layout */}
+            {/* Grid */}
             <motion.div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-1 xl:gap-3" variants={productFeatureContainerVariants}>
                     <motion.img
                         variants={productFeatureImageVariants}
@@ -82,7 +81,6 @@ export const ProductFeature = () => {
                         loading="lazy"
                     />
 
-                {/* Right Column */}
                 <motion.div className="relative w-full h-full" variants={productFeatureImageVariants}>
                     <div
                         ref={carouselRef}
@@ -105,7 +103,6 @@ export const ProductFeature = () => {
                         ))}
                     </div>
 
-                    {/* Progress Dots */}
                     {collectionImages.length > 1 && (
                         <div className="absolute bottom-2 md:bottom-3 xl:bottom-5 right-2 md:right-3 xl:right-5 flex gap-0.5 md:gap-1 z-10">
                             {collectionImages.map((_, index) => (

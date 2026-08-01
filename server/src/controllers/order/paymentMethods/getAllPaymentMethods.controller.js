@@ -1,5 +1,3 @@
-// Get All Payment Methods Controller
-
 import db from '../../../config/db.js';
 
 export const getAllPaymentMethods = async (req, res) => {
@@ -7,8 +5,6 @@ export const getAllPaymentMethods = async (req, res) => {
     const { PaymentMethod } = db.models;
     const { includeInactive } = req.query;
 
-    // For public/client: only return active payment methods
-    // For admin dashboard: include inactive if requested
     const where = includeInactive ? {} : { isActive: true };
     const paranoid = !includeInactive;
 

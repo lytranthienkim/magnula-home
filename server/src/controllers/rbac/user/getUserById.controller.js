@@ -1,5 +1,3 @@
-// Get User By ID Controller - Retrieve single user details
-
 import db from '../../../config/db.js';
 
 export const getUserById = async (req, res) => {
@@ -7,7 +5,6 @@ export const getUserById = async (req, res) => {
     const { id } = req.params;
     const { User, UserRole, Role } = db.models;
 
-    // Get user by ID
     const user = await User.findByPk(id, {
       attributes: { exclude: ['passwordHash'] },
       include: [{
@@ -24,7 +21,6 @@ export const getUserById = async (req, res) => {
       });
     }
 
-    // Format response
     const formattedUser = {
       id: user.id,
       email: user.email,

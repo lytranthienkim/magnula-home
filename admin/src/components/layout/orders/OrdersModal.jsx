@@ -66,7 +66,7 @@ export default function OrdersModal({
             </div>
           </div>
 
-          {/* Customer Information Section */}
+          {/* Customer */}
           <div>
             <p className="text-sm text-black font-semibold uppercase mb-4">Customer Information</p>
             <div className="space-y-4">
@@ -123,11 +123,11 @@ export default function OrdersModal({
             </div>
           </div>
 
-          {/* Shipping Address Section */}
+          {/* Shipping */}
           <div>
             <p className="text-sm text-black font-semibold uppercase mb-4">Shipping Address</p>
             <div className="space-y-4">
-              {/* Country and State - Same Row */}
+              {/* Country state*/}
               <div className="grid grid-cols-2 gap-4">
                 {/* Country */}
                 <div className="flex items-center">
@@ -182,7 +182,7 @@ export default function OrdersModal({
             </div>
           </div>
 
-          {/* Order Items Section */}
+          {/* Order items */}
           <div>
             <p className="text-sm text-black font-semibold uppercase mb-4">Order Items</p>
             <div className="overflow-hidden">
@@ -209,7 +209,7 @@ export default function OrdersModal({
             </div>
           </div>
 
-          {/* Total Section */}
+          {/* Total section */}
           <div className="flex flex-row items-center justify-between pt-4 border-t border-gray-200">
             <p className="text-sm text-black font-semibold uppercase">Order Total</p>
             <p className="text-2xl font-bold text-black">${parseFloat(selectedOrder.totalPrice || 0).toFixed(2)}</p>

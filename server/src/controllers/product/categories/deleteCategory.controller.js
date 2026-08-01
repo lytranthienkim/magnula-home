@@ -1,6 +1,5 @@
-// Delete Category Controller - Soft delete with product reference check
-
 import db from '../../../config/db.js';
+import { invalidateCategoryCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const deleteCategory = async (req, res) => {
   try {
@@ -15,7 +14,6 @@ export const deleteCategory = async (req, res) => {
       });
     }
 
-    // Check if any product uses this category (regardless of product status)
     const productCount = await Product.count({
       where: { categoryId: id, deletedAt: null },
     });
@@ -27,10 +25,8 @@ export const deleteCategory = async (req, res) => {
       });
     }
 
-    // Safe to soft delete using Sequelize's destroy method
     await category.destroy();
 
-    // Verify deletion was successful
     const deletedCategory = await Category.findByPk(id, { paranoid: false });
     if (!deletedCategory || !deletedCategory.deletedAt) {
       return res.status(500).json({
@@ -38,6 +34,8 @@ export const deleteCategory = async (req, res) => {
         error: 'Failed to delete category - verification failed',
       });
     }
+
+    await invalidateCategoryCache();
 
     res.status(200).json({
       success: true,

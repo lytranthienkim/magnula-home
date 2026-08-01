@@ -15,7 +15,7 @@ export function DeleteModal({ isOpen, title, message, onConfirm, onCancel, loadi
           <div className="flex-1">
             <h3 className="text-lg font-bold text-gray-900">{title}</h3>
             <p className="text-sm text-gray-600 mt-2 leading-relaxed">{message}</p>
-            <p className="text-xs text-red-600 mt-3 font-semibold bg-red-50 px-3 py-2 rounded">⚠️ This action cannot be undone.</p>
+            <p className="text-xs text-red-600 mt-3 font-semibold bg-red-50 px-3 py-2 rounded">This action cannot be undone.</p>
           </div>
         </div>
 

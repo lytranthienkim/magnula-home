@@ -1,5 +1,3 @@
-// Delete Collection Image Controller
-
 import db from '../../../config/db.js';
 
 export const deleteCollectionImage = async (req, res) => {
@@ -7,7 +5,6 @@ export const deleteCollectionImage = async (req, res) => {
     const { CollectionImage } = db.models;
     const { imageId } = req.params;
 
-    // Get collection image
     const collectionImage = await CollectionImage.findByPk(imageId);
     if (!collectionImage) {
       return res.status(404).json({
@@ -16,7 +13,6 @@ export const deleteCollectionImage = async (req, res) => {
       });
     }
 
-    // Delete image
     await collectionImage.destroy();
 
     res.json({

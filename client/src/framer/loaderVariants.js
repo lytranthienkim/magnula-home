@@ -1,6 +1,3 @@
-// Loader Motion Variants
-// Text reveal animations for loader page
-
 export const loaderContainerVariants = {
     hidden: { opacity: 0 },
     visible: {

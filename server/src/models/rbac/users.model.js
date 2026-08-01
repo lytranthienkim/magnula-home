@@ -43,7 +43,7 @@ const User = db.define(
     tableName: 'users',
     timestamps: true,
     underscored: true,
-    paranoid: false,  // Users can NEVER be deleted - deactivate instead
+    paranoid: false, 
   }
 );
 

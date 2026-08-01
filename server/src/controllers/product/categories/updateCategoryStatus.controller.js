@@ -1,5 +1,3 @@
-// Update Category Status Controller - Activate/Deactivate only
-
 import db from '../../../config/db.js';
 
 export const updateCategoryStatus = async (req, res) => {

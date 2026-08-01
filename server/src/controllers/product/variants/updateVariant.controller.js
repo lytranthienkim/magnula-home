@@ -1,6 +1,5 @@
-// Update Variant Controller - Update product variant info
-
 import db from '../../../config/db.js';
+import { invalidateProductCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const updateVariant = async (req, res) => {
   try {
@@ -16,13 +15,14 @@ export const updateVariant = async (req, res) => {
       });
     }
 
-    // Update fields
     if (price) variant.price = parseFloat(price);
     if (stockQuantity !== undefined) variant.stockQuantity = stockQuantity;
     if (overallSize) variant.overallSize = overallSize;
     if (seatSize) variant.seatSize = seatSize;
 
     await variant.save();
+
+    await invalidateProductCache();
 
     res.json({
       success: true,

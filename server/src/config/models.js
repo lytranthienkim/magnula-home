@@ -1,6 +1,5 @@
 import db from './db.js';
 
-// Import all models
 import User from '../models/rbac/users.model.js';
 import Role from '../models/rbac/roles.model.js';
 import Permission from '../models/rbac/permissions.model.js';

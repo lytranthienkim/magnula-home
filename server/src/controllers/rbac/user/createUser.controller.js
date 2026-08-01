@@ -1,5 +1,3 @@
-// Create User Controller - With transaction for data integrity
-
 import bcrypt from 'bcryptjs';
 import db from '../../../config/db.js';
 import { isValidEmail, checkEmailUniqueness } from '../../../utils/validation.js';
@@ -11,7 +9,6 @@ export const createUser = async (req, res) => {
     const { User, UserRole, Role } = db.models;
     const { email, password, fullName, roleId } = req.body;
 
-    // Validate input
     if (!email || !password) {
       await transaction.rollback();
       return res.status(400).json({
@@ -20,7 +17,6 @@ export const createUser = async (req, res) => {
       });
     }
 
-    // Validate email format
     if (!isValidEmail(email)) {
       await transaction.rollback();
       return res.status(400).json({
@@ -29,7 +25,6 @@ export const createUser = async (req, res) => {
       });
     }
 
-    // Validate password strength
     if (password.length < 6) {
       await transaction.rollback();
       return res.status(400).json({
@@ -38,7 +33,6 @@ export const createUser = async (req, res) => {
       });
     }
 
-    // Check email uniqueness
     const existingUser = await checkEmailUniqueness(User, email);
     if (existingUser) {
       await transaction.rollback();
@@ -48,7 +42,6 @@ export const createUser = async (req, res) => {
       });
     }
 
-    // Verify role exists (if roleId provided)
     let assignedRole = null;
     if (roleId) {
       assignedRole = await Role.findByPk(roleId, { transaction });
@@ -61,10 +54,8 @@ export const createUser = async (req, res) => {
       }
     }
 
-    // Hash password
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Create user within transaction
     const newUser = await User.create(
       {
         email,
@@ -74,7 +65,6 @@ export const createUser = async (req, res) => {
       { transaction }
     );
 
-    // Assign role (if provided) - within same transaction
     if (assignedRole) {
       await UserRole.create(
         {
@@ -87,15 +77,13 @@ export const createUser = async (req, res) => {
 
     await transaction.commit();
 
-    // Build response - DO NOT include plain password in response
     const responseData = {
       userId: newUser.id,
       email: newUser.email,
       fullName: newUser.fullName,
-      temporaryPassword: password, // Only for display - NOT stored/logged
+      temporaryPassword: password,
     };
 
-    // Add role info if assigned
     if (assignedRole) {
       responseData.assignedRole = assignedRole.roleName;
     }

@@ -1,5 +1,3 @@
-// Check Stock Controller - Check product stock availability
-
 import db from '../../../config/db.js';
 
 export const checkStock = async (req, res) => {
@@ -7,7 +5,6 @@ export const checkStock = async (req, res) => {
     const { Product, ProductVariant } = db.models;
     const { variantId, quantity } = req.body;
 
-    // Validate input
     if (!variantId || !quantity) {
       return res.status(400).json({
         success: false,
@@ -15,7 +12,6 @@ export const checkStock = async (req, res) => {
       });
     }
 
-    // Find variant
     const variant = await ProductVariant.findByPk(variantId, {
       include: [{ model: Product }],
     });
@@ -27,7 +23,6 @@ export const checkStock = async (req, res) => {
       });
     }
 
-    // Check stock
     const hasStock = variant.stockQuantity >= quantity;
     const remainingStock = Math.max(0, variant.stockQuantity - quantity);
 

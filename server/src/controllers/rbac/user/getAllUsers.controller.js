@@ -1,7 +1,4 @@
-// Get All Users Controller - Retrieve list of all users
-
 import db from '../../../config/db.js';
-import { Op } from 'sequelize';
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -9,7 +6,6 @@ export const getAllUsers = async (req, res) => {
 
     const isInactive = req.query.deleted === 'true';
 
-    // Get all users (active or inactive)
     const users = await User.findAll({
       where: {
         isActive: isInactive ? false : true,
@@ -23,7 +19,6 @@ export const getAllUsers = async (req, res) => {
       }],
     });
 
-    // Format response
     const formattedUsers = users.map(user => ({
       id: user.id,
       email: user.email,

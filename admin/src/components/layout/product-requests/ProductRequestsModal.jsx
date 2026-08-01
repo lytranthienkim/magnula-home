@@ -1,140 +1,138 @@
 'use client';
 
-import { memo } from 'react';
-import { HiOutlineXMark } from 'react-icons/hi2';
+import { REQUEST_STATUSES } from '@/constants/statuses';
 
-const ProductRequestsModal = memo(({
-  isOpen,
-  request,
+export default function ProductRequestsModal({
+  selectedRequest,
   editMode,
   editData,
   statusUpdating,
-  canUpdate,
-  onClose,
-  onEditClick,
+  onStatusChange,
+  onSave,
   onEditModeChange,
   onEditDataChange,
-  onSave,
-  onDelete,
-  error,
-  onErrorClear,
-}) => {
-  if (!isOpen || !request) return null;
+  onClose,
+}) {
+  if (!selectedRequest) return null;
+
+  const getStatusColor = (status) => {
+    const colors = {
+      'pending': 'bg-yellow-100 text-yellow-700',
+      'approved': 'bg-green-100 text-green-700',
+      'rejected': 'bg-red-100 text-red-700',
+    };
+    return colors[status] || 'bg-gray-100 text-gray-700';
+  };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full max-h-96 overflow-y-auto">
-        {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-black">Product Request #{request.id}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-            <HiOutlineXMark className="w-6 h-6" />
-          </button>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="px-8 py-6 border-b border-gray-200">
+          <div>
+            <p className="text-xs text-gray-600 font-semibold uppercase">Request ID</p>
+            <h2 className="text-3xl font-bold text-black">#{selectedRequest.id}</h2>
+          </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-4">
-          {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded">
-              <p className="text-xs text-red-600">{error}</p>
-              <button onClick={onErrorClear} className="text-xs text-red-600 hover:text-red-800 mt-1">Dismiss</button>
+        <div className="px-8 py-6 space-y-8">
+          <div>
+            <p className="text-xs text-gray-600 font-semibold uppercase mb-3">Request Status</p>
+            <div className={`px-4 py-2 rounded text-sm font-medium w-full ${getStatusColor(editMode ? editData.status : selectedRequest.status)}`}>
+              <select
+                value={editMode ? (editData.status || selectedRequest.status) : (selectedRequest.status || '')}
+                onChange={(e) => onStatusChange(e.target.value)}
+                disabled={statusUpdating || !editMode}
+                className="w-full bg-transparent text-black text-sm font-medium focus:outline-none cursor-pointer appearance-none disabled:opacity-50"
+              >
+                {REQUEST_STATUSES.map((status) => (
+                  <option key={status} value={status}>
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </option>
+                ))}
+              </select>
             </div>
-          )}
+          </div>
 
+          <div>
+            <p className="text-sm text-black font-semibold uppercase mb-4">Customer Information</p>
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <p className="text-xs text-black font-semibold uppercase w-32">Name:</p>
+                <p className="flex-1 bg-gray-50 px-4 py-2 text-xs">{selectedRequest.customerName || 'N/A'}</p>
+              </div>
+              <div className="flex items-center">
+                <p className="text-xs text-black font-semibold uppercase w-32">Phone:</p>
+                <p className="flex-1 bg-gray-50 px-4 py-2 text-xs">{selectedRequest.customerPhone || 'N/A'}</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm text-black font-semibold uppercase mb-4">Request Information</p>
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <p className="text-xs text-black font-semibold uppercase w-32">Product:</p>
+                <p className="flex-1 bg-gray-50 px-4 py-2 text-xs">
+                  {selectedRequest.Product?.productName || 'N/A'}
+                  {selectedRequest.ProductVariant?.overallSize && ` (${selectedRequest.ProductVariant.overallSize})`}
+                </p>
+              </div>
+              <div className="flex items-center">
+                <p className="text-xs text-black font-semibold uppercase w-32">Quantity:</p>
+                <p className="flex-1 bg-gray-50 px-4 py-2 text-xs">{selectedRequest.requestedQuantity || '-'}</p>
+              </div>
+              <div className="flex items-start">
+                <p className="text-xs text-black font-semibold uppercase w-32 mt-1">Description:</p>
+                <p className="flex-1 bg-gray-50 px-4 py-2 text-xs">{selectedRequest.description || 'N/A'}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="px-8 py-6 border-t border-gray-200 flex justify-between items-center">
           {editMode ? (
             <>
-              <div>
-                <label className="text-xs font-semibold text-gray-600 uppercase block mb-1">Status</label>
-                <select
-                  value={editData.status || request.status || 'Pending'}
-                  onChange={(e) => onEditDataChange({ ...editData, status: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm text-gray-900 focus:outline-none"
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="Completed">Completed</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold text-gray-600 uppercase block mb-1">Notes</label>
-                <textarea
-                  value={editData.notes || request.notes || ''}
-                  onChange={(e) => onEditDataChange({ ...editData, notes: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm text-gray-900 focus:outline-none min-h-24"
-                  placeholder="Add notes..."
-                />
-              </div>
-
-              <div className="flex gap-2 pt-4">
-                <button
-                  onClick={onSave}
-                  disabled={statusUpdating}
-                  className="flex-1 px-4 py-2 bg-black text-white text-xs font-bold rounded hover:bg-gray-800 transition disabled:opacity-50"
-                >
-                  {statusUpdating ? 'Saving...' : 'Save'}
-                </button>
-                <button
-                  onClick={() => onEditModeChange(false)}
-                  className="flex-1 px-4 py-2 bg-gray-100 text-gray-900 text-xs font-bold rounded hover:bg-gray-200 transition"
-                >
-                  Cancel
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  onEditModeChange(false);
+                  onEditDataChange({});
+                }}
+                disabled={statusUpdating}
+                className="px-6 py-2 bg-white border-2 border-gray-300 text-black text-xs font-bold hover:bg-gray-50 transition disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={onSave}
+                disabled={statusUpdating}
+                className="px-6 py-2 bg-black text-white text-xs font-bold hover:bg-gray-800 disabled:opacity-50 transition"
+              >
+                {statusUpdating ? 'Saving...' : 'Save'}
+              </button>
             </>
           ) : (
             <>
-              <div>
-                <p className="text-xs font-semibold text-gray-600 uppercase mb-1">Customer Name</p>
-                <p className="text-sm text-gray-900">{request.customerName || 'Anonymous'}</p>
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold text-gray-600 uppercase mb-1">Email</p>
-                <p className="text-sm text-gray-900 break-all">{request.email || 'N/A'}</p>
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold text-gray-600 uppercase mb-1">Product Name</p>
-                <p className="text-sm text-gray-900">{request.productName || 'N/A'}</p>
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold text-gray-600 uppercase mb-1">Description</p>
-                <p className="text-sm text-gray-600 whitespace-pre-wrap">{request.description || 'No description'}</p>
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold text-gray-600 uppercase mb-1">Status</p>
-                <span className={`inline-block px-3 py-1 rounded text-xs font-semibold ${
-                  request.status === 'Completed' ? 'bg-green-100 text-green-800' :
-                  request.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
-                  {request.status || 'Pending'}
-                </span>
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold text-gray-600 uppercase mb-1">Date</p>
-                <p className="text-sm text-gray-900">
-                  {new Date(request.createdAt).toLocaleString('vi-VN')}
-                </p>
-              </div>
-
-              <div className="flex gap-2 pt-4">
-                {canUpdate && (
-                  <button
-                    onClick={() => onEditClick()}
-                    className="flex-1 px-4 py-2 bg-black text-white text-xs font-bold rounded hover:bg-gray-800 transition"
-                  >
-                    Edit
-                  </button>
-                )}
+              <button
+                onClick={onClose}
+                className="px-6 py-2 bg-white border-2 border-gray-300 text-black text-xs font-bold hover:bg-gray-50 transition"
+              >
+                Cancel
+              </button>
+              <div className="flex gap-2">
                 <button
-                  onClick={onClose}
-                  className="flex-1 px-4 py-2 bg-gray-100 text-gray-900 text-xs font-bold rounded hover:bg-gray-200 transition"
+                  onClick={() => {
+                    onEditModeChange(true);
+                    onEditDataChange({ status: selectedRequest.status });
+                  }}
+                  className="px-6 py-2 bg-black text-white text-xs font-bold hover:bg-gray-800 transition"
                 >
-                  Close
+                  Edit
+                </button>
+                <button
+                  disabled
+                  className="px-6 py-2 bg-black text-white text-xs font-bold opacity-50 cursor-not-allowed"
+                >
+                  Saved
                 </button>
               </div>
             </>
@@ -143,8 +141,4 @@ const ProductRequestsModal = memo(({
       </div>
     </div>
   );
-});
-
-ProductRequestsModal.displayName = 'ProductRequestsModal';
-
-export default ProductRequestsModal;
+}

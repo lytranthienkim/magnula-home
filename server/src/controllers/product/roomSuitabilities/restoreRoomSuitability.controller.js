@@ -1,13 +1,11 @@
-// Restore Room Suitability Controller - Restore soft-deleted room suitability
-
 import db from '../../../config/db.js';
+import { invalidateRoomSuitabilityCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const restoreRoomSuitability = async (req, res) => {
   try {
     const { RoomSuitability } = db.models;
     const { id } = req.params;
 
-    // Find the soft-deleted room suitability
     const roomSuitability = await RoomSuitability.findByPk(id, { paranoid: false });
     if (!roomSuitability) {
       return res.status(404).json({
@@ -16,7 +14,6 @@ export const restoreRoomSuitability = async (req, res) => {
       });
     }
 
-    // Check if room suitability is actually deleted
     if (!roomSuitability.deletedAt) {
       return res.status(400).json({
         success: false,
@@ -24,10 +21,8 @@ export const restoreRoomSuitability = async (req, res) => {
       });
     }
 
-    // Restore the room suitability
     await roomSuitability.restore();
 
-    // Verify restoration
     const restoredRoomSuitability = await RoomSuitability.findByPk(id);
     if (!restoredRoomSuitability) {
       return res.status(500).json({
@@ -35,6 +30,8 @@ export const restoreRoomSuitability = async (req, res) => {
         error: 'Failed to restore room suitability - verification failed',
       });
     }
+
+    await invalidateRoomSuitabilityCache();
 
     res.json({
       success: true,

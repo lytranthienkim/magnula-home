@@ -9,18 +9,17 @@ import { getAllRoomSuitabilities } from "@/api/roomSuitabilities";
 import { createFilterHandlers } from "@/helper/filter";
 
 export const useProduct = () => {
-    const [products, setProducts] = useState([]); // product list state
-    const [colors, setColors] = useState([]); // color filter state
-    const [fabricTypes, setFabricTypes] = useState([]); // fabric type filter state
-    const [materials, setMaterials] = useState([]); // material filter state
-    const [roomSuitabilities, setRoomSuitabilities] = useState([]); // room suitability filter state
-    const [minPriceLimit, setMinPriceLimit] = useState(0); // minimum price limit for price filter
-    const [maxPriceLimit, setMaxPriceLimit] = useState(0); // maximum price limit for price filter
-    const [loading, setLoading] = useState(true); // loading state for product list
+    const [products, setProducts] = useState([]);
+    const [colors, setColors] = useState([]);
+    const [fabricTypes, setFabricTypes] = useState([]); 
+    const [materials, setMaterials] = useState([]);
+    const [roomSuitabilities, setRoomSuitabilities] = useState([]);
+    const [minPriceLimit, setMinPriceLimit] = useState(0);
+    const [maxPriceLimit, setMaxPriceLimit] = useState(0);
+    const [loading, setLoading] = useState(true);
 
-    const { updateQueryParams, searchParams, router, pathname } = useQueryParams(); // custom hook to manage query params and routing
+    const { updateQueryParams, searchParams, router, pathname } = useQueryParams();
 
-    // Lay cac gia tri filter tu query params
     const selectedCategory = searchParams.get('category'); 
     const selectedColor = searchParams.get('color');
     const minPrice = searchParams.get('minPrice');
@@ -29,15 +28,15 @@ export const useProduct = () => {
     const selectedMaterialName = searchParams.get('materialName');
     const selectedRoomSuitabilityName = searchParams.get('roomSuitabilityName');
 
-    // lay id tu name cua fabric type, material, room suitability de truyen vao API
+
     const selectedFabricType = fabricTypes.find(f => f.name === selectedFabricTypeName)?.id;
     const selectedMaterial = materials.find(m => m.name === selectedMaterialName)?.id;
     const selectedRoomSuitability = roomSuitabilities.find(r => r.name === selectedRoomSuitabilityName)?.id;
 
-    // Filter du lieu tu API de lay cac gia tri filter (color, price, fabric type, material, room suitability)
+
     const fetchFilterData = useCallback(async () => {
         try {
-            const [productsRes, fabricRes, materialRes, roomRes] = await Promise.all([ // promise all de goi nhieu API cung luc
+            const [productsRes, fabricRes, materialRes, roomRes] = await Promise.all([ 
                 getAllProducts(''),
                 getAllFabricTypes(),
                 getAllMaterials(),
@@ -46,22 +45,20 @@ export const useProduct = () => {
 
             const allData = productsRes.data || [];
 
-            // Lay cac gia tri filter tu du lieu product
-            const uniqueColors = new Set(); // color
-            let minPrice = Infinity; //
+            const uniqueColors = new Set();
+            let minPrice = Infinity;
             let maxPrice = 0;
 
             allData.forEach(product => {
                 if (product.variants?.[0]?.color) {
-                    uniqueColors.add(product.variants?.[0]?.color); // them color vao set de lay cac gia tri duy nhat
+                    uniqueColors.add(product.variants?.[0]?.color);
                 }
 
-                const price = parseFloat(product.variants?.[0]?.price || 0); // lay gia tri price
-                if (price < minPrice) minPrice = price; // tìm ra giá trị minPrice và maxPrice từ product variants
+                const price = parseFloat(product.variants?.[0]?.price || 0);
+                if (price < minPrice) minPrice = price;
                 if (price > maxPrice) maxPrice = price;
             });
 
-            // Nạp vào mảng
             setColors(Array.from(uniqueColors));
             setMinPriceLimit(minPrice === Infinity ? 0 : Math.floor(minPrice));
             setMaxPriceLimit(Math.ceil(maxPrice));
@@ -73,7 +70,6 @@ export const useProduct = () => {
         }
     }, []);
 
-    // Trả về danh sách sản phẩm dựa trên các query params hiện tại
     const fetchProductList = useCallback(async () => {
         setLoading(true);
         try {
@@ -89,17 +85,14 @@ export const useProduct = () => {
         }
     }, [searchParams]);
 
-    // Call fetchFilterData on mount
     useEffect(() => {
         fetchFilterData();
     }, [fetchFilterData]);
 
-    // Call fetchProductList when searchParams change
     useEffect(() => {
         fetchProductList();
     }, [fetchProductList]);
 
-    // Get filter handlers
     const {
         handleCategoryClick,
         handleColorClick,
@@ -126,7 +119,7 @@ export const useProduct = () => {
     });
 
     return {
-        // Data
+
         products,
         colors,
         fabricTypes,
@@ -134,7 +127,6 @@ export const useProduct = () => {
         roomSuitabilities,
         loading,
 
-        // Filter state
         selectedCategory,
         selectedColor,
         minPrice,
@@ -145,7 +137,6 @@ export const useProduct = () => {
         minPriceLimit,
         maxPriceLimit,
 
-        // Filter handlers
         handleCategoryClick,
         handleColorClick,
         handlePriceChange,

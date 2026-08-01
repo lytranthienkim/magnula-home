@@ -1,6 +1,5 @@
-// Update Material Controller
-
 import db from '../../../config/db.js';
+import { invalidateMaterialCache } from '../../../middleware/cache/cacheInvalidation.js';
 
 export const updateMaterial = async (req, res) => {
   try {
@@ -8,7 +7,6 @@ export const updateMaterial = async (req, res) => {
     const { id } = req.params;
     const { name, description, isActive } = req.body;
 
-    // Get material
     const material = await Material.findByPk(id);
 
     if (!material) {
@@ -18,7 +16,6 @@ export const updateMaterial = async (req, res) => {
       });
     }
 
-    // Validate name if changing
     if (name && name.trim() !== material.name) {
       if (typeof name !== 'string' || name.trim().length === 0) {
         return res.status(400).json({
@@ -39,12 +36,13 @@ export const updateMaterial = async (req, res) => {
       }
     }
 
-    // Update fields
     if (name) material.name = name.trim();
     if (description !== undefined) material.description = description || null;
     if (isActive !== undefined) material.isActive = isActive;
 
     await material.save();
+
+    await invalidateMaterialCache();
 
     res.status(200).json({
       success: true,

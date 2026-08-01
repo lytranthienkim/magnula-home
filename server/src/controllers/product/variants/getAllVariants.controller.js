@@ -1,5 +1,3 @@
-// Get All Product Variants Controller
-
 import db from '../../../config/db.js';
 
 export const getAllVariants = async (req, res) => {

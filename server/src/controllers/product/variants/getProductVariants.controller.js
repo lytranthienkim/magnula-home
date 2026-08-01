@@ -1,5 +1,3 @@
-// Get Product Variants Controller - Fetch all variants for a product
-
 import db from '../../../config/db.js';
 
 export const getProductVariants = async (req, res) => {

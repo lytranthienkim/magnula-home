@@ -9,7 +9,6 @@ import { searchAddresses } from '@/helper/mapboxGeocoding';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '@/redux/userSlice';
 
-// Custom Select Component tương tự Filter.jsx
 const CustomSelectField = ({ label, options = [], selectedValue, onSelect, placeholder = "---", disabled = false, optionKey = 'name', optionLabel = 'name' }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -32,7 +31,6 @@ const CustomSelectField = ({ label, options = [], selectedValue, onSelect, place
         <div className="flex flex-col gap-2 w-full" ref={dropdownRef}>
             <label className="font-display-regular body-02">{label}</label>
             <div className="relative">
-                {/* Thanh hiển thị chính */}
                 <button
                     type="button"
                     onClick={() => !disabled && setIsOpen(!isOpen)}
@@ -48,7 +46,6 @@ const CustomSelectField = ({ label, options = [], selectedValue, onSelect, place
                 {isOpen && !disabled && (
                     <div className="absolute z-[9999] left-0 w-full mt-[-1px] bg-background-primary
                                     border-[0.25px] border-[#272727] rounded-none max-h-48 overflow-y-auto">
-                        {/* Option mặc định rỗng */}
                         <button
                             type="button"
                             onClick={() => {
@@ -104,13 +101,10 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
     const [states, setStates] = useState([]);
     const [loadingCountries, setLoadingCountries] = useState(true);
 
-    // Address autocomplete states
     const [addressSuggestions, setAddressSuggestions] = useState([]);
     const [showAddressSuggestions, setShowAddressSuggestions] = useState(false);
     const [loadingAddresses, setLoadingAddresses] = useState(false);
 
-
-    // Fetch countries
     useEffect(() => {
         const fetchCountries = async () => {
             try {
@@ -125,7 +119,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
         fetchCountries();
     }, []);
 
-    // Fetch payment methods
     useEffect(() => {
         const fetchPaymentMethods = async () => {
             try {
@@ -140,7 +133,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
         fetchPaymentMethods();
     }, []);
 
-    // Helper: Dispatch vào Redux (Redux Persist tự động lưu vào localStorage)
     const handleChange = useCallback((e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -159,30 +151,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
         dispatch(setUser(formData));
     }, [formData, dispatch]);
 
-    {/*const handleCountryChange = async (e) => {
-        const countryName = e.target.value;
-        const country = countries.find(c => c.name === countryName);
-
-        setFormData(prev => ({
-            ...prev,
-            countryRegion: countryName,
-            countryCode: country?.iso2?.toLowerCase() || '',
-            stateProvince: ''
-        }));
-        setStates([]);
-
-        if (countryName) {
-            try {
-                if (country) {
-                    const statesData = await getAllStateByCountry(country.iso2);
-                    setStates(statesData);
-                }
-            } catch (err) {
-                console.error('Failed to fetch states:', err);
-            }
-        }
-    };*/}
-
     const handleAddressInputChange = async (e) => {
         const value = e.target.value;
         setFormData(prev => {
@@ -200,16 +168,12 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
             }));
         }
 
-        // Show suggestions if input is long enough
         if (value.trim().length >= 3) {
             setLoadingAddresses(true);
             setShowAddressSuggestions(true);
 
             try {
-                // Use country code from API (already in formData)
                 const countryCode = formData.countryCode || null;
-
-                // Search addresses
                 const suggestions = await searchAddresses(value, countryCode);
                 setAddressSuggestions(suggestions);
             } catch (error) {
@@ -238,9 +202,8 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
 
     useEffect(() => {
         const fetchStatesForSavedCountry = async () => {
-            // Kiểm tra nếu user có sẵn mã quốc gia từ trước
             const savedCountryCode = currentCustomer?.countryCode || formData.countryCode;
-            
+
             if (savedCountryCode) {
                 try {
                     const statesData = await getAllStateByCountry(savedCountryCode.toUpperCase());
@@ -250,7 +213,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                 }
             }
         };
-    
+
         fetchStatesForSavedCountry();
     }, [currentCustomer?.countryCode]);
 
@@ -263,7 +226,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
         if (!formData.countryRegion.trim()) newErrors.countryRegion = 'Country/Region is required';
         if (!formData.stateProvince.trim()) newErrors.stateProvince = 'State/Province is required';
 
-        // Validate shipping address
         if (!formData.shippingAddress.trim()) {
             newErrors.shippingAddress = 'Shipping address is required';
         } else {
@@ -275,7 +237,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
 
         if (!formData.paymentMethodId) newErrors.paymentMethodId = 'Payment method is required';
 
-        // Validate stock for all cart items
         const stockIssues = cartItems.filter(item => item.quantity > item.stock);
         if (stockIssues.length > 0) {
             const itemNames = stockIssues.map(item => item.name).join(', ');
@@ -310,7 +271,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <h1 className='h1-neu font-display-regular'>Review & Purchase</h1>
-            {/* API Error Message */}
             {error && (
                 <div className=" border-[var(--color-error)] p-4 rounded" style={{ borderLeftColor: 'var(--color-error)' }}>
                     <p className="body-02 font-display-regular" style={{ color: 'var(--color-error)' }}>
@@ -318,7 +278,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                     </p>
                 </div>
             )}
-            {/* Stock Validation Error */}
             {errors.stock && (
                 <div className=" border-[var(--color-error)] p-4 rounded" style={{ borderLeftColor: 'var(--color-error)' }}>
                     <p className="body-02 font-display-regular" style={{ color: 'var(--color-error)' }}>
@@ -327,7 +286,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                 </div>
             )}
 
-            {/* CONTACT SECTION */}
+            {/* Contact */}
             <div className="flex flex-col gap-2">
                 <h2 className="font-display-semibold body-01 uppercase">Contact</h2>
 
@@ -345,9 +304,8 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                     {errors.email && <span className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>{errors.email}</span>}
                 </div>
 
-                {/* Full Name & Phone - 1 Row */}
+                {/* Full name */}
                 <div className="grid grid-cols-2 gap-4">
-                    {/* Full Name */}
                     <div className="flex flex-col gap-2">
                         <label className="font-display-regular body-02">Full Name (*)</label>
                         <input
@@ -377,13 +335,12 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                 </div>
             </div>
 
-            {/* DELIVERY SECTION */}
+            {/* Delivery */}
             <div className="flex flex-col gap-4">
                 <p className="font-display-semibold body-02 uppercase">Delivery</p>
 
-                {/* Country/Region & State/Province - 1 Row */}
                 <div className="grid grid-cols-2 gap-4">
-                    {/* Country/Region */}
+                    {/* Country */}
                     <div className="flex flex-col gap-2">
                         <CustomSelectField
                             label="Country/Region (*)"
@@ -456,7 +413,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                     </div>
                 </div>
 
-                {/* Shipping Address with Autocomplete */}
                 <div className="flex flex-col gap-2 relative">
                     <label className="font-display-regular body-02">Shipping Address (*)</label>
                     <input
@@ -472,7 +428,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                         autoComplete="off"
                     />
 
-                    {/* Address Suggestions Dropdown */}
                     {showAddressSuggestions && (
                         <div className="absolute top-full left-0 right-0 mt-1 bg-background-primary border-[0.25px] border-[#272727] z-[1000] max-h-48 overflow-y-auto rounded-none">
                             {loadingAddresses ? (
@@ -502,7 +457,6 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                 </div>
             </div>
 
-            {/* PAYMENT METHOD SECTION */}
             <div className="flex flex-col gap-4">
                 <h2 className="font-display-semibold body-01">Payment Method</h2>
 
@@ -557,7 +511,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                 {errors.paymentMethodId && <span className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>{errors.paymentMethodId}</span>}
             </div>
 
-            {/* Submit Button */}
+            {/* Submit button */}
             <button
                 type="submit"
                 disabled={isLoading}

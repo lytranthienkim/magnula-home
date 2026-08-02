@@ -1,10 +1,10 @@
-# MAGNULA FURNITURE ONLINE SHOP - Admin Dashboard
+# ADMIN DASHBOARD
 
-Admin control panel for Magnula Furniture Online Shop, built with Next.js 16.2.6 (App Router), React 19.2.4, Redux Toolkit, Recharts and Tailwind CSS. The application provides a comprehensive management interface for products, orders, users, access control, and other features.
+Admin control panel for Magnula Furniture Online Shop, built with Next.js 16.2.6, React 19.2.4, Redux Toolkit, Recharts and Tailwind CSS. The application provides a comprehensive management interface for products, orders, users, access control, and other features.
 
 ---
 
-![Magnula admin ui](https://pub-c0d91e27663a41a5a1671bb31cabfb2a.r2.dev/readme/magnula-admin-ui.png)
+![Magnula admin ui](https://pub-c0d91e27663a41a5a1671bb31cabfb2a.r2.dev/readme/admin-magnula.MOV)
 
 ## Admin Dashboard Folder Structure
 
@@ -282,7 +282,7 @@ Custom hooks for managing component logic and state management
 
 **Password Recovery (Forgot Password):**
 - Email input form to request password recovery
-- Check if user email has role with permission to change password, if login email has role without this permission, user must report to higher authority to change password for user
+- Check if user email has role with permission to change password, if login email has role without this permission, user must report to higher authority to change password for user.
 
 **Account Management (Account Management):**
 - **Personal Profile (Profile)**:
@@ -582,7 +582,6 @@ npm install
 ### 2. Setup Environment
 ```bash
 cp .env.example .env.local
-# Edit .env.local with your API server URL
 NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ```
 

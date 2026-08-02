@@ -1,6 +1,6 @@
 # FRONTEND (CLIENT)
 
-Frontend for https://magnula.space built with Next.js 16.2.6 (App Router), React 19.2.4, Redux Toolkit, Motion (Framer Motion) and Tailwind CSS v4. The application provides a smooth furniture shopping experience with interactive animations, multi-criteria product filtering, and real-time order tracking.
+Frontend for https://magnula.space built with Next.js 16.2.6, React 19.2.4, Redux Toolkit, Motion (Framer Motion) and Tailwind CSS v4. The application provides a smooth furniture shopping experience with interactive animations, multi-criteria product filtering, and real-time order tracking.
 
 ---
 

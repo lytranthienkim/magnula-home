@@ -4,7 +4,7 @@ Frontend for https://magnula.space built with Next.js 16.2.6, React 19.2.4, Redu
 
 ---
 
-![Magnula client ui](https://pub-c0d91e27663a41a5a1671bb31cabfb2a.r2.dev/readme/ui-magnula.MOV)
+![Magnula client ui](https://pub-c0d91e27663a41a5a1671bb31cabfb2a.r2.dev/readme/vide-magnula-demo.GIF)
 
 ## Frontend Folder Structure (Folder Structure)
 

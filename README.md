@@ -4,7 +4,7 @@ Magnula Furniture Online Shop is built based on Magnula Furniture brand - a furn
 
 ---
 
-![Magnula video](https://pub-c0d91e27663a41a5a1671bb31cabfb2a.r2.dev/readme/ui-magnula.MOV)
+![Magnula video](https://pub-c0d91e27663a41a5a1671bb31cabfb2a.r2.dev/readme/vide-magnula-demo.GIF)
 
 ## Project Architecture
 

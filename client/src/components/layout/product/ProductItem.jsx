@@ -9,6 +9,8 @@ import { generateSlug } from "@/helper/slug";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/cartSlice";
 import { RequestForm } from "@/components/common/modal/form/RequestForm";
+import { RequestButton } from "@/components/common/button/RequestButton";
+import { AddToCartButton } from "@/components/common/button/AddToCartButton";
 import { SkeletonProductItem } from "@/components/skeleton";
 
 export const ProductItem = () => {
@@ -79,7 +81,6 @@ export const ProductItem = () => {
         dispatch(addToCart(itemPayload));
     }, [product, quantityInCart, stock, price, mainImage, dispatch]);
 
-
     const isOutOfStock = stock <= 0;
     const isExceedsStock = quantityInCart >= stock;
     const isButtonDisabled = isOutOfStock || isExceedsStock;
@@ -89,20 +90,30 @@ export const ProductItem = () => {
     }
 
     return (
-        <div className="w-full h-fit padding-wide">
+        /* Section wrapper */
+        <section className="w-full h-fit padding-wide">
+            {/* Main grid */}
             <div className="grid grid-cols-1 xl:grid-cols-[1fr_1fr] gap-10 xl:gap-20">
+                {/* Image gallery */}
                 <div className="w-full flex flex-col md:flex-row justify-between gap-2">
+                    {/* Primary image */}
                     <div className="relative flex items-center justify-center w-full h-[400px] md:h-[500px]">
-                        <Image
-                            src={mainImage}
-                            alt={product.productName}
-                            fill
-                            className="object-cover"
-                        />
+                        {mainImage && (
+                            <Image
+                                src={mainImage}
+                                alt={product.productName || "Product Image"}
+                                fill
+                                priority
+                                unoptimized
+                                className="object-cover"
+                            />
+                        )}
                     </div>
 
+                    {/* Thumbnail list */}
                     <div className="h-full flex flex-row md:flex-col justify-start gap-2 md:gap-3 xl:gap-4">
                         {images.map((image, index) => (
+                            /* Thumbnail item */
                             <div
                                 key={index}
                                 className="relative flex flex-col cursor-pointer gap-2 w-[70px] h-[70px]"
@@ -112,6 +123,7 @@ export const ProductItem = () => {
                                     src={image.imageUrl}
                                     alt={`${product.productName} view ${index + 1}`}
                                     fill
+                                    unoptimized
                                     className={`object-cover ${selectedImageIndex === index
                                         ? 'border-[0.25px] border-[#272727]'
                                         : 'border-[0.25px] border-transparent'
@@ -122,118 +134,125 @@ export const ProductItem = () => {
                     </div>
                 </div>
 
+                {/* Info section */}
                 <div className="flex flex-col justify-between gap-4 md:gap-6 overflow-hidden">
+                    {/* Header info */}
                     <div className="flex flex-col gap-4">
-                        <h1 className="font-display-ss-regular">{product.productName}</h1>
+                        {/* Title text */}
+                        <h1 className="font-seasons-bold">{product.productName}</h1>
 
-                        <p className="body-01 leading-regular font-display-regular">
+                        {/* Description text */}
+                        <p className="body-01 font-[400]">
                             {description}
                         </p>
                     </div>
 
-                    <hr className="opacity-20 h-[0.25px]"></hr>
+                    {/* Section divider */}
+                    <hr className="opacity-20 h-[0.25px]" />
 
+                    {/* Specifications list */}
                     <div className="flex flex-col gap-3">
-                        <p className="body-02 font-display-semibold uppercase">Details -</p>
+                        {/* Specs title */}
+                        <p className="body-02 uppercase font-[500]">Details -</p>
+
+                        {/* Overall size */}
                         <div className="flex flex-row flex-wrap items-center gap-1">
-                            <span className="body-02 font-display-semibold min-w-fit">Overall:</span>
-                            <span className="body-02 font-display-regular">
+                            <span className="body-02 min-w-fit font-[500]">Overall:</span>
+                            <span className="body-02 font-[400]">
                                 {product.variants?.[0]?.overallSize || 'Not specified'}"
                             </span>
                         </div>
 
+                        {/* Seat size */}
                         <div className="flex flex-row flex-wrap items-center gap-1">
-                            <span className="body-02 font-display-semibold min-w-fit">Seat:</span>
-                            <span className="body-02 font-display-regular">
+                            <span className="body-02 min-w-fit font-[500]">Seat:</span>
+                            <span className="body-02 font-[400]">
                                 {product.variants?.[0]?.seatSize || 'Not specified'}"
                             </span>
                         </div>
 
+                        {/* Fabric specification */}
                         <div className="flex flex-col flex-wrap items-start gap-1">
                             <div className="flex flex-row flex-wrap items-center gap-1">
-                                <span className="body-02 font-display-semibold min-w-fit">Fabric:</span>
-                                <span className="body-02 font-display-regular">
+                                <span className="body-02 min-w-fit font-[500]">Fabric:</span>
+                                <span className="body-02 font-[400]">
                                     {product.FabricType?.name || 'Not specified'}
                                 </span>
                             </div>
                             {product.FabricType?.description && (
-                                <span className="body-03 font-display-regular text-gray-700">
+                                <span className="body-03 text-gray-600">
                                     {product.FabricType.description}
                                 </span>
                             )}
                         </div>
 
+                        {/* Material specification */}
                         <div className="flex flex-col flex-wrap items-start gap-1">
                             <div className="flex flex-row flex-wrap items-center gap-1">
-                                <span className="body-02 font-display-semibold min-w-fit">Material:</span>
-                                <span className="body-02 font-display-regular">
+                                <span className="body-02 min-w-fit font-[500]">Material:</span>
+                                <span className="body-02 font-[400]">
                                     {product.Material?.name || 'Not specified'}
                                 </span>
                             </div>
                             {product.Material?.description && (
-                                <span className="body-03 font-display-regular text-gray-700">
+                                <span className="body-03 text-gray-600">
                                     {product.Material.description}
                                 </span>
                             )}
                         </div>
 
+                        {/* Room suitability */}
                         <div className="flex flex-col flex-wrap items-start gap-1">
                             <div className="flex flex-row flex-wrap items-center gap-1">
-                                <span className="body-02 font-display-semibold min-w-fit">Room:</span>
-                                <span className="body-02 font-display-regular">
+                                <span className="body-02 min-w-fit font-[500]">Room:</span>
+                                <span className="body-02 font-[400]">
                                     {product.RoomSuitability?.name || 'Not specified'}
                                 </span>
                             </div>
                             {product.RoomSuitability?.description && (
-                                <span className="body-03 font-display-regular text-gray-700">
+                                <span className="body-03 text-gray-600">
                                     {product.RoomSuitability.description}
                                 </span>
                             )}
                         </div>
                     </div>
 
+                    {/* Action controls */}
                     <div className="flex flex-col gap-4">
+                        {/* Stock row */}
                         <div className="flex flex-row items-center justify-between">
-                            <div className="flex justify-between items-center">
-                                <span className="body-02 font-display-semibold">Stock:</span>
-                                <span className="body-02 font-display-regular">{stock > 0 ? stock : 'Out of Stock'}</span>
+                            {/* Stock status */}
+                            <div className="flex justify-between items-center gap-2">
+                                <span className="body-02 font-[500]">Stock:</span>
+                                <span className="body-02 font-[400]">{stock > 0 ? stock : 'Out of Stock'}</span>
                             </div>
 
-                            <button
-                                onClick={() => setIsRequestFormOpen(true)}
-                                className="body-02 font-display-regular text-gray-500 underline cursor-pointer hover:text-gray-700 bg-transparent border-none p-0"
-                            >
-                                Request for quantity
-                            </button>
+                            <RequestButton onClick={() => setIsRequestFormOpen(true)} />
                         </div>
 
-                        
+                        {/* Restock note */}
                         {isButtonDisabled && (
-                            <p className="body-02 font-display-regular italic text-gray-600">
+                            <p className="body-02 italic text-gray-600">
                                 You can submit a restock request.
                             </p>
                         )}
 
-                        <button
+                        <AddToCartButton
+                            price={price}
                             disabled={isButtonDisabled}
-                            className={`w-full py-2 body-02 font-display-semibold  rounded-none ${isButtonDisabled
-                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
-                                    : 'bg-black text-third cursor-pointer hover:opacity-90 border-[0.25px] border-[#272727]'
-                                }`}
                             onClick={handleAddToCArt}
-                        >
-                            ADD TO CART - ${parseFloat(price)}
-                        </button>
+                        />
                     </div>
                 </div>
             </div>
 
+            {/* Request modal */}
             <RequestForm
                 isOpen={isRequestFormOpen}
                 onClose={() => setIsRequestFormOpen(false)}
                 productId={product?.id}
                 productVariantId={product?.variants?.[0]?.id}
             />
-        </div>
+        </section>
     );
 };

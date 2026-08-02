@@ -1,4 +1,3 @@
-import { Footer } from "@/components/common/navigation/Footer";
 import { AboutContainer } from "@/components/layout/about/AboutContainer";
 
 export default function About() {
@@ -7,7 +6,6 @@ export default function About() {
             <main>
                 <AboutContainer/>
             </main>
-            <Footer />
         </div>
     )
 }

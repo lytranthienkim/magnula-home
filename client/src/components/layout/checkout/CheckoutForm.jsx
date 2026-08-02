@@ -29,13 +29,13 @@ const CustomSelectField = ({ label, options = [], selectedValue, onSelect, place
 
     return (
         <div className="flex flex-col gap-2 w-full" ref={dropdownRef}>
-            <label className="font-display-regular body-02">{label}</label>
+            <label className=" body-02">{label}</label>
             <div className="relative">
                 <button
                     type="button"
                     onClick={() => !disabled && setIsOpen(!isOpen)}
                     disabled={disabled}
-                    className="w-full text-left body-02 font-display-regular
+                    className="w-full text-left body-02 
                                border-[0.25px] border-[#272727] py-2 px-3 bg-background-primary
                                focus:outline-none rounded-none flex justify-between items-center
                                disabled:opacity-50 disabled:cursor-not-allowed"
@@ -52,7 +52,7 @@ const CustomSelectField = ({ label, options = [], selectedValue, onSelect, place
                                 onSelect('');
                                 setIsOpen(false);
                             }}
-                            className="w-full text-left py-2 px-3 body-02 font-display-regular transition-colors cursor-pointer"
+                            className="w-full text-left py-2 px-3 body-02  transition-colors cursor-pointer"
                         >
                             {placeholder}
                         </button>
@@ -64,7 +64,7 @@ const CustomSelectField = ({ label, options = [], selectedValue, onSelect, place
                                     onSelect(opt[optionKey]);
                                     setIsOpen(false);
                                 }}
-                                className={`w-full text-left py-2 px-3 body-02 font-display-regular cursor-pointer hover:bg-black hover:text-third duration-100
+                                className={`w-full text-left py-2 px-3 body-02  cursor-pointer hover:bg-black hover:text-third duration-100
                                            ${String(selectedValue) === String(opt[optionKey])
                                         ? 'bg-[#000000] text-third cursor-pointer'
                                         : 'text-primary cursor-pointer'}`}
@@ -270,17 +270,17 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <h1 className='h1-neu font-display-regular'>Review & Purchase</h1>
+            <h1 className=' '>Review & Purchase</h1>
             {error && (
                 <div className=" border-[var(--color-error)] p-4 rounded" style={{ borderLeftColor: 'var(--color-error)' }}>
-                    <p className="body-02 font-display-regular" style={{ color: 'var(--color-error)' }}>
+                    <p className="body-02 " style={{ color: 'var(--color-error)' }}>
                         {error}
                     </p>
                 </div>
             )}
             {errors.stock && (
                 <div className=" border-[var(--color-error)] p-4 rounded" style={{ borderLeftColor: 'var(--color-error)' }}>
-                    <p className="body-02 font-display-regular" style={{ color: 'var(--color-error)' }}>
+                    <p className="body-02 " style={{ color: 'var(--color-error)' }}>
                         {errors.stock}
                     </p>
                 </div>
@@ -288,56 +288,56 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
 
             {/* Contact */}
             <div className="flex flex-col gap-2">
-                <h2 className="font-display-semibold body-01 uppercase">Contact</h2>
+                <h2 className=" body-01 uppercase">Contact</h2>
 
 
                 <div className="flex flex-col gap-2">
-                    <label className="font-display-regular body-02">Email (*)</label>
+                    <label className=" body-02">Email (*)</label>
                     <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className="body-02 font-display-regular border-[0.25px] border-[#272727] py-2 px-3 bg-background-primary focus:outline-none rounded-none"
+                        className="body-02  border-[0.25px] border-[#272727] py-2 px-3 bg-background-primary focus:outline-none rounded-none"
                         placeholder="Enter your email"
                     />
-                    {errors.email && <span className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>{errors.email}</span>}
+                    {errors.email && <span className="body-03 " style={{ color: 'var(--color-error)' }}>{errors.email}</span>}
                 </div>
 
                 {/* Full name */}
                 <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
-                        <label className="font-display-regular body-02">Full Name (*)</label>
+                        <label className=" body-02">Full Name (*)</label>
                         <input
                             type="text"
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
-                            className="body-02 font-display-regular border-[0.25px] border-[#272727] py-2 px-3 bg-background-primary focus:outline-none rounded-none"
+                            className="body-02  border-[0.25px] border-[#272727] py-2 px-3 bg-background-primary focus:outline-none rounded-none"
                             placeholder="Enter your full name"
                         />
-                        {errors.fullName && <span className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>{errors.fullName}</span>}
+                        {errors.fullName && <span className="body-03 " style={{ color: 'var(--color-error)' }}>{errors.fullName}</span>}
                     </div>
 
                     {/* Phone */}
                     <div className="flex flex-col gap-2">
-                        <label className="font-display-regular body-02">Phone (*)</label>
+                        <label className=" body-02">Phone (*)</label>
                         <input
                             type="tel"
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            className="body-02 font-display-regular border-[0.25px] border-[#272727] py-2 px-3 bg-background-primary focus:outline-none rounded-none"
+                            className="body-02  border-[0.25px] border-[#272727] py-2 px-3 bg-background-primary focus:outline-none rounded-none"
                             placeholder="Enter your phone number"
                         />
-                        {errors.phone && <span className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>{errors.phone}</span>}
+                        {errors.phone && <span className="body-03 " style={{ color: 'var(--color-error)' }}>{errors.phone}</span>}
                     </div>
                 </div>
             </div>
 
             {/* Delivery */}
             <div className="flex flex-col gap-4">
-                <p className="font-display-semibold body-02 uppercase">Delivery</p>
+                <p className=" body-02 uppercase">Delivery</p>
 
                 <div className="grid grid-cols-2 gap-4">
                     {/* Country */}
@@ -380,7 +380,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                             optionKey="name"
                             optionLabel="name"
                         />
-                        {errors.countryRegion && <span className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>{errors.countryRegion}</span>}
+                        {errors.countryRegion && <span className="body-03 " style={{ color: 'var(--color-error)' }}>{errors.countryRegion}</span>}
                     </div>
 
                     {/* State/Province */}
@@ -409,12 +409,12 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                             optionKey="name"
                             optionLabel="name"
                         />
-                        {errors.stateProvince && <span className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>{errors.stateProvince}</span>}
+                        {errors.stateProvince && <span className="body-03 " style={{ color: 'var(--color-error)' }}>{errors.stateProvince}</span>}
                     </div>
                 </div>
 
                 <div className="flex flex-col gap-2 relative">
-                    <label className="font-display-regular body-02">Shipping Address (*)</label>
+                    <label className=" body-02">Shipping Address (*)</label>
                     <input
                         type="text"
                         name="shippingAddress"
@@ -422,7 +422,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                         onChange={handleAddressInputChange}
                         onFocus={() => formData.shippingAddress.length >= 3 && setShowAddressSuggestions(true)}
                         onBlur={() => setTimeout(() => setShowAddressSuggestions(false), 200)}
-                        className={`body-02 font-display-regular border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${errors.shippingAddress ? 'border-[#dc2626]' : 'border-[#272727]'
+                        className={`body-02  border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${errors.shippingAddress ? 'border-[#dc2626]' : 'border-[#272727]'
                             }`}
                         placeholder="Type your address if it not display"
                         autoComplete="off"
@@ -440,7 +440,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                                         key={index}
                                         type="button"
                                         onClick={() => handleSelectAddress(suggestion.address)}
-                                        className="w-full text-left px-3 py-2 body-02 font-display-regular border-b-[0.25px] border-[#272727]/50 last:border-b-0 hover:bg-black hover:text-third cursor-pointer transition-colors"
+                                        className="w-full text-left px-3 py-2 body-02  border-b-[0.25px] border-[#272727]/50 last:border-b-0 hover:bg-black hover:text-third cursor-pointer transition-colors"
                                     >
                                         {suggestion.address}
                                     </button>
@@ -453,17 +453,17 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                         </div>
                     )}
 
-                    {errors.shippingAddress && <span className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>{errors.shippingAddress}</span>}
+                    {errors.shippingAddress && <span className="body-03 " style={{ color: 'var(--color-error)' }}>{errors.shippingAddress}</span>}
                 </div>
             </div>
 
             <div className="flex flex-col gap-4">
-                <h2 className="font-display-semibold body-01">Payment Method</h2>
+                <h2 className=" body-01">Payment Method</h2>
 
                 {loadingPayments ? (
-                    <p className="body-02 font-display-regular">Loading payment methods...</p>
+                    <p className="body-02 ">Loading payment methods...</p>
                 ) : paymentMethods.length === 0 ? (
-                    <p className="body-02 font-display-regular text-gray-500">No payment methods available</p>
+                    <p className="body-02  text-gray-500">No payment methods available</p>
                 ) : (
                     <div className="flex flex-col gap-3">
                         {paymentMethods.map((method) => (
@@ -494,11 +494,11 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                                     className="w-4 h-4 cursor-pointer accent-black"
                                 />
                                 <div className="flex flex-col gap-1">
-                                    <p className="font-display-semibold body-02 uppercase">
+                                    <p className=" body-02 uppercase">
                                         {method.name}
                                     </p>
                                     {method.description && (
-                                        <p className="font-display-regular body-02 text-gray-600">
+                                        <p className=" body-02 text-gray-600">
                                             {method.description}
                                         </p>
                                     )}
@@ -508,14 +508,14 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
                     </div>
                 )}
 
-                {errors.paymentMethodId && <span className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>{errors.paymentMethodId}</span>}
+                {errors.paymentMethodId && <span className="body-03 " style={{ color: 'var(--color-error)' }}>{errors.paymentMethodId}</span>}
             </div>
 
             {/* Submit button */}
             <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-black text-third body-02 font-display-regular py-3 rounded-none cursor-pointer disabled:opacity-50"
+                className="w-full bg-black text-third body-02  py-3 rounded-none cursor-pointer disabled:opacity-50"
             >
                 {isLoading ? 'Processing...' : 'Place Order'}
             </button>

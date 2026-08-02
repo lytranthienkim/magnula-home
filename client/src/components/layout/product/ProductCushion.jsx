@@ -1,15 +1,16 @@
 'use client'
 
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getAllProducts } from "@/api/products";
 import { generateSlug } from "@/helper/slug";
 import {
-  productCushionContainerVariants,
-  cushionGridVariants,
-  cushionItemVariants,
-  cushionImageVariants,
+    productCushionContainerVariants,
+    cushionGridVariants,
+    cushionItemVariants,
+    cushionImageVariants,
 } from "@/framer/productCushionMotion";
 
 export const ProductCushion = () => {
@@ -55,8 +56,10 @@ export const ProductCushion = () => {
     const largeImage = selectedProduct?.images?.[0]?.imageUrl || '';
 
     return (
+        /* Section wrapper */
         <div className="w-full h-fit bg-background-primary padding-wide">
 
+            {/* Motion container */}
             <motion.div
                 className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 w-full min-h-[300px] md:min-h-[450px] xl:min-h-[600px] gap-1 md:gap-2 xl:gap-3"
                 variants={productCushionContainerVariants}
@@ -65,11 +68,14 @@ export const ProductCushion = () => {
                 viewport={{ once: true, amount: 0.3 }}
             >
 
+                {/* Grid layout */}
                 <motion.div className="grid grid-cols-2 grid-rows-2 gap-1 md:gap-2 xl:gap-2" variants={cushionGridVariants}>
 
+                    {/* Header item */}
                     <motion.div className="flex flex-col flex-wrap justify-start items-start" variants={cushionItemVariants}>
-                        <h2 className="font-display-ss-regular">
-                            Adaptive <span className="font-display-ss-italic">cushion</span> for <span>{product.Collection.collectionName}</span>
+                        {/* Heading title */}
+                        <h2 className="font-seasons-bold">
+                            Adaptive <span className="font-seasons-italic">cushion</span> for <span>{product.Collection.collectionName}</span>
                         </h2>
                     </motion.div>
 
@@ -77,6 +83,7 @@ export const ProductCushion = () => {
                     {cushionProducts.map((item, index) => {
 
                         return (
+                            /* Cushion item */
                             <motion.div
                                 key={item.id}
                                 onClick={() => setSelectedImageIndex(index)}
@@ -84,14 +91,18 @@ export const ProductCushion = () => {
                                 `}
                                 variants={cushionItemVariants}
                             >
+                                {/* Thumbnail container */}
                                 <div className="relative w-full h-full aspect-[4/3] overflow-hidden flex items-center justify-center">
-                                    <img
+                                    {/* Thumbnail image */}
+                                    <Image
                                         src={item.images?.[0]?.imageUrl || ''}
-                                        alt={item.productName}
+                                        alt={item.productName || 'Cushion image'}
+                                        fill
+                                        unoptimized
                                         className='w-full h-full object-cover transition-transform duration-500'
-                                        loading="lazy"
                                     />
-                                    <p className="absolute bottom-1 left-2 md:bottom-5 md:left-5  body-03 font-display-regular">
+                                    {/* Cushion title */}
+                                    <p className="absolute bottom-1 left-2 md:bottom-5 md:left-5 body-03 z-10">
                                         {item.productName}
                                     </p>
                                 </div>
@@ -102,13 +113,20 @@ export const ProductCushion = () => {
                 </motion.div>
 
 
+                {/* Preview panel */}
                 <motion.div className="w-full h-full flex items-center justify-center bg-background-primary" variants={cushionImageVariants}>
-                    <div className="w-full h-full flex items-center justify-center overflow-hidden">
-                        <img
-                            src={largeImage}
-                            alt={selectedProduct?.productName}
-                            className="w-full h-full object-contain transition-all duration-300"
-                        />
+                    {/* Display container */}
+                    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                        {/* Featured image */}
+                        {largeImage && (
+                            <Image
+                                src={largeImage}
+                                alt={selectedProduct?.productName || 'Selected cushion'}
+                                fill
+                                unoptimized
+                                className="w-full h-full object-contain transition-all duration-300"
+                            />
+                        )}
                     </div>
                 </motion.div>
 

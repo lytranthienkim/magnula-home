@@ -1,23 +1,49 @@
 'use client'
 
 import { motion } from 'framer-motion';
-import { useTrackingOrder } from '@/hooks/useTrackingOrder';
+import { useState } from 'react';
+import { getOrderByOrderCode, getOrderItemByOrderId } from '@/api/order';
 import { Navbar } from '@/components/common/navigation/Navbar';
-import { Footer } from '@/components/common/navigation/Footer';
 import { TrackingForm, TrackingOrderDetails } from '@/components/layout/tracking';
 import { trackingHeaderContainerVariants, trackingHeaderTitleVariants, trackingHeaderDescriptionVariants, trackingFormContainerVariants, trackingDetailsContainerVariants } from '@/framer/trackingOrderMotion';
 import { SkeletonTrackingOrder } from '@/components/skeleton';
 
 export default function TrackingOrderPage() {
-    const {
-        trackingCode,
-        setTrackingCode,
-        trackedOrder,
-        orderItems,
-        trackingLoading,
-        trackingError,
-        handleTrackingSubmit
-    } = useTrackingOrder();
+    const [trackingCode, setTrackingCode] = useState('');
+    const [trackedOrder, setTrackedOrder] = useState(null);
+    const [orderItems, setOrderItems] = useState([]);
+    const [trackingLoading, setTrackingLoading] = useState(false);
+    const [trackingError, setTrackingError] = useState('');
+
+    const handleTrackingSubmit = async (e) => {
+        e.preventDefault();
+        setTrackingLoading(true);
+        setTrackingError('');
+        setTrackedOrder(null);
+        setOrderItems([]);
+
+        try {
+            const data = await getOrderByOrderCode(trackingCode);
+            if (data.success) {
+                setTrackedOrder(data.data);
+                try {
+                    const itemsData = await getOrderItemByOrderId(data.data.id);
+                    if (itemsData.success) {
+                        setOrderItems(itemsData.data);
+                    }
+                } catch (itemsErr) {
+                    console.error('Failed to fetch order items:', itemsErr);
+                }
+            } else {
+                setTrackingError('Order code not found. Please check and try again.');
+            }
+        } catch (err) {
+            setTrackingError('Order code not found. Please check and try again.');
+            console.error(err);
+        } finally {
+            setTrackingLoading(false);
+        }
+    };
 
     return (
         <div className="w-full min-h-screen flex flex-col items-center justify-between">
@@ -34,13 +60,13 @@ export default function TrackingOrderPage() {
                         viewport={{ once: true, amount: 0.5 }}
                     >
                         <motion.h1
-                            className="h2-neu md:h1-neu font-display-semibold text-center"
+                            className=" text-center"
                             variants={trackingHeaderTitleVariants}
                         >
                             Track Your Order
                         </motion.h1>
                         <motion.p
-                            className="body-03 md:body-02 font-display-regular text-center"
+                            className="body-03 md:body-02  text-center"
                             variants={trackingHeaderDescriptionVariants}
                         >
                             Enter your order code above to track your order
@@ -83,7 +109,6 @@ export default function TrackingOrderPage() {
                     )}
                 </div>
             </main>
-            <Footer />
         </div>
     );
 }

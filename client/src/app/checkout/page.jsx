@@ -1,10 +1,9 @@
 'use client'
 
+import { Navbar } from '@/components/common/navigation/Navbar';
 import { useCheckout } from '@/hooks/useCheckout';
 import { CheckoutForm } from '@/components/layout/checkout/CheckoutForm';
 import { CheckoutSummary } from '@/components/layout/checkout/CheckoutSummary';
-import { Navbar } from '@/components/common/navigation/Navbar';
-import { Footer } from '@/components/common/navigation/Footer';
 
 export default function CheckoutPage() {
     const { cartItems, cartTotal, isLoading, error, handleCheckoutSubmit } = useCheckout();
@@ -29,11 +28,11 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className='lg:hidden mt-10 flex flex-col gap-4'>
-                    <h2 className="font-display-semibold body-01 uppercase">Order Items</h2>
+                    <h2 className=" body-01 uppercase">Order Items</h2>
 
                     <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                         {cartItems.length === 0 ? (
-                            <p className="body-02 font-display-regular text-gray-500">No items in cart</p>
+                            <p className="body-02  text-gray-500">No items in cart</p>
                         ) : (
                             cartItems.map((item) => (
                                 <div
@@ -50,13 +49,13 @@ export default function CheckoutPage() {
                                     </div>
 
                                     <div className="flex flex-col gap-1">
-                                        <p className="body-03 font-display-semibold truncate">
+                                        <p className="body-03  truncate">
                                             {item.name}
                                         </p>
-                                        <p className="body-03 font-display-regular text-gray-600">
+                                        <p className="body-03  text-gray-600">
                                             x{item.quantity}
                                         </p>
-                                        <p className="body-03 font-display-semibold">
+                                        <p className="body-03 ">
                                             ${(parseFloat(item.price || 0) * item.quantity).toFixed(2)}
                                         </p>
                                     </div>
@@ -67,15 +66,14 @@ export default function CheckoutPage() {
 
                     <div className="flex flex-col gap-4 mt-6 p-4 border-t-[0.25px] border-[#272727]">
                         <div className="flex justify-between items-center">
-                            <p className="font-display-semibold body-01">Total:</p>
-                            <p className="font-display-semibold body-01">
+                            <p className=" body-01">Total:</p>
+                            <p className=" body-01">
                                 ${cartTotal}
                             </p>
                         </div>
                     </div>
                 </div>
             </main>
-            <Footer/>
         </div>
     );
 }

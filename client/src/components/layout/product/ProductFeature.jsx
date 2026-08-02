@@ -6,10 +6,10 @@ import { motion } from "framer-motion";
 import { getAllProducts } from "@/api/products";
 import { generateSlug } from "@/helper/slug";
 import {
-  productFeatureContainerVariants,
-  productFeatureHeaderVariants,
-  productFeatureImageVariants,
-  carouselImageVariants,
+    productFeatureContainerVariants,
+    productFeatureHeaderVariants,
+    productFeatureImageVariants,
+    carouselImageVariants,
 } from "@/framer/productFeatureMotion";
 
 export const ProductFeature = () => {
@@ -56,6 +56,7 @@ export const ProductFeature = () => {
     };
 
     return (
+        /* Feature wrapper */
         <motion.div
             className="w-full h-fit flex flex-col padding-wide gap-3"
             variants={productFeatureContainerVariants}
@@ -63,36 +64,43 @@ export const ProductFeature = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
         >
-            {/* Header */}
+            {/* Header section */}
             <motion.div className="flex flex-col items-center" variants={productFeatureHeaderVariants}>
-                <h2 className="max-w-[300px] md:max-w-full font-display-ss-regular text-center">Designed to be <span className="font-display-ss-italic">the heart</span> of your home</h2>
-                <p className="max-w-[300px] md:max-w-full body-02 font-display-regular text-center">
+                {/* Heading title */}
+                <h2 className="max-w-[300px] md:max-w-full font-seasons-bold text-center">Designed to be <span className="font-seasons-italic">the heart</span> of your home</h2>
+                {/* Subtitle text */}
+                <p className="max-w-[300px] md:max-w-full body-02  text-center">
                     Bring quiet elegance, comfort, and balance into contemporary homes
                 </p>
             </motion.div>
 
-            {/* Grid */}
+            {/* Grid layout */}
             <motion.div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-1 xl:gap-3" variants={productFeatureContainerVariants}>
-                    <motion.img
-                        variants={productFeatureImageVariants}
-                        src='https://d1yei2z3i6k35z.cloudfront.net/14433334/6960da0ce8e2d_adptivecushionsdetail.png'
-                        alt="Seating"
-                        className="xl:w-full xl:h-full"
-                        loading="lazy"
-                    />
+                {/* Featured image */}
+                <motion.img
+                    variants={productFeatureImageVariants}
+                    src='https://d1yei2z3i6k35z.cloudfront.net/14433334/6960da0ce8e2d_adptivecushionsdetail.png'
+                    alt="Seating"
+                    className="xl:w-full xl:h-full"
+                    loading="lazy"
+                />
 
+                {/* Carousel container */}
                 <motion.div className="relative w-full h-full" variants={productFeatureImageVariants}>
+                    {/* Scroll track */}
                     <div
                         ref={carouselRef}
                         className="w-full h-full flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar"
                         onScroll={handleCarouselScroll}
                     >
                         {collectionImages.map((img, index) => (
+                            /* Slide item */
                             <motion.div
                                 key={index}
                                 className="w-full h-full flex-shrink-0 snap-center no-scrollbar"
                                 variants={carouselImageVariants}
                             >
+                                {/* Slide image */}
                                 <img
                                     src={img.imageUrl || ''}
                                     alt={`${index + 1}`}
@@ -104,15 +112,16 @@ export const ProductFeature = () => {
                     </div>
 
                     {collectionImages.length > 1 && (
+                        /* Indicator wrapper */
                         <div className="absolute bottom-2 md:bottom-3 xl:bottom-5 right-2 md:right-3 xl:right-5 flex gap-0.5 md:gap-1 z-10">
                             {collectionImages.map((_, index) => (
+                                /* Indicator dot */
                                 <div
                                     key={index}
-                                    className={`h-0.5 transition-all duration-300 ${
-                                        index === currentImageIndex
+                                    className={`h-0.5 transition-all duration-300 ${index === currentImageIndex
                                             ? 'w-5 bg-black/75'
                                             : 'w-3 bg-black/30'
-                                    }`}
+                                        }`}
                                 />
                             ))}
                         </div>

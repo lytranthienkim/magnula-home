@@ -8,10 +8,8 @@ export const SkeletonCard = ({ className = '' }) => {
         <div className={`flex flex-col gap-3 ${className}`}>
             {/* Image */}
             <SkeletonImage width="w-full" height="h-48" />
-
             
             <SkeletonText lines={1} height="h-5" width="w-3/4" />
-
             
             <SkeletonText lines={2} height="h-3" width="w-full" />
 

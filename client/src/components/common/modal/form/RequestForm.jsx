@@ -118,7 +118,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
                     >
                         {/* Header */}
                         <div className="flex justify-between items-center mb-4 md:mb-6">
-                            <h2 className="h3-neu font-display-semibold md:h2-neu">Request Quantity</h2>
+                            <h2 className="  md:">Request Quantity</h2>
                             <button
                                 onClick={onClose}
                                 className="hover:opacity-70 transition-opacity"
@@ -130,7 +130,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
                         
                         {error && (
                             <div className="mb-4 md:mb-6 p-3 md:p-4  border-[var(--color-error)] bg-red-50 rounded-none">
-                                <p className="body-02 font-display-regular" style={{ color: 'var(--color-error)' }}>
+                                <p className="body-02 " style={{ color: 'var(--color-error)' }}>
                                     {error}
                                 </p>
                             </div>
@@ -140,19 +140,19 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
                         <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:gap-4 lg:gap-5">
                             {/* Customer name */}
                             <div className="flex flex-col gap-1 md:gap-2">
-                                <label className="body-03 md:body-02 font-display-regular">Full Name (*)</label>
+                                <label className="body-03 md:body-02 ">Full Name (*)</label>
                                 <input
                                     type="text"
                                     name="customerName"
                                     value={formData.customerName}
                                     onChange={handleChange}
                                     placeholder="Enter your full name"
-                                    className={`body-03 md:body-02 font-display-regular border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${
+                                    className={`body-03 md:body-02  border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${
                                         fieldErrors.customerName ? 'border-[var(--color-error)]' : 'border-[#272727]'
                                     }`}
                                 />
                                 {fieldErrors.customerName && (
-                                    <p className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>
+                                    <p className="body-03 " style={{ color: 'var(--color-error)' }}>
                                         {fieldErrors.customerName}
                                     </p>
                                 )}
@@ -160,19 +160,19 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
 
                             {/* Customer phone */}
                             <div className="flex flex-col gap-1 md:gap-2">
-                                <label className="body-03 md:body-02 font-display-regular">Phone Number (*)</label>
+                                <label className="body-03 md:body-02 ">Phone Number (*)</label>
                                 <input
                                     type="tel"
                                     name="customerPhone"
                                     value={formData.customerPhone}
                                     onChange={handleChange}
                                     placeholder="Enter your phone number"
-                                    className={`body-03 md:body-02 font-display-regular border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${
+                                    className={`body-03 md:body-02  border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${
                                         fieldErrors.customerPhone ? 'border-[var(--color-error)]' : 'border-[#272727]'
                                     }`}
                                 />
                                 {fieldErrors.customerPhone && (
-                                    <p className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>
+                                    <p className="body-03 " style={{ color: 'var(--color-error)' }}>
                                         {fieldErrors.customerPhone}
                                     </p>
                                 )}
@@ -180,19 +180,19 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
 
                             {/* Requested quantity */}
                             <div className="flex flex-col gap-1 md:gap-2">
-                                <label className="body-03 md:body-02 font-display-regular">Requested Quantity (*)</label>
+                                <label className="body-03 md:body-02 ">Requested Quantity (*)</label>
                                 <input
                                     type="text"
                                     name="requestedQuantity"
                                     value={formData.requestedQuantity}
                                     onChange={handleChange}
                                     placeholder="Enter quantity (e.g., 5)"
-                                    className={`body-03 md:body-02 font-display-regular border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${
+                                    className={`body-03 md:body-02  border-[0.25px] py-2 px-3 bg-background-primary focus:outline-none rounded-none ${
                                         fieldErrors.requestedQuantity ? 'border-[var(--color-error)]' : 'border-[#272727]'
                                     }`}
                                 />
                                 {fieldErrors.requestedQuantity && (
-                                    <p className="body-03 font-display-regular" style={{ color: 'var(--color-error)' }}>
+                                    <p className="body-03 " style={{ color: 'var(--color-error)' }}>
                                         {fieldErrors.requestedQuantity}
                                     </p>
                                 )}
@@ -200,14 +200,14 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
 
                             
                             <div className="flex flex-col gap-1 md:gap-2">
-                                <label className="body-03 md:body-02 font-display-regular">Description</label>
+                                <label className="body-03 md:body-02 ">Description</label>
                                 <textarea
                                     name="description"
                                     value={formData.description}
                                     onChange={handleChange}
                                     placeholder="Add any special requests or notes"
                                     rows={3}
-                                    className="body-03 md:body-02 font-display-regular border-[0.25px] border-[#272727] py-2 px-3 bg-background-primary focus:outline-none rounded-none resize-none"
+                                    className="body-03 md:body-02  border-[0.25px] border-[#272727] py-2 px-3 bg-background-primary focus:outline-none rounded-none resize-none"
                                 />
                             </div>
 
@@ -216,14 +216,14 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="flex-1 border-[0.25px] border-[#272727] body-02 md:body-02 font-display-semibold py-2 md:py-3 rounded-none cursor-pointer hover:opacity-80 transition-opacity"
+                                    className="flex-1 border-[0.25px] border-[#272727] body-02 md:body-02  py-2 md:py-3 rounded-none cursor-pointer hover:opacity-80 transition-opacity"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={loading || success || !formData.customerName.trim() || !formData.customerPhone.trim()}
-                                    className="flex-1 bg-black text-third body-02 md:body-02 font-display-semibold py-2 md:py-3 rounded-none cursor-pointer disabled:opacity-50 hover:opacity-90 transition-opacity"
+                                    className="flex-1 bg-black text-third body-02 md:body-02  py-2 md:py-3 rounded-none cursor-pointer disabled:opacity-50 hover:opacity-90 transition-opacity"
                                 >
                                     {loading ? 'Submitting...' : success ? 'Submitted' : 'Request'}
                                 </button>

@@ -1,14 +1,22 @@
-import { Damion } from "next/font/google";
+import { Damion, Google_Sans_Flex } from "next/font/google";
 import '@/styles/globals.css';
 import { PreloaderWrapper } from "@/components/layout/preloader/PreloaderWrapper";
 import { Providers } from "@/redux/Provider";
+import { Footer } from "@/components/common/navigation/Footer";
+
+const googleSansFlexFont = Google_Sans_Flex({
+  variable: "--font-google-sans-flex",
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  display: "swap"
+});
 
 const damionFont = Damion({
-  variable: '--font-damion',
-  weight: '400',
+  variable: "--font-damion",
+  weight: "400",
   subsets: ["latin"],
-  display: 'swap'
-})
+  display: "swap"
+});
 
 export const metadata = {
   title: {
@@ -40,12 +48,17 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${damionFont.variable}  h-full antialiased`}
+      className={`${googleSansFlexFont.variable} ${damionFont.variable} h-full antialiased`}
     >
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body className="min-h-full flex flex-col justify-between">
         <Providers>
           <PreloaderWrapper>
             {children}
+            <Footer />
           </PreloaderWrapper>
         </Providers>
       </body>

@@ -5,7 +5,7 @@ import { HomeContent03 } from "./HomeContent03"
 
 export const AboutContainer = () => {
     return (
-        <div className="relative w-full h-full flex flex-col justify-between">
+        <div className="relative w-full min-h-full flex flex-col justify-between">
             <AboutHero />
             <HomeContent01 />
             <HomeContent02 />

@@ -18,21 +18,21 @@ export default function Loader() {
                 animate="visible"
             >
                 <motion.h2
-                    className="text-primary font-damion text-4xl"
+                    className="font-damion text-[60px]"
                     variants={loaderTitleVariants}
                 >
                     Magnula
                 </motion.h2>
 
                 <motion.p
-                    className="font-display-semibold uppercase body-02 text-primary tracking-tight"
+                    className="uppercase body-01"
                     variants={loaderSubtitleVariants}
                 >
                     Designed with purpose
                 </motion.p>
 
                 <motion.p
-                    className="font-display-regular body-03 text-primary max-w-2xl text-center leading-relaxed px-6"
+                    className="body-02 max-w-2xl text-center px-6"
                     variants={loaderBodyVariants}
                 >
                     Magnula's journey is not just about making furniture. It's about helping people feel that they've created something truly good for their family, a lasting symbol of care, pride, and belonging that will be cherished for generations.

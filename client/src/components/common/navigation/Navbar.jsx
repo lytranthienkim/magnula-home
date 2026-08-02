@@ -1,7 +1,8 @@
 'use client'
 
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
-import Link from "next/link"
+import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MENU } from "@/constants/menu";
@@ -29,59 +30,88 @@ export const Navbar = () => {
     const cartCount = useSelector((state) => state.cart.totalQuantity);
 
     return (
-        <nav className="relative bg-background-primary w-full flex flex-row justify-between items-center padding-wide z-[999]">
-            <div className="flex flex-row item-start gap-1 md:gap-1.5">
-                <img src='/common/logo.svg' className="w-[18px] md:w-[25px]" loading="lazy"></img>
-                <Link href={'/'}>
-                    <p className="text-[25px] md:text-[35px] font-damion leading-[1]">Magnula</p>
+        <header className="relative bg-background-primary w-full flex flex-row justify-between items-center padding-wide z-[999]">
+            {/* Header navigation */}
+            {/* Brand logo */}
+            <div className="flex flex-row items-center gap-1 md:gap-1.5">
+                <Image
+                    src="/common/logo.svg"
+                    alt="Magnula Logo"
+                    width={25}
+                    height={25}
+                    className="w-[18px] md:w-[25px] h-auto"
+                    priority
+                />
+                <Link href="/">
+                    <span className="text-[25px] md:text-[35px] font-damion leading-[1] block">
+                        Magnula
+                    </span>
                 </Link>
             </div>
 
-            <div className="hidden relative lg:flex flex-row items-center justify-center gap-18">
-                {MENU.map((nav, index) => (
-                    <ul key={index}>
-                        <Link href={nav.link} className={`relative transition-all ${isActive(nav.link) ? 'font-display-semibold' : 'font-display-regular'}`}>
-                            <p className="body-02 hover:opacity-70 transition-opacity duration-200">{nav.tab}</p>
-                        </Link>
-                    </ul>
-                ))}
-                {/* Cart - desktop */}
-                <button
-                    onClick={() => setIsCartOpen(!isCartOpen)}
-                    className="hidden lg:flex flex-row items-center gap-2 relative hover:opacity-70 transition-opacity duration-200 cursor-pointer"
-                >
-                    <p className="body-03 font-display-regular">Cart</p>
-                    {mounted && (
-                        <p className="text-[10px] font-display-semibold text-primary ">
-                            ({cartCount ? cartCount : 0})
-                        </p>
-                    )}
-                </button>
-            </div>
+            {/* Desktop navigation */}
+            <nav aria-label="Main Navigation" className="hidden relative lg:flex flex-row items-center justify-center">
+                <ul className="flex flex-row items-center gap-18">
+                    {MENU.map((nav, index) => (
+                        <li key={nav.id || index}>
+                            <Link
+                                href={nav.link}
+                                className={`body-02 ${isActive(nav.link) ? 'font-medium' : 'font-regular'
+                                    }`}
+                            >
+                                {nav.tab}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
 
-            <div className="flex lg:hidden flex-row items-center gap-6">
-                {/* Cart - mobile/tablet */}
+                {/* Cart button */}
                 <button
+                    type="button"
                     onClick={() => setIsCartOpen(!isCartOpen)}
-                    className="relative flex flex-row items-center gap-1 hover:opacity-70 transition-opacity duration-200 cursor-pointer"
+                    className="hidden lg:flex flex-row items-center gap-2 ml-12 transition-opacity duration-200 cursor-pointer"
+                    aria-label="Open Cart"
                 >
-                    <p className="body-01 font-display-regular">Cart</p>
-                    {mounted && cartCount > 0 && (
-                        <p className="absolute top-[-5] right-[-15] text-[9px] font-display-semibold text-primary">
-                            ({cartCount})
-                        </p>
+                    <p className="body-02">Cart</p>
+                    {mounted && (
+                        <span className="text-[10px] text-primary">
+                            ({cartCount ? cartCount : 0})
+                        </span>
                     )}
                 </button>
+            </nav>
+
+            {/* Mobile actions */}
+            <div className="flex lg:hidden flex-row items-center gap-6">
+                {/* Mobile cart */}
                 <button
+                    type="button"
+                    onClick={() => setIsCartOpen(!isCartOpen)}
+                    className="relative flex flex-row items-center gap-1  transition-opacity duration-200 cursor-pointer"
+                    aria-label="Open Cart"
+                >
+                    <p className="body-02">Cart</p>
+                    {mounted && cartCount > 0 && (
+                        <span className="absolute -top-1 -right-3 text-[9px] text-primary">
+                            ({cartCount})
+                        </span>
+                    )}
+                </button>
+
+                {/* Menu toggle */}
+                <button
+                    type="button"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="hover:opacity-70 transition-opacity"
+                    className=" transition-opacity"
+                    aria-label="Toggle Mobile Menu"
                 >
                     <HiOutlineMenuAlt4 size={22} />
                 </button>
             </div>
 
+            {/* Modal components */}
             <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
             <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-        </nav>
-    )
-}
+        </header>
+    );
+};

@@ -35,15 +35,15 @@ export const CheckoutSummary = () => {
 
                             {/* Product info */}
                             <div className="flex flex-col justify-between flex-1 gap-2">
-                                <p className="body-02 font-display-semibold line-clamp-2">
+                                <p className="body-02  line-clamp-2">
                                     {item.name}
                                 </p>
                                 <div className='flex flex-row items-center justify-between'>
 
-                                    <p className="body-03 font-display-regular">
+                                    <p className="body-03 ">
                                         Quantity: {item.quantity}
                                     </p>
-                                    <p className="body-03 font-display-semibold">
+                                    <p className="body-03 ">
                                         ${(parseFloat(item.price || 0) * item.quantity)}
                                     </p>
                                 </div>
@@ -58,23 +58,23 @@ export const CheckoutSummary = () => {
             <div className="flex flex-col gap-2">
                 {/* Subtotal */}
                 <div className="flex flex-row justify-between items-center">
-                    <p className="body-02 font-display-regular">Quantiy:</p>
-                    <p className="body-02 font-display-regular">
+                    <p className="body-02 ">Quantiy:</p>
+                    <p className="body-02 ">
                         {totalQuantity}
                     </p>
                 </div>
                 
                 <div className="flex flex-row justify-between items-center">
-                    <p className="body-02 font-display-regular">Shipping fee:</p>
-                    <p className="body-02 font-display-regular">
+                    <p className="body-02 ">Shipping fee:</p>
+                    <p className="body-02 ">
                         Excluded
                     </p>
                 </div>
 
                 {/* Total */}
                 <div className="flex flex-row justify-between items-center pt-2 ">
-                    <p className="font-display-semibold body-01">Total:</p>
-                    <p className="font-display-semibold body-01">
+                    <p className=" body-01">Total:</p>
+                    <p className=" body-01">
                         ${total}
                     </p>
                 </div>

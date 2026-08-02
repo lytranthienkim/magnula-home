@@ -1,15 +1,16 @@
 'use client'
 
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { getAllProducts } from "@/api/products";
 import { generateSlug } from "@/helper/slug";
 import {
-  productSimilarContainerVariants,
-  productSimilarHeaderVariants,
-  productCardStackVariants,
-  scrollContainerVariants,
+    productSimilarContainerVariants,
+    productSimilarHeaderVariants,
+    productCardStackVariants,
+    scrollContainerVariants,
 } from "@/framer/productSimilarMotion";
 
 export const ProductSimilar = () => {
@@ -52,6 +53,7 @@ export const ProductSimilar = () => {
     const collectionName = product.Collection?.collectionName || '';
 
     return (
+        /* Section wrapper */
         <motion.div
             className="w-full flex flex-col gap-3 padding-wide"
             variants={productSimilarContainerVariants}
@@ -59,9 +61,10 @@ export const ProductSimilar = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
         >
-            {/* Header */}
-            <motion.h2 className="font-display-ss-regular text-center" variants={productSimilarHeaderVariants}>{collectionName} <span className="font-display-ss-italic">collection</span></motion.h2>
+            {/* Heading title */}
+            <motion.h2 className="font-seasons-bold text-center" variants={productSimilarHeaderVariants}>{collectionName} <span className="font-seasons-italic">collection</span></motion.h2>
 
+            {/* Scroll container */}
             <motion.div
                 ref={scrollContainerRef}
                 className="flex gap-1 md:gap-2 lg:gap-3 overflow-x-auto pb-2 md:pb-3 lg:pb-4 no-scrollbar"
@@ -75,35 +78,40 @@ export const ProductSimilar = () => {
                     };
 
                     return (
-                    <motion.div
-                        key={item.id}
-                        className="flex-shrink-0 w-[65%] md:w-[50%] lg:w-[30%]"
-                        variants={productCardStackVariants}
-                    >
-                        {/* Product Card */}
-                        <div className="flex flex-col gap-4">
-                            {/* Product Image */}
-                            <div className="w-full aspect-square bg-gray-100 overflow-hidden">
-                                <img
-                                    src={item.images?.[0]?.imageUrl || ''}
-                                    alt={item.productName}
-                                    className="w-full h-full object-cover transition-transform duration-300 cursor-pointer"
-                                    onClick={handleProductClick}
-                                    loading="lazy"
-                                />
-                            </div>
+                        /* Card wrapper */
+                        <motion.div
+                            key={item.id}
+                            className="flex-shrink-0 w-[65%] md:w-[50%] lg:w-[30%]"
+                            variants={productCardStackVariants}
+                        >
+                            {/* Product card */}
+                            <div className="flex flex-col gap-4">
+                                {/* Image container */}
+                                <div className="relative w-full aspect-square bg-gray-100 overflow-hidden">
+                                    {/* Product image */}
+                                    <Image
+                                        src={item.images?.[0]?.imageUrl || ''}
+                                        alt={item.productName || 'Similar product'}
+                                        fill
+                                        unoptimized
+                                        className="w-full h-full object-cover transition-transform duration-300 cursor-pointer"
+                                        onClick={handleProductClick}
+                                    />
+                                </div>
 
-                            {/* Product Info */}
-                            <div className="flex flex-col cursor-pointer" onClick={handleProductClick}>
-                                <p className="body-03 font-display-semibold truncate">
-                                    {item.productName}
-                                </p>
-                                <p className="body-03 font-display-regular">
-                                    ${parseFloat(item.variants?.[0]?.price || 0)}
-                                </p>
+                                {/* Info wrapper */}
+                                <div className="flex flex-col cursor-pointer" onClick={handleProductClick}>
+                                    {/* Product name */}
+                                    <p className="body-03 font-[500] truncate">
+                                        {item.productName}
+                                    </p>
+                                    {/* Product price */}
+                                    <p className="body-03 ">
+                                        ${parseFloat(item.variants?.[0]?.price || 0)}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
                     );
                 })}
             </motion.div>

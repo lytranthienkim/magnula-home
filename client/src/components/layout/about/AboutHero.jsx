@@ -4,6 +4,7 @@ import { useLayoutEffect, useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MENU } from "@/constants/menu"
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { MobileMenu } from '@/components/common/navigation/MobileMenu';
@@ -57,17 +58,26 @@ export const AboutHero = () => {
         <div ref={trackRef} className="relative w-full h-[250vh] bg-transparent">
             <div className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[url('/common/about-thumbnail.png')] bg-no-repeat bg-cover bg-right xl:bg-center flex items-start justify-start z-0 ">
                 <nav className="relative  w-full flex flex-row justify-between items-center padding-wide z-[999]">
-                    <div className="flex flex-row item-start gap-1 md:gap-1.5">
-                        <img src='/common/logo.svg' className="w-[18px] md:w-[25px]" loading="lazy"></img>
-                        <Link href={'/'}>
-                            <p className="text-[25px] md:text-[35px] font-damion leading-[1] ">Magnula</p>
+                    <div className="flex flex-row items-center gap-1 md:gap-1.5">
+                        <Image
+                            src="/common/logo.svg"
+                            alt="Magnula Logo"
+                            width={25}
+                            height={25}
+                            className="w-[18px] md:w-[25px] h-auto"
+                            priority
+                        />
+                        <Link href="/">
+                            <span className="text-[25px] md:text-[35px] font-damion leading-[1] block">
+                                Magnula
+                            </span>
                         </Link>
                     </div>
 
                     <div className="hidden relative lg:flex flex-row items-center justify-center gap-18 ">
                         {MENU.map((nav, index) => (
                             <ul key={index}>
-                                <Link href={nav.link} className={`relative transition-all ${isActive(nav.link) ? 'font-display-semibold' : 'font-display-regular'}`}>
+                                <Link href={nav.link} className={`relative transition-all ${isActive(nav.link) ? '' : ''}`}>
                                     <p className="body-02 hover:opacity-70 transition-opacity duration-200">{nav.tab}</p>
                                 </Link>
                             </ul>
@@ -77,9 +87,9 @@ export const AboutHero = () => {
                             onClick={() => setIsCartOpen(!isCartOpen)}
                             className="hidden lg:flex flex-row items-center gap-2 relative hover:opacity-70 transition-opacity duration-200 cursor-pointer"
                         >
-                            <p className="body-03 font-display-regular">Cart</p>
+                            <p className="body-03 ">Cart</p>
                             {mounted && (
-                                <p className="text-[10px] font-display-semibold ">
+                                <p className="text-[10px]  ">
                                     ({cartCount ? cartCount : 0})
                                 </p>
                             )}
@@ -92,9 +102,9 @@ export const AboutHero = () => {
                             onClick={() => setIsCartOpen(!isCartOpen)}
                             className="relative flex flex-row items-center gap-1 hover:opacity-70 transition-opacity duration-200 cursor-pointer"
                         >
-                            <p className="body-01 font-display-regular">Cart</p>
+                            <p className="body-01 ">Cart</p>
                             {mounted && cartCount > 0 && (
-                                <p className="absolute top-[-5] right-[-15] text-[9px] font-display-semibold text-primary">
+                                <p className="absolute top-[-5] right-[-15] text-[9px]  text-primary">
                                     ({cartCount})
                                 </p>
                             )}
@@ -125,12 +135,12 @@ export const AboutHero = () => {
                         <img src='/common/text-about-decor.svg' className='w-full md:w-[80%]' loading="lazy"></img>
                     </motion.div>
                     <motion.p
-                        className="font-display-regular body-01 text-center max-w-md xl:max-w-xl"
+                        className="body-01 text-center max-w-md xl:max-w-xl"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: showText ? 1 : 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        It began with a <span className="font-display-ss-italic">craftsman</span> who was never satisfied with ordinary furniture. To him, wood was not just a material it was a living canvas carrying stories of the earth, waiting to be shaped into something meaningful. Every curve, every joint, every finish was an opportunity to create more than utility, <span className="font-display-ss-italic">it was a chance to create belonging.</span>
+                        It began with a <span className="font-seasons-italic">craftsman</span> who was never satisfied with ordinary furniture. To him, wood was not just a material it was a living canvas carrying stories of the earth, waiting to be shaped into something meaningful. Every curve, every joint, every finish was an opportunity to create more than utility, <span className="font-seasons-italic">it was a chance to create belonging.</span>
                     </motion.p>
                 </motion.div>
             </div>

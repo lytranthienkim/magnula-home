@@ -28,11 +28,9 @@ export const useProduct = () => {
     const selectedMaterialName = searchParams.get('materialName');
     const selectedRoomSuitabilityName = searchParams.get('roomSuitabilityName');
 
-
     const selectedFabricType = fabricTypes.find(f => f.name === selectedFabricTypeName)?.id;
     const selectedMaterial = materials.find(m => m.name === selectedMaterialName)?.id;
     const selectedRoomSuitability = roomSuitabilities.find(r => r.name === selectedRoomSuitabilityName)?.id;
-
 
     const fetchFilterData = useCallback(async () => {
         try {

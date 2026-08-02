@@ -1,43 +1,38 @@
 @import "tailwindcss";
-@import './components.css';
 @import './typography.css';
+@import './components.css';
 
 :root {
   --background-primary: #fffdf3;
-  --foreground: #272727;
   --color-primary: #272727;
   --color-secondary: #696969;
   --color-third: #ffffff;
+  --color-sucess: #2f7b2f;
   --color-error: #b32f2f;
 }
 
 @theme inline {
   --color-background-primary: var(--background-primary);
-  --color-foreground: var(--foreground);
   --color-primary: var(--color-primary);
   --color-secondary: var(--color-secondary);
   --color-third: var(--color-third);
+  --color-sucess: var(--color-sucess);
   --color-error: var(--color-error);
-  --font-damion: var(--font-damion);
-  --font-display: 'Hanken Design Co - Neue Einstellung', sans-serif;
+  --font-sans: var(--font-google-sans-flex), sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-damion: var(--font-damion), 'Damion', cursive, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-seasons-italic: 'The Seasons Italic', serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-seasons-bold: 'TheSeasonsBold', serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-body {
-  background: var(--background-primary);
-  color: var(--foreground);
-  width: 100%;
-  min-height: 100dvh; 
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; 
-}
-
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+@layer base {
+  body {
+    width: 100%;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: var(--background-primary);
+    color: var(--color-primary);
+    font-family: var(--font-sans);
   }
 }

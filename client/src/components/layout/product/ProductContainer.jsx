@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { ProductCard } from "./ProductCard";
+import PaginationControl from "../../common/navigation/PaginationControl";
 import { Filter } from "@/components/common/filter/Filter";
 import { useProduct } from "@/hooks/useProduct";
 import { productContainerVariants, productCardVariants } from "@/framer/productContainerMotion";
@@ -15,12 +16,12 @@ export const ProductContainer = () => {
 
     const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
-    const ITEMS_PER_PAGE = 6;
+    const ITEMS_PER_PAGE = 9;
     const imageSizes = [
         [280, 0, 340, 380],
         [340, 280, 0, 380],
         [380, 0, 280, 340]
-    ]; 
+    ];
 
     const {
         products,
@@ -47,7 +48,14 @@ export const ProductContainer = () => {
         handleClear
     } = useProduct();
 
-    if (loading) return <div className="w-full min-h-screen flex flex-col gap-8 padding-wide"><SkeletonGrid count={12} columns="grid-cols-1 md:grid-cols-2 lg:grid-cols-3" /></div>;
+    if (loading) {
+        return (
+            <div className="w-full min-h-screen flex flex-col gap-8 padding-wide">
+                {/* Skeleton loader */}
+                <SkeletonGrid count={12} columns="grid-cols-1 md:grid-cols-2 lg:grid-cols-3" />
+            </div>
+        );
+    }
 
     const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -78,7 +86,8 @@ export const ProductContainer = () => {
     };
 
     return (
-        <div className="w-full min-h-screen flex flex-col gap-8 padding-wide">
+        <section className="w-full min-h-screen flex flex-col gap-8 padding-wide">
+            {/* Filter component */}
             <Filter
                 selectedCategory={selectedCategory}
                 onCategoryClick={handleCategoryClick}
@@ -104,13 +113,14 @@ export const ProductContainer = () => {
 
             {products.length === 0 ? (
                 <div className="w-full h-[50vh] flex items-center justify-center">
-                    <p className="body-03 text-primary font-display-regular text-center">
+                    <p className="body-03 text-primary text-center">
                         We couldn't find a match for your request. Discover our other curated collections.
                     </p>
                 </div>
             ) : (
                 <>
-                    <motion.div
+                    {/* Products grid */}
+                    <motion.div 
                         variants={productContainerVariants}
                         initial="hidden"
                         animate="visible"
@@ -150,27 +160,14 @@ export const ProductContainer = () => {
                         })}
                     </motion.div>
 
-                    <div className="w-full flex justify-end items-center gap-4 mt-8">
-                        <span className="body-02 font-display-regular text-primary">
-                            Page {currentPage} of {totalPages}
-                        </span>
-                        <button
-                            onClick={handlePreviousPage}
-                            disabled={currentPage === 1}
-                            className="px-4 py-2 border-[0.25px] border-[#272727] bg-white text-black body-02 font-display-regular rounded-none cursor-pointer hover:bg-black hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            Previous
-                        </button>
-                        <button
-                            onClick={handleNextPage}
-                            disabled={currentPage === totalPages}
-                            className="px-4 py-2 border-[0.25px] border-[#272727] bg-black text-white body-02 font-display-regular rounded-none cursor-pointer hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            Next
-                        </button>
-                    </div>
+                    <PaginationControl
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPrevious={handlePreviousPage}
+                        onNext={handleNextPage}
+                    />
                 </>
             )}
-        </div>
+        </section>
     );
 };

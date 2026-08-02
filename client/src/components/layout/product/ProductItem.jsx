@@ -93,11 +93,11 @@ export const ProductItem = () => {
         /* Section wrapper */
         <section className="w-full h-fit padding-wide">
             {/* Main grid */}
-            <div className="grid grid-cols-1 xl:grid-cols-[1fr_1fr] gap-10 xl:gap-20">
+            <div className="grid grid-cols-1 xl:grid-cols-[1fr_1fr] gap-10">
                 {/* Image gallery */}
                 <div className="w-full flex flex-col md:flex-row justify-between gap-2">
                     {/* Primary image */}
-                    <div className="relative flex items-center justify-center w-full h-[400px] md:h-[500px]">
+                    <div className="relative flex items-center justify-center w-full h-[400px] md:h-[600px] xl:h-full">
                         {mainImage && (
                             <Image
                                 src={mainImage}
@@ -105,13 +105,13 @@ export const ProductItem = () => {
                                 fill
                                 priority
                                 unoptimized
-                                className="object-cover"
+                                className="object-cover "
                             />
                         )}
                     </div>
 
                     {/* Thumbnail list */}
-                    <div className="h-full flex flex-row md:flex-col justify-start gap-2 md:gap-3 xl:gap-4">
+                    <div className="h-fit md:h-full flex flex-row md:flex-col justify-start gap-2 md:gap-3 xl:gap-4">
                         {images.map((image, index) => (
                             /* Thumbnail item */
                             <div

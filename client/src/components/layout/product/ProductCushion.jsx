@@ -87,7 +87,7 @@ export const ProductCushion = () => {
                             <motion.div
                                 key={item.id}
                                 onClick={() => setSelectedImageIndex(index)}
-                                className={`flex flex-col justify-between cursor-pointer select-none transition-colors duration-200
+                                className={`w-full h-full flex flex-col justify-between cursor-pointer select-none transition-colors duration-200
                                 `}
                                 variants={cushionItemVariants}
                             >
@@ -114,7 +114,7 @@ export const ProductCushion = () => {
 
 
                 {/* Preview panel */}
-                <motion.div className="w-full h-full flex items-center justify-center bg-background-primary" variants={cushionImageVariants}>
+                <motion.div className="w-full h-[300px] lg:h-full flex items-center justify-center bg-background-primary" variants={cushionImageVariants}>
                     {/* Display container */}
                     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
                         {/* Featured image */}
@@ -124,7 +124,7 @@ export const ProductCushion = () => {
                                 alt={selectedProduct?.productName || 'Selected cushion'}
                                 fill
                                 unoptimized
-                                className="w-full h-full object-contain transition-all duration-300"
+                                className="w-full h-full object-contain object-cover transition-all duration-300"
                             />
                         )}
                     </div>

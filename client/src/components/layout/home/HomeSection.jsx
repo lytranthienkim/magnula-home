@@ -9,7 +9,7 @@ export const HomeSection = () => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true);
+        queueMicrotask(() => setIsMounted(true));
         const timer = setTimeout(() => {
             setIsExpanded(true);
         }, 500);

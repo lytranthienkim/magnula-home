@@ -215,9 +215,9 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
         };
 
         fetchStatesForSavedCountry();
-    }, [currentCustomer?.countryCode]);
+    }, [currentCustomer?.countryCode, formData.countryCode]);
 
-    const validateForm = () => {
+    const validateForm = useCallback(() => {
         const newErrors = {};
         if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
         if (!formData.email.trim()) newErrors.email = 'Email is required';
@@ -245,7 +245,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
-    };
+    }, [formData, cartItems]);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
@@ -253,7 +253,7 @@ export const CheckoutForm = ({ onSubmit, isLoading, error, cartItems = [] }) => 
         if (validateForm()) {
             onSubmit(formData);
         }
-    }, [formData, onSubmit]);
+    }, [formData, onSubmit, validateForm]);
 
     if (loadingCountries || loadingPayments) {
         return (

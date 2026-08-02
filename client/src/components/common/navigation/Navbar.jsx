@@ -18,7 +18,7 @@ export const Navbar = () => {
     const [isCartOpen, setIsCartOpen] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
+        queueMicrotask(() => setMounted(true));
     }, []);
 
     const isActive = (link) => {

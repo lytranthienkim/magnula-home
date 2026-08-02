@@ -33,7 +33,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
         }
     }, [error, fieldErrors]);
 
-    const validateForm = () => {
+    const validateForm = useCallback(() => {
         const errors = {};
 
         if (!formData.customerName || formData.customerName.trim() === '') {
@@ -50,7 +50,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
         }
 
         return errors;
-    };
+    }, [formData]);
 
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
@@ -91,7 +91,7 @@ export const RequestForm = ({ isOpen, onClose, productId, productVariantId }) =>
         } finally {
             setLoading(false);
         }
-    }, [formData, productId, productVariantId, onClose]);
+    }, [formData, productId, productVariantId, onClose, validateForm]);
 
     return (
         <AnimatePresence>

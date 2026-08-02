@@ -17,13 +17,13 @@ export default function OrderConfirmationPage() {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (!orderId) {
-            setError('Order not found');
-            setLoading(false);
-            return;
-        }
+        const init = async () => {
+            if (!orderId) {
+                setError('Order not found');
+                setLoading(false);
+                return;
+            }
 
-        const fetchOrder = async () => {
             try {
                 const data = await getOrderById(orderId);
                 setOrder(data.data);
@@ -35,7 +35,7 @@ export default function OrderConfirmationPage() {
             }
         };
 
-        fetchOrder();
+        init();
     }, [orderId]);
 
     const renderContent = () => {

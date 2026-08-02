@@ -1,5 +1,5 @@
 {
-  "name": "magnula-backend",
+  "name": "server",
   "version": "1.0.0",
   "description": "Magnula furniture backend",
   "main": "server.js",

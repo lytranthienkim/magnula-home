@@ -35,7 +35,7 @@ export default function Loader() {
                     className="body-02 max-w-2xl text-center px-6"
                     variants={loaderBodyVariants}
                 >
-                    Magnula's journey is not just about making furniture. It's about helping people feel that they've created something truly good for their family, a lasting symbol of care, pride, and belonging that will be cherished for generations.
+                    Magnula&apos;s journey is not just about making furniture. It&apos;s about helping people feel that they&apos;ve created something truly good for their family, a lasting symbol of care, pride, and belonging that will be cherished for generations.
                 </motion.p>
             </motion.div>
         </div>

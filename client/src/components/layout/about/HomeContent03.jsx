@@ -10,10 +10,10 @@ export const HomeContent03 = () => {
                 {/* Content wrapper */}
                 <div className="max-w-sm md:max-w-md lg:max-w-xl flex flex-col items-center justify-center gap-2 px-4 md:px-0">
                     <h3 className="font-seasons-bold text-center text-xl md:text-2xl lg:text-3xl">
-                        Magnula's journey is not just about making <span className="font-seasons-italic">furniture</span>
+                        Magnula&apos;s journey is not just about making <span className="font-seasons-italic">furniture</span>
                     </h3>
                     <p className="max-w-xl body-01 text-center text-sm md:text-base">
-                        It's about helping people feel that they've created something truly good for their family, a lasting symbol of care, pride, and belonging that will be cherished for generations.
+                        It&apos;s about helping people feel that they&apos;ve created something truly good for their family, a lasting symbol of care, pride, and belonging that will be cherished for generations.
                     </p>
                 </div>
 

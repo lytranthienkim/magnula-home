@@ -159,7 +159,7 @@ export const ProductItem = () => {
                         <div className="flex flex-row flex-wrap items-center gap-1">
                             <span className="body-02 min-w-fit font-[500]">Overall:</span>
                             <span className="body-02 font-[400]">
-                                {product.variants?.[0]?.overallSize || 'Not specified'}"
+                                {product.variants?.[0]?.overallSize || 'Not specified'}&quot;
                             </span>
                         </div>
 
@@ -167,7 +167,7 @@ export const ProductItem = () => {
                         <div className="flex flex-row flex-wrap items-center gap-1">
                             <span className="body-02 min-w-fit font-[500]">Seat:</span>
                             <span className="body-02 font-[400]">
-                                {product.variants?.[0]?.seatSize || 'Not specified'}"
+                                {product.variants?.[0]?.seatSize || 'Not specified'}&quot;
                             </span>
                         </div>
 

@@ -11,7 +11,7 @@ export function PreloaderWrapper({ children }) {
         const loaderShown = sessionStorage.getItem('loaderShown')
 
         if (!loaderShown) {
-            setShowLoader(true)
+            queueMicrotask(() => setShowLoader(true))
 
             const timer = setTimeout(() => {
                 sessionStorage.setItem('loaderShown', 'true')
@@ -21,7 +21,7 @@ export function PreloaderWrapper({ children }) {
 
             return () => clearTimeout(timer)
         } else {
-            setLoading(false)
+            queueMicrotask(() => setLoading(false))
         }
     }, [])
 

@@ -27,7 +27,7 @@ export const AboutHero = () => {
     const [isCartOpen, setIsCartOpen] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
+        queueMicrotask(() => setMounted(true));
     }, []);
 
     const isActive = (link) => {
@@ -37,7 +37,7 @@ export const AboutHero = () => {
     };
 
     useEffect(() => {
-        setIsMounted(true);
+        queueMicrotask(() => setIsMounted(true));
         const timer = setTimeout(() => {
             setIsExpanded(true);
         }, 500);
@@ -46,10 +46,12 @@ export const AboutHero = () => {
     }, []);
 
     useLayoutEffect(() => {
-        setProgress(1);
-        setShowContainer(true);
-        setShowDecor(true);
-        setShowText(true);
+        queueMicrotask(() => {
+            setProgress(1);
+            setShowContainer(true);
+            setShowDecor(true);
+            setShowText(true);
+        });
     }, []);
 
     const cartCount = useSelector((state) => state.cart.totalQuantity);
@@ -132,7 +134,7 @@ export const AboutHero = () => {
                         transition={{ duration: 0.8 }}
                         className='flex items-center justify-center'
                     >
-                        <img src='/common/text-about-decor.svg' className='w-full md:w-[80%]' loading="lazy"></img>
+                        <img src='/common/text-about-decor.svg' className='w-full md:w-[80%]' alt='text decor' loading="lazy"></img>
                     </motion.div>
                     <motion.p
                         className="body-01 text-center max-w-md xl:max-w-xl"

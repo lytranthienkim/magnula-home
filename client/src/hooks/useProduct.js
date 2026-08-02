@@ -84,11 +84,15 @@ export const useProduct = () => {
     }, [searchParams]);
 
     useEffect(() => {
-        fetchFilterData();
+        (async () => {
+            await fetchFilterData();
+        })();
     }, [fetchFilterData]);
 
     useEffect(() => {
-        fetchProductList();
+        (async () => {
+            await fetchProductList();
+        })();
     }, [fetchProductList]);
 
     const {

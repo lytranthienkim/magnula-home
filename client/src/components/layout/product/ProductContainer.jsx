@@ -114,7 +114,7 @@ export const ProductContainer = () => {
             {products.length === 0 ? (
                 <div className="w-full h-[50vh] flex items-center justify-center">
                     <p className="body-03 text-primary text-center">
-                        We couldn't find a match for your request. Discover our other curated collections.
+                        We couldn&apos;t find a match for your request. Discover our other curated collections.
                     </p>
                 </div>
             ) : (

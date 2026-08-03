@@ -2,7 +2,7 @@
 
 Magnula Furniture Online Shop is built based on Magnula Furniture brand - a furniture brand specializing in premium furniture chair products for families launched in Indore, India in 2025 (original website at https://www.magnula.com). Magnula Furniture Online Shop uses the domain https://magnula.space with improvements including added product purchase and sales functionality, order inquiry and tracking, product order request submission to sellers, and enhanced website interface. The prerequisite when building Magnula Furniture Online is to provide users with an intuitive and modern product purchasing experience while maintaining the authentic brand identity of Magnula.
 
-Link: https://www.magnula.com
+Link: https://www.magnula.space
 ---
 
 ![Magnula ui](https://pub-c0d91e27663a41a5a1671bb31cabfb2a.r2.dev/readme/magnula-thumbnail.png)
